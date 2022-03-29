@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+# don't create a source-map file, also create a "minified" file
+sass --no-source-map --style=compressed scss/main.scss ../public/css/main.css
