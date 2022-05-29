@@ -1,0 +1,22 @@
+
+# Check that docker exists
+if [ "x$(which docker)" == "x" ]; then
+  echo "Docker doesn't exist in the path"
+  exit 1
+fi
+
+# Check that containers are running, assume if bugr-php is running then they all will be
+RUNNING=$(docker inspect --format="{{.State.Running}}" bugr-php 2> /dev/null)
+
+if [ $? -eq 1 ]; then
+  echo "bugr-php container does not exist."
+  exit 3
+fi
+
+if [ "$RUNNING" == "false" ]; then
+  echo "bugr-php is not running."
+  exit 2
+fi
+
+# Connect to container and run setup script
+docker exec -it bugr-php php /var/www/install.php
