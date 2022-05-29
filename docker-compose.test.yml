@@ -1,0 +1,33 @@
+version: "3.0"
+services:
+  phpunit-test:
+    build:
+      context: ./build
+      dockerfile: phpunit.dockerfile
+    container_name: bugr-test-www
+    tty: true # holds the container open once it's started
+    volumes:
+      - ./src/tests:/var/www/tests
+      - ./src/resources/lib:/var/www/tests/lib
+    networks:
+      - bugr_test
+
+  redis-test:
+    image: redis:7
+    container_name: bugr-test-redis
+    networks:
+      - bugr_test
+
+  mysql-test:
+    image: mysql:8
+    container_name: bugr-test-mysql
+    environment:
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_ROOT_PASSWORD=test
+      - MYSQL_DATABASE=bugr
+    networks:
+      - bugr_test
+
+networks:
+  bugr_test:

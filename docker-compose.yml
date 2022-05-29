@@ -1,0 +1,46 @@
+version: "3.0"
+services:
+  www:
+    build:
+      context: ./build
+      dockerfile: nginx.dockerfile
+    container_name: bugr-www
+    volumes:
+      - ./src:/var/www
+    ports:
+      - 10000:80
+    networks:
+      - bugr_external
+      - bugr_internal
+
+  php:
+    build:
+      context: ./build
+      dockerfile: php.dockerfile
+    container_name: bugr-php
+    volumes:
+      - ./src:/var/www
+    networks:
+      - bugr_internal
+
+  redis:
+    image: redis:7
+    container_name: bugr-redis
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - bugr_internal
+
+  mysql:
+    image: mysql:8
+    container_name: bugr-mysql
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    networks:
+      - bugr_internal
+      
+networks:
+  bugr_external:
+  bugr_internal:
