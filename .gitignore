@@ -4,3 +4,6 @@ data/redis/*
 
 # Ignore installed packages from Composer
 src/tests/vendor
+
+# Ignore the database access password
+src/resources/database_password
