@@ -1,0 +1,6 @@
+# Don't ignore these directories BUT do ignore their contents
+data/mysql/*
+data/redis/*
+
+# Ignore installed packages from Composer
+src/tests/vendor
