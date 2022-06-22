@@ -1,0 +1,6 @@
+{
+    "routes": {
+        "/": "BugTracker\\Controller\\IndexController",
+        "/bugs/(\\d+)": "BugTracker\\Controller\\Bug\\GetBugController"
+    }
+}
