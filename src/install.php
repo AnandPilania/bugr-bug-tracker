@@ -49,7 +49,6 @@ if($user_exists === false) {
 $db->query('USE bugr');
 
 # Create tables by importing database migrations
-# Todo: load all files from migrations directory, run contents in filename ascending order
 $migrations_dir = __DIR__.'/resources/migrations';
 $migrations = scandir($migrations_dir);
 foreach($migrations as $migration) {
