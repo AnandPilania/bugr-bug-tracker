@@ -9,7 +9,8 @@ class Autoloader
         // only attempt to autoload BugTracker or SourcePot library classes
         $vendors = [
             'BugTracker',
-            'SourcePot'
+            'SourcePot',
+            'Psr'
         ];
 
         $vendorName = substr($className, 0, strpos($className, '\\'));

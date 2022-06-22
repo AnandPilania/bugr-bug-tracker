@@ -2,5 +2,13 @@
     "routes": {
         "/": "BugTracker\\Controller\\IndexController",
         "/bugs/(\\d+)": "BugTracker\\Controller\\Bug\\GetBugController"
-    }
+    },
+    "listeners": [
+        ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\RequestStartedListener"],
+        ["SourcePot\\Core\\Event\\CoreShutdownEvent", "BugTracker\\Listener\\AutoloaderDebugListener"],
+        ["SourcePot\\Core\\Event\\CoreStartedEvent", "BugTracker\\Listener\\DebugLogListener"],
+        ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\DebugLogListener"],
+        ["SourcePot\\Core\\Event\\RequestFinishedEvent", "BugTracker\\Listener\\DebugLogListener"],
+        ["SourcePot\\Core\\Event\\CoreShutdownEvent", "BugTracker\\Listener\\DebugLogListener"]
+    ]
 }
