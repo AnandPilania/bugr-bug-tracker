@@ -5,7 +5,7 @@ namespace BugTracker\Controller;
 use SourcePot\Core\Controller\ControllerInterface;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\ResponseInterface;
-use SourcePot\Core\Http\BasicResponse;
+use SourcePot\Core\Http\Response\BasicResponse;
 
 class IndexController implements ControllerInterface
 {

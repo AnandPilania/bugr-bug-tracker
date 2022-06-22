@@ -4,7 +4,7 @@ namespace SourcePot\Core;
 
 use SourcePot\Core\Config\StorageConfig as Config;
 use SourcePot\Core\Storage\Storage;
-use SourcePot\Core\Http\ErrorResponse;
+use SourcePot\Core\Http\Response\ErrorResponse;
 use SourcePot\Core\Http\Request;
 use SourcePot\Core\Http\Router;
 use SourcePot\IO\FileLoader;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SourcePot\Core\Http;
+namespace SourcePot\Core\Http\Response;
 
 class BasicResponse implements ResponseInterface
 {

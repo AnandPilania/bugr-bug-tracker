@@ -4,16 +4,14 @@ namespace BugTracker\Controller\Bug;
 
 use SourcePot\Core\Controller\ControllerInterface;
 use SourcePot\Core\Http\RequestInterface;
-use SourcePot\Core\Http\ResponseInterface;
-use SourcePot\Core\Http\BasicResponse;
+use SourcePot\Core\Http\Response\ResponseInterface;
+use SourcePot\Core\Http\Response\BasicResponse;
 
 class GetBugController implements ControllerInterface
 {
     public function __construct(
         private int $bugId
-    ) {
-
-    }
+    ) { }
 
     public static function create(...$args): self
     {

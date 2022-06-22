@@ -3,7 +3,7 @@
 namespace SourcePot\Core\Controller;
 
 use SourcePot\Core\Http\RequestInterface;
-use SourcePot\Core\Http\ResponseInterface;
+use SourcePot\Core\Http\Response\ResponseInterface;
 
 interface ControllerInterface
 {
