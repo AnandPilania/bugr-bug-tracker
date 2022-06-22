@@ -7,3 +7,6 @@ src/tests/vendor
 
 # Ignore the database access password
 src/resources/database_password
+
+# Ignore private documentation files
+docs/
