@@ -9,6 +9,7 @@ namespace SourcePot\Core\Http;
 class Request implements RequestInterface
 {
     protected readonly string $path;
+    protected readonly string $method;
     protected readonly array $params;
     protected readonly array $headers;
 
@@ -16,6 +17,7 @@ class Request implements RequestInterface
     {
         $request = new self;
         $request->path = $_SERVER['REQUEST_URI'] ?? '/';
+        $request->method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $request->params = $_REQUEST;
         $request->headers = getallheaders();
 
@@ -25,5 +27,30 @@ class Request implements RequestInterface
     public function path(): string
     {
         return $this->path;
+    }
+
+    public function method(): string
+    {
+        return $this->method;
+    }
+
+    public function params(): array
+    {
+        return $this->params;
+    }
+
+    public function hasParam(string $param): bool
+    {
+        return isset($this->params[$param]);
+    }
+
+    public function headers(): array
+    {
+        return $this->headers;
+    }
+
+    public function hasHeader(string $header): bool
+    {
+        return isset($this->headers[$header]);
     }
 }

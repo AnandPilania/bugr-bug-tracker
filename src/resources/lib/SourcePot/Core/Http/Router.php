@@ -7,15 +7,24 @@ use SourcePot\Core\Controller\ControllerInterface;
 class Router implements RouterInterface
 {
     private array $controllers = [];
+    private array $routes = [];
 
     public static function create(): self
     {
         return new self;
     }
 
-    public function getControllerForRoute(string $path): ControllerInterface
+    public function getControllerForRoute(string $path, string $method): ControllerInterface
     {
-        foreach($this->controllers as $pathRegex => $controllerClass) {
+        foreach($this->routes as $route) {
+            [$pathRegex, $controllerClass, $methods] = $route;
+
+            if(!in_array($method, $methods)) {
+                continue;
+            }
+
+        // }
+        // foreach($this->controllers as $pathRegex => $controllerClass) {
             $matches = [];
             preg_match('#^'.$pathRegex.'$#', $path, $matches);
             if(sizeof($matches) > 0) {
@@ -29,7 +38,7 @@ class Router implements RouterInterface
                 array_shift($matches);
 
                 // Pass the capture groups into the controller's create method
-                $controller = $controllerClass::create(...$matches);
+                $controller = new $controllerClass(...$matches);
 
                 if(!$controller instanceof ControllerInterface) {
                     throw new Exception\InvalidControllerClass($controllerClass);
@@ -44,8 +53,13 @@ class Router implements RouterInterface
 
     public function addRoutes(array $routes): self
     {
-        foreach($routes as $path => $controller) {
-            $this->controllers[$path] = $controller;
+        foreach($routes as $route) {
+            if(sizeof($route) === 2) {
+                $route[] = ['GET'];
+            }
+
+            // $this->controllers[$path] = $controller;
+            $this->routes[] = $route;
         }
 
         return $this;

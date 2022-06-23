@@ -9,4 +9,5 @@ interface ControllerInterface
 {
     public static function create(...$args): self;
     public function execute(RequestInterface $request): ResponseInterface;
+    public function accessCode(): string;
 }

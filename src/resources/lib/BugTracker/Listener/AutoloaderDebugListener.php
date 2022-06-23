@@ -10,8 +10,11 @@ class AutoloaderDebugListener implements ListenerInterface
 {
     public function handle(StoppableEventInterface $event): StoppableEventInterface
     {
-        echo "\n\nAutoloaded classes:\n";
-        echo implode("\n", Autoloader::$loadedClasses);
+        error_log(str_repeat('-',80));
+        foreach(Autoloader::$loadedClasses as $class) {
+            error_log($class);
+        }
+        error_log(str_repeat('-',80));
         return $event;
     }
 }

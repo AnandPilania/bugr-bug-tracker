@@ -1,14 +1,18 @@
 {
-    "routes": {
-        "/": "BugTracker\\Controller\\IndexController",
-        "/bugs/(\\d+)": "BugTracker\\Controller\\Bug\\GetBugController"
-    },
+    "routes": [
+        ["/", "BugTracker\\Controller\\IndexController"],
+        ["/login", "BugTracker\\Controller\\Authentication\\LoginPageController"],
+        ["/login", "BugTracker\\Controller\\Authentication\\LoginController", ["POST"]],
+        ["/bugs/(\\d+)", "BugTracker\\Controller\\Bug\\GetBugController"]
+    ],
     "listeners": [
         ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\RequestStartedListener"],
         ["SourcePot\\Core\\Event\\CoreShutdownEvent", "BugTracker\\Listener\\AutoloaderDebugListener"],
+        ["SourcePot\\Core\\Event\\RouteDecidedEvent", "BugTracker\\Listener\\AuthorisationListener"],
         ["SourcePot\\Core\\Event\\CoreStartedEvent", "BugTracker\\Listener\\DebugLogListener"],
         ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\DebugLogListener"],
         ["SourcePot\\Core\\Event\\RequestFinishedEvent", "BugTracker\\Listener\\DebugLogListener"],
-        ["SourcePot\\Core\\Event\\CoreShutdownEvent", "BugTracker\\Listener\\DebugLogListener"]
+        ["SourcePot\\Core\\Event\\CoreShutdownEvent", "BugTracker\\Listener\\DebugLogListener"],
+        ["SourcePot\\Core\\Event\\RouteDecidedEvent", "BugTracker\\Listener\\DebugLogListener"]
     ]
 }

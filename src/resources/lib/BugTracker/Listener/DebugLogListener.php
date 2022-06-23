@@ -9,7 +9,7 @@ class DebugLogListener implements ListenerInterface
 {
     public function handle(StoppableEventInterface $event): StoppableEventInterface
     {
-        error_log($event::class);
+        error_log('*** '.$event::class);
         return $event;
     }
 }

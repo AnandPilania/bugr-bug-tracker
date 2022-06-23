@@ -1,0 +1,35 @@
+
+* {
+    color: var(--color-text);
+}
+
+body {
+    background: linear-gradient(-25deg, var(--color3-dark), var(--color3));
+}
+
+header h1 {
+    background-color: var(--color1);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+}
+
+fieldset {
+    border-color: var(--color-text);
+    padding: 1rem;
+
+    p {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0.5rem 0;
+
+        label {
+            width: 25%;
+            text-align: right;
+        }
+
+        input {
+            width: 25%;
+        }
+    }
+}
