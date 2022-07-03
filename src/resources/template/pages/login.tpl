@@ -1,3 +1,4 @@
+{{@include:html_head.tpl}}
 <header>
     <h1>{{page-title}}</h1>
 </header>
@@ -20,3 +21,4 @@
         </fieldset>
     </form>
 </article>
+{{@include:html_foot.tpl}}

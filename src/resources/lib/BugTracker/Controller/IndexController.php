@@ -6,7 +6,7 @@ use SourcePot\Core\Controller\ControllerInterface;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Core\Http\Response\HTMLResponse;
-use SourcePot\TemplateEngine\Template;
+use SourcePot\TemplateEngine\TemplateEngine;
 
 class IndexController implements ControllerInterface
 {
@@ -22,12 +22,11 @@ class IndexController implements ControllerInterface
 
     public function execute(RequestInterface $request): ResponseInterface
     {
-        $templateDirectory = dirname($_SERVER['DOCUMENT_ROOT']).'/resources/template';
-        $header = new Template($templateDirectory.'/html_head.tpl', ['page-title' => 'Bug Tracker']);
-        $content = new Template($templateDirectory.'/pages/index.tpl', ['page-title' => 'Bug Tracker']);
-        $footer = new Template($templateDirectory.'/html_foot.tpl');
+        TemplateEngine::setBaseDirectory(dirname($_SERVER['DOCUMENT_ROOT']).'/resources/template');
+        $template = TemplateEngine::loadFromFile('pages/index.tpl');
+        $template->parse(['page-title' => 'Bug Tracker']);
         return (new HTMLResponse())->setBody(
-            $header->output() . $content->output() . $footer->output()
+            $template->render()
         );
     }
 }
