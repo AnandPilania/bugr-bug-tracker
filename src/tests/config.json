@@ -1,0 +1,10 @@
+{
+    "database": {
+        "credentials": {
+            "username": "test",
+            "password": "test"
+        },
+        "database": "bugr",
+        "hostname": "bugr-test-mysql"
+    }
+}
