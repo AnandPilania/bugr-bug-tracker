@@ -2,6 +2,9 @@
 
 namespace SourcePot\IO;
 
+use SourcePot\IO\Exception\FileNotFoundException;
+use SourcePot\IO\Exception\UnableToOpenFileException;
+
 class FileLoader
 {
     private string $filename = '';
@@ -13,7 +16,7 @@ class FileLoader
     {
         // detect whether the file actually exists first
         if(!file_exists($filename)) {
-            throw new Exception\FileNotFoundException($filename);
+            throw new FileNotFoundException($filename);
         }
 
         // suppress warnings to avoid unneccesary output
@@ -21,7 +24,7 @@ class FileLoader
 
         // catch file loading failure
         if($contents === false) {
-            throw new Exception\UnableToOpenFileException($filename);
+            throw new UnableToOpenFileException($filename);
         }
 
         // use JSON_THROW_ON_ERROR so we'll get an exception if the decode doesn't work

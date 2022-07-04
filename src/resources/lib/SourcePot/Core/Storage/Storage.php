@@ -4,27 +4,24 @@ namespace SourcePot\Core\Storage;
 
 class Storage implements StorageInterface
 {
-    private static ?StorageInterface $instance = null;
+    private static $storedData = [];
 
-    private array $storedData = [];
-
-    // Storage class is a singleton
+    // Storage class is a static class
     private function __construct() {}
 
-    public static function instance(): self
+    public static function setFromJson(array|object $json): void
     {
-        if(self::$instance === null) {
-            self::$instance = new self;
+        foreach($json as $key => $value) {
+            self::set($key, $value);
         }
-        return self::$instance;
     }
 
-    public function set(string $key, mixed $value): self
+    public static function set(string $key, mixed $value): void
     {
         // handle simple key
         if(!str_contains($key, '.')) {
-            $this->storedData[$key] = $value;
-            return $this;
+            self::$storedData[$key] = $value;
+            return;
         }
 
         // support deep array-like keys with dot separators
@@ -34,7 +31,7 @@ class Storage implements StorageInterface
         $finalKey = array_pop($keyParts);
 
         // grab reference to stored data so we can traverse it
-        $data = &$this->storedData;
+        $data = &self::$storedData;
         foreach($keyParts as $key) {
             if(!isset($data[$key])) {
                 $data[$key] = [];
@@ -42,20 +39,19 @@ class Storage implements StorageInterface
             $data = &$data[$key];
         }
         $data[$finalKey] = $value;
-        return $this;
     }
 
-    public function has(string $key): bool
+    public static function has(string $key): bool
     {
         // handle simple keys
         if(!str_contains($key, '.')) {
-            return array_key_exists($key, $this->storedData);
+            return array_key_exists($key, self::$storedData);
         }
 
         // support deep array-like keys with dot separators
         $keyParts = explode('.', $key);
         $finalKey = array_pop($keyParts);
-        $data = &$this->storedData;
+        $data = &self::$storedData;
         foreach($keyParts as $key) {
             if(!isset($data[$key])) {
                 // we do not have the key
@@ -67,17 +63,17 @@ class Storage implements StorageInterface
         return array_key_exists($finalKey, $data);
     }
 
-    public function get(string $key): mixed
+    public static function get(string $key): mixed
     {
         // handle simple key
         if(!str_contains($key, '.')) {
-            return $this->storedData[$key] ?? null;
+            return self::$storedData[$key] ?? null;
         }
 
         // support deep array-like keys with dot separators
         $keyParts = explode('.', $key);
         $finalKey = array_pop($keyParts);
-        $data = &$this->storedData;
+        $data = &self::$storedData;
         foreach($keyParts as $key) {
             if(!isset($data[$key])) {
                 // if we can't go deeper in the list, fail

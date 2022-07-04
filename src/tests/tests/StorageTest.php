@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use SourcePot\Storage\Storage;
+use SourcePot\Core\Storage\Storage;
 
 final class StorageTest extends TestCase
 {
@@ -11,36 +11,9 @@ final class StorageTest extends TestCase
         new Storage;
     }
 
-    public function testStorageCanInstantiateWithCreateMethod(): void
-    {
-        $storage = Storage::create();
-        $this->assertInstanceOf(Storage::class, $storage);
-    }
-
-    public function testStorageCreateMethodReturnsSameInstance(): void
-    {
-        $storage1 = Storage::create();
-        $storage2 = Storage::create();
-        $this->assertEquals(
-            $storage1,
-            $storage2
-        );
-    }
-
-    public function testStorageStoreMethodReturnsInstanceOfStorage(): void
-    {
-        $storage = Storage::create();
-        $this->assertInstanceOf(
-            Storage::class,
-            $storage->set('hello', 'world')
-        );
-    }
-
     public function testStorageHasFunctionReturnsFalseWithMissingKey(): void
     {
-        $this->assertFalse(
-            (Storage::create())->has('key_that_does_not_exist'),
-        );
+        $this->assertFalse(Storage::has('key_that_does_not_exist'));
     }
 
     public function testStorageAcceptsAndReturnsCorrectData(): void
@@ -48,9 +21,8 @@ final class StorageTest extends TestCase
         $key = 'something';
         $data = 'hello, world';
 
-        $storage = Storage::create();
-        $storage->set($key, $data);
-        $something = $storage->get($key);
+        Storage::set($key, $data);
+        $something = Storage::get($key);
 
         $this->assertEquals($data, $something);
     }
@@ -59,10 +31,9 @@ final class StorageTest extends TestCase
     {
         $key = 'something';
 
-        $storage = Storage::create();
-        $storage->set($key, 'something');
+        Storage::set($key, 'something');
 
-        $this->assertTrue($storage->has($key));
+        $this->assertTrue(Storage::has($key));
     }
 
     public function testPopulateStorageWithJsonContents(): void
@@ -72,30 +43,28 @@ final class StorageTest extends TestCase
         $key2 = 'key2';
         $value2 = 'value2';
 
-        $storage = Storage::create();
-        $storage->loadFromJson([
+        Storage::setFromJson([
             $key1 => $value1,
             $key2 => $value2
         ]);
 
-        $this->assertTrue($storage->has($key1));
-        $this->assertTrue($storage->has($key2));
-        $this->assertEquals($value1, $storage->get($key1));
-        $this->assertEquals($value2, $storage->get($key2));
+        $this->assertTrue(Storage::has($key1));
+        $this->assertTrue(Storage::has($key2));
+        $this->assertEquals($value1, Storage::get($key1));
+        $this->assertEquals($value2, Storage::get($key2));
     }
 
     public function testCanSetDeepKeysIntoStorage(): void
     {
         $key = 'some.long.key';
         $value = 'value';
-        $storage = Storage::create();
-        $storage->set($key, $value);
+        Storage::set($key, $value);
 
-        $this->assertEquals($value, $storage->get($key));
-        $this->assertIsArray($storage->get('some'));
-        $this->assertIsArray($storage->get('some.long'));
-        $this->assertTrue($storage->has('some'));
-        $this->assertTrue($storage->has('some.long'));
-        $this->assertTrue($storage->has('some.long.key'));
+        $this->assertEquals($value, Storage::get($key));
+        $this->assertIsArray(Storage::get('some'));
+        $this->assertIsArray(Storage::get('some.long'));
+        $this->assertTrue(Storage::has('some'));
+        $this->assertTrue(Storage::has('some.long'));
+        $this->assertTrue(Storage::has('some.long.key'));
     }
 }

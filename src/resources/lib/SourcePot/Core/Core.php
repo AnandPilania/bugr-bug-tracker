@@ -23,27 +23,19 @@ class Core implements CoreInterface
     private readonly ListenerProvider $listenerProvider;
     private readonly string $configFile;
 
-    public function __construct()
+    public function __construct(
+        private Config $config,
+    )
     {
         $this->listenerProvider = new ListenerProvider;
-        $this->configFile = dirname($_SERVER['DOCUMENT_ROOT']).'/config.json';
-    }
-
-    public static function create(): self
-    {
-        return new self;
     }
 
     public function execute(): void
     {
         try {
-            // todo load some global settings/config
-            // todo refactor how config is stored and loaded
-            $config = new Config(Storage::instance());
-            $config->load(FileLoader::loadJsonFromFile($this->configFile),true);
             $eventDispatcher = new EventDispatcher($this->listenerProvider);
 
-            foreach($config->get('listeners') as $listenerObject) {
+            foreach($this->config->get('listeners') as $listenerObject) {
                 [$eventName, $listenerClass] = $listenerObject;
                 $this->listenerProvider->registerListenerForEvent(
                     $eventName,
@@ -54,7 +46,7 @@ class Core implements CoreInterface
             $eventDispatcher->dispatch(new CoreStartedEvent);
 
             $router = Router::create();
-            $router->addRoutes($config->get('routes'));
+            $router->addRoutes($this->config->get('routes'));
 
             $request = Request::create();
             $controller = $router->getControllerForRoute($request->path(), $request->method());

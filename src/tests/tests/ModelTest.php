@@ -1,23 +1,24 @@
 <?php
 
+use Error;
 use PHPUnit\Framework\TestCase;
 use SourcePot\Model\AbstractModel;
 use SourcePot\Model\Bug;
 use SourcePot\IO\FileLoader;
-use BugTracker\Core\Persistence\MySQLDatabase as Database;
-use SourcePot\Storage\Storage;
+use SourcePot\Core\Persistence\MySQLDatabase as Database;
+use SourcePot\Core\Storage\Storage;
 
 final class ModelTest extends TestCase
 {
     public function testCannotInstantiateAbstractModelClass(): void
     {
-        $this->expectException(\Error::class);
+        $this->expectException(Error::class);
         new AbstractModel();
     }
 
     public function testCannotInstantiateBugClass(): void
     {
-        $this->expectException(\Error::class);
+        $this->expectException(Error::class);
         new Bug;
     }
 
@@ -55,13 +56,12 @@ final class ModelTest extends TestCase
             'content' => 'This describes the bug in question'
         ]);
 
-        $storage = Storage::create();
-        $storage->loadFromJson(FileLoader::loadJsonFromFile('config.json'));
+        Storage::setFromJson(FileLoader::loadJsonFromFile('config.json'));
         $database = new Database(
-            username: $storage->get('database.credentials.username'),
-            password: $storage->get('database.credentials.password'),
-            database: $storage->get('database.database'),
-            host: $storage->get('database.hostname')
+            username: Storage::get('database.credentials.username'),
+            password: Storage::get('database.credentials.password'),
+            database: Storage::get('database.database'),
+            host: Storage::get('database.hostname')
         );
 
         $this->assertTrue($bug->save($database));
@@ -69,13 +69,11 @@ final class ModelTest extends TestCase
 
     public function testCanLoadBugFromDatabase(): void
     {
-        $storage = Storage::create();
-        $storage->loadFromJson(FileLoader::loadJsonFromFile('config.json'));
         $database = new Database(
-            username: $storage->get('database.credentials.username'),
-            password: $storage->get('database.credentials.password'),
-            database: $storage->get('database.database'),
-            host: $storage->get('database.hostname')
+            username: Storage::get('database.credentials.username'),
+            password: Storage::get('database.credentials.password'),
+            database: Storage::get('database.database'),
+            host: Storage::get('database.hostname')
         );
 
         $id = 1;
@@ -88,13 +86,11 @@ final class ModelTest extends TestCase
 
     public function testCanSaveExitingBugToDatabase(): void
     {
-        $storage = Storage::create();
-        $storage->loadFromJson(FileLoader::loadJsonFromFile('config.json'));
         $database = new Database(
-            username: $storage->get('database.credentials.username'),
-            password: $storage->get('database.credentials.password'),
-            database: $storage->get('database.database'),
-            host: $storage->get('database.hostname')
+            username: Storage::get('database.credentials.username'),
+            password: Storage::get('database.credentials.password'),
+            database: Storage::get('database.database'),
+            host: Storage::get('database.hostname')
         );
 
         $id = 1;

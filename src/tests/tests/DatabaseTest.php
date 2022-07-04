@@ -1,20 +1,18 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use BugTracker\Core\Persistence\MySQLDatabase as Database;
-use SourcePot\Storage\Storage;
+use SourcePot\Core\Persistence\MySQLDatabase as Database;
+use SourcePot\Core\Storage\Storage;
 use SourcePot\IO\FileLoader;
 
 final class DatabaseTest extends TestCase
 {
     private Database $database;
-    private Storage $storage;
 
     protected function setup(): void
     {
         $this->assertTrue(class_exists(Database::class));
-        $this->storage = Storage::create();
-        $this->storage->loadFromJson(
+        Storage::setFromJson(
             FileLoader::loadJsonFromFile('config.json')
         );
     }
@@ -22,20 +20,20 @@ final class DatabaseTest extends TestCase
     private function dbConnect(): void
     {
         $this->database = new Database(
-            $this->storage->get('database.hostname'),
-            $this->storage->get('database.credentials.username'),
-            $this->storage->get('database.credentials.password'),
-            $this->storage->get('database.database')
+            Storage::get('database.hostname'),
+            Storage::get('database.credentials.username'),
+            Storage::get('database.credentials.password'),
+            Storage::get('database.database')
         );
     }
 
     public function testCanInstantiateDatabaseObject(): void
     {
         $database = new Database(
-            $this->storage->get('database.hostname'),
-            $this->storage->get('database.credentials.username'),
-            $this->storage->get('database.credentials.password'),
-            $this->storage->get('database.database')
+            Storage::get('database.hostname'),
+            Storage::get('database.credentials.username'),
+            Storage::get('database.credentials.password'),
+            Storage::get('database.database')
         );
         $this->assertInstanceOf(
             Database::class,

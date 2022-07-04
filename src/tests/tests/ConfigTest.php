@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use SourcePot\IO\FileLoader;
-use SourcePot\Storage\Storage;
+use SourcePot\Core\Storage\Storage;
 
 final class ConfigTest extends TestCase
 {
@@ -18,24 +18,22 @@ final class ConfigTest extends TestCase
         file_put_contents($dummy_filename, json_encode($data));
         $json = FileLoader::loadJsonFromFile($dummy_filename);
 
-        $storage = Storage::create();
-        $storage->loadFromJson($json);
+        Storage::setFromJson($json);
 
-        $this->assertEquals($value, $storage->get($key));
+        $this->assertEquals($value, Storage::get($key));
     }
 
     public function testLoadDatabaseConfig(): void
     {
         $filename = 'config.json';
-        $storage = Storage::create();
-        $storage->loadFromJson(FileLoader::loadJsonFromFile($filename));
+        Storage::setFromJson(FileLoader::loadJsonFromFile($filename));
 
-        $this->assertTrue($storage->has('database'));
-        $this->assertTrue($storage->has('database.credentials'));
-        $this->assertTrue($storage->has('database.credentials.username'));
+        $this->assertTrue(Storage::has('database'));
+        $this->assertTrue(Storage::has('database.credentials'));
+        $this->assertTrue(Storage::has('database.credentials.username'));
         $this->assertEquals(
             'test',
-            $storage->get('database.credentials.username')
+            Storage::get('database.credentials.username')
         );
     }
 }
