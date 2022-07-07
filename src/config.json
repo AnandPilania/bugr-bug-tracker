@@ -14,5 +14,12 @@
         ["SourcePot\\Core\\Event\\RequestFinishedEvent", "BugTracker\\Listener\\DebugLogListener"],
         ["SourcePot\\Core\\Event\\CoreShutdownEvent", "BugTracker\\Listener\\DebugLogListener"],
         ["SourcePot\\Core\\Event\\RouteDecidedEvent", "BugTracker\\Listener\\DebugLogListener"]
-    ]
+    ],
+    "database": {
+        "credentials": {
+            "username": "bugr",
+            "password_file": "resources/database_password"
+        },
+        "host": "bugr-mysql"
+    }
 }

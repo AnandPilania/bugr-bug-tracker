@@ -26,7 +26,7 @@ echo 'Installing...'."\n";
 $db = new PDO('mysql:host=bugr-mysql', 'root', 'password');
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-# Create database is we need to
+# Create database if we need to
 $databases = array_column($db->query('SHOW DATABASES')->fetchAll(), 'Database');
 if(!in_array('bugr', $databases)) {
     echo "Creating bug tracker database\n";
