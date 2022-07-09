@@ -3,7 +3,7 @@
 namespace SourcePot\Core;
 
 use BugTracker\Listener\OutputAutoloaderClassesHandler;
-use SourcePot\Core\Config\StorageConfig as Config;
+use SourcePot\Core\Config\Config;
 use SourcePot\Core\Storage\Storage;
 use SourcePot\Core\Http\Response\ErrorResponse;
 use SourcePot\Core\Http\Response\UnauthorisedResponse;
