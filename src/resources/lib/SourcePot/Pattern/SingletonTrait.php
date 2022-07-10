@@ -2,7 +2,7 @@
 
 namespace SourcePot\Pattern;
 
-trait Singleton
+trait SingletonTrait
 {
     // Maybe can't be type-hinted because we'll never know what the type is
     private static self $instance;

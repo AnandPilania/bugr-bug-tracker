@@ -18,8 +18,9 @@
     "database": {
         "credentials": {
             "username": "bugr",
-            "password_file": "resources/database_password"
+            "password-file": "resources/database_password"
         },
-        "host": "bugr-mysql"
+        "host": "bugr-mysql",
+        "database": "bugr"
     }
 }

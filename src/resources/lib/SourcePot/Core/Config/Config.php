@@ -26,7 +26,7 @@ class Config implements ConfigInterface
         }
 
         // support deep array-like keys with dot separators
-        $keyParts = explode('.', $key);
+        $keyParts = explode('.', $name);
 
         // remove last part of array key to be final key
         $finalKey = array_pop($keyParts);
@@ -74,7 +74,7 @@ class Config implements ConfigInterface
         }
 
         // support deep array-like keys with dot separators
-        $keyParts = explode('.', $key);
+        $keyParts = explode('.', $name);
         $finalKey = array_pop($keyParts);
         $data = &$this->storedData;
         foreach($keyParts as $key) {

@@ -24,3 +24,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 # Set working directory so when we connect via a shell we're in the right place
 WORKDIR /var/www/tests
+
+COPY test/composer.json composer.json
+RUN composer install

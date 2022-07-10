@@ -2,9 +2,9 @@
 
 namespace SourcePot\Core\Config;
 
-use SourcePot\Pattern\Singleton;
+use SourcePot\Pattern\SingletonTrait;
 
 class GlobalConfig extends Config implements ConfigInterface
 {
-    use Singleton;
+    use SingletonTrait;
 }

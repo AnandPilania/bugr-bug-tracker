@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use SourcePot\Pattern\Singleton;
+use SourcePot\Pattern\SingletonTrait;
 
 class SingletonTest extends TestCase
 {
@@ -22,5 +22,5 @@ class SingletonTest extends TestCase
 
 class TestSingleton
 {
-    use Singleton;
+    use SingletonTrait;
 }

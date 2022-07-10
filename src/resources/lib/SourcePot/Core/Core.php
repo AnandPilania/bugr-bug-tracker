@@ -2,7 +2,7 @@
 
 namespace SourcePot\Core;
 
-use BugTracker\Listener\OutputAutoloaderClassesHandler;
+use SourcePot\Container\Container;
 use SourcePot\Core\Config\Config;
 use SourcePot\Core\Storage\Storage;
 use SourcePot\Core\Http\Response\ErrorResponse;
@@ -21,11 +21,8 @@ use SourcePot\IO\FileLoader;
 class Core implements CoreInterface
 {
     private readonly ListenerProvider $listenerProvider;
-    private readonly string $configFile;
 
-    public function __construct(
-        private Config $config,
-    )
+    public function __construct()
     {
         $this->listenerProvider = new ListenerProvider;
     }
@@ -33,9 +30,11 @@ class Core implements CoreInterface
     public function execute(): void
     {
         try {
+            $config = Container::get(Config::class);
+
             $eventDispatcher = new EventDispatcher($this->listenerProvider);
 
-            foreach($this->config->get('listeners') as $listenerObject) {
+            foreach($config->get('listeners') as $listenerObject) {
                 [$eventName, $listenerClass] = $listenerObject;
                 $this->listenerProvider->registerListenerForEvent(
                     $eventName,
@@ -46,7 +45,7 @@ class Core implements CoreInterface
             $eventDispatcher->dispatch(new CoreStartedEvent);
 
             $router = Router::create();
-            $router->addRoutes($this->config->get('routes'));
+            $router->addRoutes($config->get('routes'));
 
             $request = Request::create();
             $controller = $router->getControllerForRoute($request->path(), $request->method());

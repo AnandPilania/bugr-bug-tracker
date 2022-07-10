@@ -3,9 +3,11 @@
 namespace SourcePot\Persistence;
 
 use PDO;
+use PDOStatement;
 
 /**
- * This is a MySQL Database adapter that wraps a PDO instance
+ * This Database adapter simply wraps a PDO instance.
+ * It allows instantiation without needing to invoke the PDO constructor until necessary.
  */
 class DatabaseAdapter
 {
