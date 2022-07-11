@@ -1,11 +1,13 @@
 {
     "autoload": {
         "psr-4": {
-            "BugTracker\\": "lib/BugTracker",
-            "SourcePot\\": "lib/SourcePot"
+            "BugTracker\\": "tests/lib/BugTracker",
+            "SourcePot\\": "tests/lib/SourcePot"
         }
     },
     "require": {
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "9.*",
+        "squizlabs/php_codesniffer": "3.*",
+        "vimeo/psalm": "4.*"
     }
 }

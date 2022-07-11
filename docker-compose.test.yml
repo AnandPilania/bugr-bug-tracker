@@ -6,9 +6,10 @@ services:
       dockerfile: phpunit.dockerfile
     container_name: bugr-test-www
     tty: true # holds the container open once it's started
+    working_dir: /var/www/tests/tests
     volumes:
-      - ./src/tests:/var/www/tests
-      - ./src/resources/lib:/var/www/tests/lib
+      - ./src/tests:/var/www/tests/tests
+      - ./src/resources/lib:/var/www/tests/tests/lib
     networks:
       - bugr_test
 

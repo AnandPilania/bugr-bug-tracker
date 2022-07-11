@@ -1,0 +1,2 @@
+#!/bin/bash
+docker exec -it bugr-test-www /var/www/tests/vendor/bin/phpcs --standard=PSR12 ./lib
