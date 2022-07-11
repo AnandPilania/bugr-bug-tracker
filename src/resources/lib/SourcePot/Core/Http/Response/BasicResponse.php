@@ -2,14 +2,17 @@
 
 namespace SourcePot\Core\Http\Response;
 
+use InvalidArgumentException;
+
 class BasicResponse implements ResponseInterface
 {
     protected array $headers = [];
     protected int $statusCode = 200;
+    protected string $body = '';
 
     public static function create(): self
     {
-        return new self;
+        return new self();
     }
 
     public function setHeader(string $name, string $value): self
@@ -20,8 +23,8 @@ class BasicResponse implements ResponseInterface
 
     public function setBody(mixed $body): self
     {
-        if(!is_string($body)) {
-            throw new IllegalArgumentException('Body is not a string');
+        if (!is_string($body)) {
+            throw new InvalidArgumentException('Body is not a string');
         }
         $this->body = $body;
         return $this;
@@ -32,10 +35,10 @@ class BasicResponse implements ResponseInterface
         $this->statusCode = $code;
         return $this;
     }
-    
+
     public function send(): void
     {
-        foreach($this->headers as $name => $value) {
+        foreach ($this->headers as $name => $value) {
             header("$name: $value");
         }
 

@@ -5,20 +5,17 @@ namespace BugTracker\Listener;
 use SourcePot\Core\Http\Exception\ForbiddenException;
 use SourcePot\Core\Http\Exception\UnauthorisedException;
 use SourcePot\Core\EventDispatcher\ListenerInterface;
-use SourcePot\Core\EventDispatcher\StoppableEventInterface;
-use SourcePot\Core\EventDispatcher\StoppableEventTrait;
+use SourcePot\Core\EventDispatcher\EventInterface;
 
 class AuthorisationListener implements ListenerInterface
 {
-    use StoppableEventTrait;
-
-    public function handle(StoppableEventInterface $event): StoppableEventInterface
+    public function handle(EventInterface $event): EventInterface
     {
         // todo handle authorisation
-        $accessCode = $event->controller->accessCode();
+        $accessCode = $event->get('controller')->accessCode();
 
         // if controller has no access requirements, automatically pass
-        if($accessCode === '') {
+        if ($accessCode === '') {
             return $event;
         }
 
@@ -35,14 +32,14 @@ class AuthorisationListener implements ListenerInterface
 
         // yes: check user has access to this page
         // controller should store something to show access requirement
-        if(!in_array($accessCode, $accessCodes)) {
+        if (!in_array($accessCode, $accessCodes)) {
             throw new ForbiddenException($username, $accessCode);
         }
 
         // no: check anon users can access this page
         // controller should store something to show access requirement
-        if($accessCode !== null) {
-            throw new UnauthorisedException;
+        if ($accessCode !== null) {
+            throw new UnauthorisedException();
         }
 
         return $event;

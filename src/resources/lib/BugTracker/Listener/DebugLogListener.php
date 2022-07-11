@@ -3,13 +3,13 @@
 namespace BugTracker\Listener;
 
 use SourcePot\Core\EventDispatcher\ListenerInterface;
-use SourcePot\Core\EventDispatcher\StoppableEventInterface;
+use SourcePot\Core\EventDispatcher\EventInterface;
 
 class DebugLogListener implements ListenerInterface
 {
-    public function handle(StoppableEventInterface $event): StoppableEventInterface
+    public function handle(EventInterface $event): EventInterface
     {
-        error_log('*** '.$event::class);
+        error_log('*** ' . $event::class);
         return $event;
     }
 }

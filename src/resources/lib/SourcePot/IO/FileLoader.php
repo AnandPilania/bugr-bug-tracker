@@ -10,12 +10,14 @@ class FileLoader
     private string $filename = '';
 
     // not allowed to instantiate with 'new' keyword
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     public static function loadJsonFromFile(string $filename): array
     {
         // detect whether the file actually exists first
-        if(!file_exists($filename)) {
+        if (!file_exists($filename)) {
             throw new FileNotFoundException($filename);
         }
 
@@ -23,7 +25,7 @@ class FileLoader
         $contents = @file_get_contents($filename);
 
         // catch file loading failure
-        if($contents === false) {
+        if ($contents === false) {
             throw new UnableToOpenFileException($filename);
         }
 

@@ -24,7 +24,7 @@ class Core implements CoreInterface
 
     public function __construct()
     {
-        $this->listenerProvider = new ListenerProvider;
+        $this->listenerProvider = new ListenerProvider();
     }
 
     public function execute(): void
@@ -34,7 +34,7 @@ class Core implements CoreInterface
 
             $eventDispatcher = new EventDispatcher($this->listenerProvider);
 
-            foreach($config->get('listeners') as $listenerObject) {
+            foreach ($config->get('listeners') as $listenerObject) {
                 [$eventName, $listenerClass] = $listenerObject;
                 $this->listenerProvider->registerListenerForEvent(
                     $eventName,
@@ -42,7 +42,7 @@ class Core implements CoreInterface
                 );
             }
 
-            $eventDispatcher->dispatch(new CoreStartedEvent);
+            $eventDispatcher->dispatch(new CoreStartedEvent());
 
             $router = Router::create();
             $router->addRoutes($config->get('routes'));
@@ -52,22 +52,21 @@ class Core implements CoreInterface
 
             $eventDispatcher->dispatch(new RouteDecidedEvent($request, $controller));
 
-            $eventDispatcher->dispatch(new RequestStartedEvent);
+            $eventDispatcher->dispatch(new RequestStartedEvent());
             $response = $controller->execute($request);
-            $eventDispatcher->dispatch(new RequestFinishedEvent);
+            $eventDispatcher->dispatch(new RequestFinishedEvent());
             $response->send();
 
-            $eventDispatcher->dispatch(new CoreShutdownEvent);
-
-        } catch(Http\Exception\NoRouteForPathException $e) {
+            $eventDispatcher->dispatch(new CoreShutdownEvent());
+        } catch (Http\Exception\NoRouteForPathException $e) {
             ErrorResponse::create()
                 ->setBody($e->getMessage())
                 ->send();
-        } catch(Http\Exception\UnauthorisedException $e) {
+        } catch (Http\Exception\UnauthorisedException $e) {
             UnauthorisedResponse::create()
                 ->setBody($e->getMessage())
                 ->send();
-        } catch(Http\Exception\ForbiddenException $e) {
+        } catch (Http\Exception\ForbiddenException $e) {
             UnauthorisedResponse::create()
                 ->setBody($e->getMessage())
                 ->send();

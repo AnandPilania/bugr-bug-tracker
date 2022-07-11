@@ -7,5 +7,5 @@ namespace SourcePot\Core\EventDispatcher;
  */
 interface EventDispatcherInterface
 {
-    public function dispatch(StoppableEventInterface $event): StoppableEventInterface;
+    public function dispatch(EventInterface $event): EventInterface;
 }

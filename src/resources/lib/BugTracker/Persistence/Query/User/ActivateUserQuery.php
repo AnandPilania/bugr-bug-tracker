@@ -15,6 +15,6 @@ class ActivateUserQuery implements QueryInterface
     public function execute(DatabaseAdapter $database): mixed
     {
         $statement = $database->prepare('UPDATE user SET active=1 WHERE username=:username AND active=0');
-        $statement->execute(['username' => $this->username]);
+        return $statement->execute(['username' => $this->username]);
     }
 }

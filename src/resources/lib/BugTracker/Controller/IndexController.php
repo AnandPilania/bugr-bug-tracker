@@ -17,12 +17,12 @@ class IndexController implements ControllerInterface
 
     public static function create(...$args): self
     {
-        return new self;
+        return new self();
     }
 
     public function execute(RequestInterface $request): ResponseInterface
     {
-        TemplateEngine::setBaseDirectory(dirname($_SERVER['DOCUMENT_ROOT']).'/resources/template');
+        TemplateEngine::setBaseDirectory(dirname($_SERVER['DOCUMENT_ROOT']) . '/resources/template');
         $template = TemplateEngine::loadFromFile('pages/index.tpl');
         $template->parse(['page-title' => 'Bug Tracker']);
         return (new HTMLResponse())->setBody(

@@ -4,5 +4,5 @@ namespace SourcePot\Core\EventDispatcher;
 
 interface ListenerInterface
 {
-    public function handle(StoppableEventInterface $event): StoppableEventInterface;
+    public function handle(EventInterface $event): EventInterface;
 }

@@ -16,18 +16,17 @@ class Template implements ComponentInterface
     ) {
         $this->templateContents = $templateContents;
         // check the incoming template contents and build a list of components
-        while(strlen($templateContents) > 0)
-        {
+        while (strlen($templateContents) > 0) {
             $tokenStartPos = strpos($templateContents, TemplateEngine::TOKEN_START);
 
-            if($tokenStartPos === false) {
+            if ($tokenStartPos === false) {
                 // If we didn't find a token start, assume all that is left is plain text
                 $template = new TextComponent($templateContents);
                 $this->components[] = $template;
                 break;
             }
 
-            if($tokenStartPos > 0) {
+            if ($tokenStartPos > 0) {
                 // If we found a token start not at the beginning of the string, everything before
                 // the token start is a text component
                 $template = new TextComponent(substr($templateContents, 0, $tokenStartPos));
@@ -38,9 +37,9 @@ class Template implements ComponentInterface
 
             $tokenEndPos = strpos($templateContents, TemplateEngine::TOKEN_END, $tokenStartPos);
 
-            if($tokenEndPos === false) {
+            if ($tokenEndPos === false) {
                 // If we didn't find the end of a token, this is a terminal error
-                throw new Exception\TemplateParseException('No end of token found');
+                throw new TemplateParseException('No end of token found');
             }
 
             $token = substr(
@@ -51,7 +50,7 @@ class Template implements ComponentInterface
 
             $nextBlockStartPos = $tokenEndPos + strlen(TemplateEngine::TOKEN_END);
 
-            if($token[0] !== '@') {
+            if ($token[0] !== '@') {
                 // Simple variable replacement is just {{variable}}
                 $template = new VariableComponent($token);
                 $this->components[] = $template;
@@ -59,47 +58,67 @@ class Template implements ComponentInterface
                 continue;
             }
 
-            [$token,$params] = explode(':',$token,2);
+            [$token,$params] = explode(':', $token, 2);
 
-            switch($token) {
+            switch ($token) {
                 case '@include':
                     $template = new IncludeComponent($params);
                     $this->components[] = $template;
                     $templateContents = substr($templateContents, $nextBlockStartPos);
                     continue 2; // while loop
-                
+
                 case '@foreach':
                     // This is a "block component" which means it has another corresponding token
                     // somewhere later in the file.  We need to find that first
-                    [$iterableVariable, $instanceVariable] = explode(':',$params,2);
-                    $closingToken = TemplateEngine::TOKEN_START.'@endforeach:'.$iterableVariable.TemplateEngine::TOKEN_END;
+                    [$iterableVariable, $instanceVariable] = explode(':', $params, 2);
+                    $closingToken = TemplateEngine::TOKEN_START
+                        . '@endforeach:' . $iterableVariable . TemplateEngine::TOKEN_END;
                     $closingTokenStart = strpos($templateContents, $closingToken, $nextBlockStartPos);
 
-                    if($closingTokenStart === false) {
+                    if ($closingTokenStart === false) {
                         // Terminal error if we can't find the end
-                        throw new TemplateParseException('No closing token found for '.$token);
+                        throw new TemplateParseException("No closing token found for $token");
                     }
 
-                    $blockContents = substr($templateContents, $nextBlockStartPos, $closingTokenStart-$nextBlockStartPos);
+                    $blockContents = substr(
+                        $templateContents,
+                        $nextBlockStartPos,
+                        $closingTokenStart - $nextBlockStartPos
+                    );
 
-                    $template = new LoopComponent($blockContents, $iterableVariable, $instanceVariable);
+                    $template = new LoopComponent(
+                        $blockContents,
+                        $iterableVariable,
+                        $instanceVariable
+                    );
                     $this->components[] = $template;
-                    $templateContents = substr($templateContents, $nextBlockStartPos + strlen($blockContents) + strlen($closingToken));
+                    $templateContents = substr(
+                        $templateContents,
+                        $nextBlockStartPos + strlen($blockContents) + strlen($closingToken)
+                    );
                     continue 2; // while loop
 
                 case '@if':
-                    $closingToken = TemplateEngine::TOKEN_START.'@endif:'.$params.TemplateEngine::TOKEN_END;
+                    $closingToken = TemplateEngine::TOKEN_START
+                        . '@endif:' . $params . TemplateEngine::TOKEN_END;
                     $closingTokenStart = strpos($templateContents, $closingToken, $nextBlockStartPos);
 
-                    if($closingTokenStart === false) {
-                        throw new TemplateParseException('No closing token found for '.$token);
+                    if ($closingTokenStart === false) {
+                        throw new TemplateParseException("No closing token found for $token");
                     }
 
-                    $blockContents = substr($templateContents, $nextBlockStartPos, $closingTokenStart-$nextBlockStartPos);
+                    $blockContents = substr(
+                        $templateContents,
+                        $nextBlockStartPos,
+                        $closingTokenStart - $nextBlockStartPos
+                    );
 
                     $template = new IfComponent($blockContents, $params);
                     $this->components[] = $template;
-                    $templateContents = substr($templateContents, $nextBlockStartPos + strlen($blockContents) + strlen($closingToken));
+                    $templateContents = substr(
+                        $templateContents,
+                        $nextBlockStartPos + strlen($blockContents) + strlen($closingToken)
+                    );
                     continue 2;
 
                 default:
@@ -115,14 +134,16 @@ class Template implements ComponentInterface
         }
     }
 
-    public function parse(array $data = []): self {
-        foreach($this->components as $component) {
+    public function parse(array $data = []): self
+    {
+        foreach ($this->components as $component) {
             $component->parse($data);
         }
         return $this;
     }
 
-    public function render(): string {
+    public function render(): string
+    {
         return array_reduce(
             $this->components,
             fn($carry, $component) => $carry . $component->render(),

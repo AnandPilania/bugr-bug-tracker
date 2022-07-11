@@ -12,7 +12,7 @@ class Container implements ContainerInterface
 
     public static function get(string $class): object
     {
-        if(!array_key_exists($class, self::$containers)) {
+        if (!array_key_exists($class, self::$containers)) {
             throw new ContainerException('No container for class ' . $class . ' exists');
         }
 
@@ -23,7 +23,7 @@ class Container implements ContainerInterface
     {
         $class = $interfaceName ?? $object::class;
 
-        if(array_key_exists($class, self::$containers)) {
+        if (array_key_exists($class, self::$containers)) {
             throw new ContainerException('Container for class ' . $class . ' already set');
         }
 

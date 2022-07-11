@@ -6,11 +6,13 @@ class Config implements ConfigInterface
 {
     private array $storedData = [];
 
-    public function __construct() { }
+    public function __construct()
+    {
+    }
 
     public function setMany(array $directives): self
     {
-        foreach($directives as $name => $value) {
+        foreach ($directives as $name => $value) {
             $this->set($name, $value);
         }
 
@@ -20,7 +22,7 @@ class Config implements ConfigInterface
     public function set(string $name, mixed $value): self
     {
         // handle simple key
-        if(!str_contains($name, '.')) {
+        if (!str_contains($name, '.')) {
             $this->storedData[$name] = $value;
             return $this;
         }
@@ -33,8 +35,8 @@ class Config implements ConfigInterface
 
         // grab reference to stored data so we can traverse it
         $data = &$this->storedData;
-        foreach($keyParts as $key) {
-            if(!isset($data[$key])) {
+        foreach ($keyParts as $key) {
+            if (!isset($data[$key])) {
                 $data[$key] = [];
             }
             $data = &$data[$key];
@@ -44,19 +46,19 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    public function has(string $key): bool
+    public function has(string $name): bool
     {
         // handle simple keys
-        if(!str_contains($key, '.')) {
-            return array_key_exists($key, $this->storedData);
+        if (!str_contains($name, '.')) {
+            return array_key_exists($name, $this->storedData);
         }
 
         // support deep array-like keys with dot separators
-        $keyParts = explode('.', $key);
+        $keyParts = explode('.', $name);
         $finalKey = array_pop($keyParts);
         $data = &$this->storedData;
-        foreach($keyParts as $key) {
-            if(!isset($data[$key])) {
+        foreach ($keyParts as $key) {
+            if (!isset($data[$key])) {
                 // we do not have the key
                 return false;
             }
@@ -69,7 +71,7 @@ class Config implements ConfigInterface
     public function get(string $name): mixed
     {
         // handle simple key
-        if(!str_contains($name, '.')) {
+        if (!str_contains($name, '.')) {
             return $this->storedData[$name] ?? null;
         }
 
@@ -77,8 +79,8 @@ class Config implements ConfigInterface
         $keyParts = explode('.', $name);
         $finalKey = array_pop($keyParts);
         $data = &$this->storedData;
-        foreach($keyParts as $key) {
-            if(!isset($data[$key])) {
+        foreach ($keyParts as $key) {
+            if (!isset($data[$key])) {
                 // if we can't go deeper in the list, fail
                 return null;
             }

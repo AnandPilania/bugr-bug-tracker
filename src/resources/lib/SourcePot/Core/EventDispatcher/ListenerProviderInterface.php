@@ -4,5 +4,5 @@ namespace SourcePot\Core\EventDispatcher;
 
 interface ListenerProviderInterface
 {
-    public function getListenersForEvent(StoppableEventInterface $event): iterable;
+    public function getListenersForEvent(EventInterface $event): iterable;
 }

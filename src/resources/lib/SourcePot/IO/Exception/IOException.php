@@ -9,5 +9,4 @@ use SourcePot\Core\Exception\DebugLogException;
  */
 class IOException extends DebugLogException
 {
-    
 }

@@ -9,11 +9,12 @@ class IfComponent implements ComponentInterface
     public function __construct(
         private string $content,
         private string $truthyVariable
-    ) { }
+    ) {
+    }
 
     public function parse(array $data = []): self
     {
-        $this->showContent = (bool)$data[$this->truthyVariable];
+        $this->showContent = (bool) $data[$this->truthyVariable];
         return $this;
     }
 

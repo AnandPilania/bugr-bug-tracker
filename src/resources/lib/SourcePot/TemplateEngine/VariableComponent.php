@@ -10,7 +10,7 @@ class VariableComponent implements ComponentInterface
 
     public function __construct(
         private string $content
-    ) { 
+    ) {
         $this->keys = explode('.', $content);
     }
 
@@ -22,17 +22,17 @@ class VariableComponent implements ComponentInterface
         // The final key entry is the key of the value we're searching for
         $valueKey = array_pop($keys);
 
-        foreach($keys as $key) {
-            if(array_key_exists($key, $data)) {
+        foreach ($keys as $key) {
+            if (array_key_exists($key, $data)) {
                 $data = $data[$key];
                 continue;
             }
             throw new InvalidArgumentException(
-                "Key $key not found in data array: " . implode(',',array_keys($data))
+                "Key $key not found in data array: " . implode(',', array_keys($data))
             );
         }
 
-        if(!array_key_exists($valueKey, $data) || is_array($data[$valueKey])) {
+        if (!array_key_exists($valueKey, $data) || is_array($data[$valueKey])) {
             throw new InvalidArgumentException(
                 "Invalid data found for key $valueKey"
             );

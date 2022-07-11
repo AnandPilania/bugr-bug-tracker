@@ -12,12 +12,12 @@ class IncludeComponent implements ComponentInterface
 
     public function __construct(string $filename)
     {
-        if(file_exists(TemplateEngine::baseDirectory().$filename)) {
-            $this->loadFromFile(TemplateEngine::baseDirectory().$filename);
+        if (file_exists(TemplateEngine::baseDirectory() . $filename)) {
+            $this->loadFromFile(TemplateEngine::baseDirectory() . $filename);
             return;
         }
 
-        if(file_exists($filename)) {
+        if (file_exists($filename)) {
             $this->loadFromFile($filename);
             return;
         }
@@ -29,11 +29,11 @@ class IncludeComponent implements ComponentInterface
     {
         try {
             $content = file_get_contents($filename);
-            if($content === false) {
+            if ($content === false) {
                 // error loading file
                 throw new UnableToOpenFileException($filename);
             }
-        } catch(\Throwable $t) {
+        } catch (\Throwable $t) {
             throw new UnableToOpenFileException($t->getMessage());
         }
 

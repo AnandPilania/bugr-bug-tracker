@@ -11,7 +11,7 @@ class TemplateEngine
 
     public static function setBaseDirectory(string $baseDir): void
     {
-        if(!str_ends_with($baseDir, '/')) {
+        if (!str_ends_with($baseDir, '/')) {
             $baseDir .= '/';
         }
         self::$baseDirectory = $baseDir;

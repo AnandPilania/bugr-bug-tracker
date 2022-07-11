@@ -1,8 +1,15 @@
 <?php
 
+namespace SourcePot;
+
 class Autoloader
 {
     public static array $loadedClasses = [];
+
+    public static function register(): void
+    {
+        spl_autoload_register([self::class, 'autoload']);
+    }
 
     public static function autoload(string $className): void
     {
@@ -15,17 +22,15 @@ class Autoloader
 
         $vendorName = substr($className, 0, strpos($className, '\\'));
 
-        if(!in_array($vendorName, $vendors)) {
+        if (!in_array($vendorName, $vendors)) {
             return;
         }
 
-        $fileName = __DIR__ . '/' . str_replace('\\', '/', $className) . '.php';
+        $fileName = dirname(__DIR__) . '/' . str_replace('\\', '/', $className) . '.php';
 
-        if(file_exists($fileName)) {
+        if (file_exists($fileName)) {
             self::$loadedClasses[] = $className;
             include $fileName;
         }
     }
 }
-
-spl_autoload_register(['Autoloader', 'autoload']);

@@ -2,12 +2,11 @@
 
 namespace BugTracker\Controller\Bug;
 
+use InvalidArgumentException;
 use SourcePot\Core\Controller\ControllerInterface;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Core\Http\Response\BasicResponse;
-
-use InvalidArgumentException;
 
 class GetBugController implements ControllerInterface
 {
@@ -18,24 +17,25 @@ class GetBugController implements ControllerInterface
 
     public function __construct(
         private int $bugId
-    ) { }
+    ) {
+    }
 
     public static function create(...$args): self
     {
         [$bugIdStr] = $args;
 
-        if(!is_numeric($bugIdStr)) {
+        if (!is_numeric($bugIdStr)) {
             throw new InvalidArgumentException("Bug ID {$bugIdStr} is not numeric!");
         }
 
-        $bugId = (int)$bugIdStr;
+        $bugId = (int) $bugIdStr;
 
         return new self($bugId);
     }
 
     public function execute(RequestInterface $request): ResponseInterface
     {
-        return (new BasicResponse)
+        return (new BasicResponse())
             ->setHeader('content-type', 'text/plain')
             ->setBody(get_debug_type($this->bugId) . '(' . $this->bugId . ')');
     }

@@ -15,10 +15,10 @@ class Session implements SessionInterface
 
     public static function has(string $key): bool
     {
-        return array_key_exists($key, $_SESSION);
+        return array_key_exists($key, $_SESSION ?? []);
     }
 
-    public static function retrieve(string $key, ?string $defaultValue = null): string
+    public static function retrieve(string $key, ?string $defaultValue = null): ?string
     {
         return $_SESSION[$key] ?? $defaultValue;
     }

@@ -6,8 +6,7 @@ use PDO;
 use PDOStatement;
 
 /**
- * This Database adapter simply wraps a PDO instance.
- * It allows instantiation without needing to invoke the PDO constructor until necessary.
+ * This is a MySQL Database adapter that wraps a PDO instance
  */
 class DatabaseAdapter
 {
@@ -15,7 +14,7 @@ class DatabaseAdapter
 
     private readonly string $host;
     private readonly int $port;
-    
+
     private readonly string $username;
     private readonly string $password;
 
@@ -41,14 +40,14 @@ class DatabaseAdapter
 
     public function connect(string $username, string $password, ?string $database = null): self
     {
-        $dsn = 'mysql:host='.$this->host;
-        if($database !== null) {
-            $dsn .= ';dbname='.$database;
+        $dsn = 'mysql:host=' . $this->host;
+        if ($database !== null) {
+            $dsn .= ';dbname=' . $database;
         }
 
         $pdo = new PDO(
             $dsn,
-            $username, 
+            $username,
             $password
         );
 
@@ -59,13 +58,13 @@ class DatabaseAdapter
         return $this;
     }
 
-    public function prepare(string $query): PDOStatement
+    public function prepare(string $query): ?PDOStatement
     {
-        return $this->pdo->prepare($query);
+        return $this->pdo->prepare($query) ?: null;
     }
 
-    public function query(Query $query): mixed
+    public function query(QueryInterface $query): mixed
     {
-        $query->execute($this);
+        return $query->execute($this);
     }
 }

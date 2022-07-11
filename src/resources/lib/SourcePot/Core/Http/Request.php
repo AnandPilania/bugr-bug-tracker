@@ -19,7 +19,7 @@ class Request implements RequestInterface
 
     public static function create(): self
     {
-        $request = new self;
+        $request = new self();
         $request->path = $_SERVER['REQUEST_URI'] ?? '/';
         $request->method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $request->params = new Bag($_REQUEST);
@@ -52,10 +52,5 @@ class Request implements RequestInterface
     public function headers(): BagInterface
     {
         return $this->headers;
-    }
-
-    public function hasHeader(string $header): bool
-    {
-        return isset($this->headers[$header]);
     }
 }

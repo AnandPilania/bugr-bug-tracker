@@ -7,7 +7,8 @@ class File
     public function __construct(
         private string $filename,
         private string $contents
-    ) { }
+    ) {
+    }
 
     public static function load(string $filename): File
     {

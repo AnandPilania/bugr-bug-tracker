@@ -8,9 +8,9 @@ class NotFoundResponse extends BasicResponse
     protected array $headers = [
         'content-type' => 'text/plain'
     ];
-    
+
     public static function create(): self
     {
-        return new self;
+        return new self();
     }
 }

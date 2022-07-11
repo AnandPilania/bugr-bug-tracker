@@ -7,33 +7,35 @@ class Storage implements StorageInterface
     private static $storedData = [];
 
     // Storage class is a static class
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     public static function setFromJson(array|object $json): void
     {
-        foreach($json as $key => $value) {
+        foreach ($json as $key => $value) {
             self::set($key, $value);
         }
     }
 
-    public static function set(string $key, mixed $value): void
+    public static function set(string $name, mixed $value): void
     {
         // handle simple key
-        if(!str_contains($key, '.')) {
-            self::$storedData[$key] = $value;
+        if (!str_contains($name, '.')) {
+            self::$storedData[$name] = $value;
             return;
         }
 
         // support deep array-like keys with dot separators
-        $keyParts = explode('.', $key);
+        $keyParts = explode('.', $name);
 
         // remove last part of array key to be final key
         $finalKey = array_pop($keyParts);
 
         // grab reference to stored data so we can traverse it
         $data = &self::$storedData;
-        foreach($keyParts as $key) {
-            if(!isset($data[$key])) {
+        foreach ($keyParts as $key) {
+            if (!isset($data[$key])) {
                 $data[$key] = [];
             }
             $data = &$data[$key];
@@ -41,19 +43,19 @@ class Storage implements StorageInterface
         $data[$finalKey] = $value;
     }
 
-    public static function has(string $key): bool
+    public static function has(string $name): bool
     {
         // handle simple keys
-        if(!str_contains($key, '.')) {
-            return array_key_exists($key, self::$storedData);
+        if (!str_contains($name, '.')) {
+            return array_key_exists($name, self::$storedData);
         }
 
         // support deep array-like keys with dot separators
-        $keyParts = explode('.', $key);
+        $keyParts = explode('.', $name);
         $finalKey = array_pop($keyParts);
         $data = &self::$storedData;
-        foreach($keyParts as $key) {
-            if(!isset($data[$key])) {
+        foreach ($keyParts as $key) {
+            if (!isset($data[$key])) {
                 // we do not have the key
                 return false;
             }
@@ -63,19 +65,19 @@ class Storage implements StorageInterface
         return array_key_exists($finalKey, $data);
     }
 
-    public static function get(string $key): mixed
+    public static function get(string $name): mixed
     {
         // handle simple key
-        if(!str_contains($key, '.')) {
-            return self::$storedData[$key] ?? null;
+        if (!str_contains($name, '.')) {
+            return self::$storedData[$name] ?? null;
         }
 
         // support deep array-like keys with dot separators
-        $keyParts = explode('.', $key);
+        $keyParts = explode('.', $name);
         $finalKey = array_pop($keyParts);
         $data = &self::$storedData;
-        foreach($keyParts as $key) {
-            if(!isset($data[$key])) {
+        foreach ($keyParts as $key) {
+            if (!isset($data[$key])) {
                 // if we can't go deeper in the list, fail
                 return null;
             }

@@ -6,15 +6,16 @@ class EventDispatcher implements EventDispatcherInterface
 {
     public function __construct(
         private ListenerProviderInterface $provider
-    ) { }
+    ) {
+    }
 
-    public function dispatch(StoppableEventInterface $event): StoppableEventInterface
+    public function dispatch(EventInterface $event): EventInterface
     {
         $listeners = $this->provider->getListenersForEvent($event);
 
-        foreach($listeners as $listener) {
+        foreach ($listeners as $listener) {
             $listener->handle($event);
-            if($event->isPropagationStopped()) {
+            if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {
                 break;
             }
         }

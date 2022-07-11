@@ -8,13 +8,13 @@ class ListenerProvider implements ListenerProviderInterface
 
     public function registerListenerForEvent(string $eventName, string $listenerClass): void
     {
-        if(!isset($this->listeners[$eventName])) {
+        if (!isset($this->listeners[$eventName])) {
             $this->listeners[$eventName] = [];
         }
-        $this->listeners[$eventName][] = new $listenerClass;
+        $this->listeners[$eventName][] = new $listenerClass();
     }
 
-    public function getListenersForEvent(StoppableEventInterface $event) : iterable
+    public function getListenersForEvent(EventInterface $event): iterable
     {
         return $this->listeners[$event::class] ?? [];
     }
