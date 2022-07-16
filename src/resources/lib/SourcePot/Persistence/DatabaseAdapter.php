@@ -12,13 +12,13 @@ class DatabaseAdapter
 {
     private PDO $pdo;
 
-    private readonly string $host;
-    private readonly int $port;
+    private string $host;
+    private int $port;
 
-    private readonly string $username;
-    private readonly string $password;
+    private string $username;
+    private string $password;
 
-    private readonly string $database;
+    private string $database;
 
     public function setup(string $host, int $port = 3306): self
     {

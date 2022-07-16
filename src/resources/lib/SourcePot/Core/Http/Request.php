@@ -11,11 +11,11 @@ use SourcePot\Bag\BagInterface;
  */
 class Request implements RequestInterface
 {
-    protected readonly string $path;
-    protected readonly string $method;
-    protected readonly BagInterface $params;
-    protected readonly BagInterface $cookies;
-    protected readonly BagInterface $headers;
+    protected string $path;
+    protected string $method;
+    protected BagInterface $params;
+    protected BagInterface $cookies;
+    protected BagInterface $headers;
 
     public static function create(): self
     {
