@@ -4,22 +4,55 @@ namespace SourcePot\Core\Http\Session;
 
 use SourcePot\Pattern\StaticClassTrait;
 
-class Session implements SessionInterface
+class Session
 {
-    use StaticClassTrait;
+    private const TIMEOUT_IN_SECONDS = 3600;
 
-    public static function store(string $key, string $value): void
-    {
-        $_SESSION[$key] = $value;
+    public function __construct(
+        private SessionInterface $session
+    ) {
     }
 
-    public static function has(string $key): bool
+    public function store(string $key, string $value): void
     {
-        return array_key_exists($key, $_SESSION ?? []);
+        $this->session->store($key, $value);
     }
 
-    public static function retrieve(string $key, ?string $defaultValue = null): ?string
+    public function has(string $key): bool
     {
-        return $_SESSION[$key] ?? $defaultValue;
+        return $this->session->has($key);
+    }
+
+    public function retrieve(string $key, ?string $defaultValue = null): ?string
+    {
+        return $this->session->retrieve($key, $defaultValue);
+    }
+
+    public function id(): ?string
+    {
+        return $this->session->id();
+    }
+    
+    public function validate(): void
+    {
+        $now = time();
+
+        if ($this->session->id() === null) {
+            // first time access
+            $this->session->regenerate();
+            $this->session->store('ttl', $now + self::TIMEOUT_IN_SECONDS);
+            return;
+        }
+
+        // check if session has timed out and regenerate if needed
+        if ($now > (int)$this->session->retrieve('ttl')) {
+            // session has timed out
+            $this->session->clear();
+            $this->session->regenerate();
+        }
+
+        $this->session->store('ttl', $now + self::TIMEOUT_IN_SECONDS);
+
+        return;
     }
 }

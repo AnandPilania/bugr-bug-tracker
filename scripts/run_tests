@@ -1,2 +1,2 @@
 #!/bin/bash
-docker exec -it bugr-test-www /var/www/tests/vendor/bin/phpunit /var/www/tests/tests --testdox
+docker compose --file docker-compose.test.yml run phpunit-test /var/www/tests/vendor/bin/phpunit /var/www/tests/tests --testdox

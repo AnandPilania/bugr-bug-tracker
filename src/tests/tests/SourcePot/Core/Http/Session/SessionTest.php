@@ -2,34 +2,64 @@
 
 use PHPUnit\Framework\TestCase;
 use SourcePot\Core\Http\Session\Session;
+use SourcePot\Core\Http\Session\MemorySession;
+use SourcePot\Core\Http\Session\SessionInterface;
 
 class SessionTest extends TestCase
 {
-    protected function setUp(): void
+    public function testCanInstantiate(): void
     {
-        //session_start();
-    }
-
-    protected function tearDown(): void
-    {
-        //session_abort();
-    }
-
-    public function testCannotInstantiate(): void
-    {
-        $this->expectException(Throwable::class);
-        new Session;
+        $session = new Session(new MemorySession());
+        $this->assertInstanceOf(Session::class, $session);
     }
 
     public function testCanStoreAndRetrieve(): void
     {
-        Session::store('test', 'value');
-        $this->assertEquals('value', Session::retrieve('test'));
+        $session = new Session(new MemorySession());
+        $session->store('test', 'value');
+        $this->assertEquals('value', $session->retrieve('test'));
     }
 
-    public function testHas(): void
+    public function testHasMethod(): void
     {
-        Session::store('test', 'value');
-        $this->assertTrue(Session::has('test'));
+        $session = new Session(new MemorySession());
+        $session->store('test', 'value');
+        $this->assertTrue($session->has('test'));
+    }
+
+    public function testCanValidate(): void
+    {
+        $session = new Session(new MemorySession());
+
+        $this->assertNull($session->id());
+        $session->validate();
+        $this->assertNotNull($session->id());
+    }
+
+    public function testTimeoutRegeneratesId(): void
+    {
+        $session = new Session(new MemorySession());
+
+        $session->validate();
+        $id = $session->id();
+
+        $session->store('ttl', time()-4800);
+        $session->validate();
+
+        $this->assertNotEquals($id, $session->id());
+    }
+
+    public function testSessionTimeoutExtends(): void
+    {
+        $session = new Session(new MemorySession());
+
+        $session->validate();
+        $timeout = (int)$session->retrieve('ttl');
+
+        sleep(1);
+
+        $session->validate();
+
+        $this->assertGreaterThan($timeout, (int)$session->retrieve('ttl'));
     }
 }
