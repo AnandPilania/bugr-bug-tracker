@@ -17,7 +17,7 @@ class MemorySession implements SessionInterface
         return array_key_exists($key, $this->storedData);
     }
 
-    public function retrieve(string $key, string $defaultValue = null): string
+    public function retrieve(string $key, string $defaultValue = null): ?string
     {
         return $this->storedData[$key] ?? $defaultValue;
     }

@@ -14,7 +14,7 @@ class RealSession implements SessionInterface
         return array_key_exists($key, $_SESSION);
     }
 
-    public function retrieve(string $key, string $defaultValue = null): string
+    public function retrieve(string $key, string $defaultValue = null): ?string
     {
         return $_SESSION[$key] ?? $defaultValue;
     }

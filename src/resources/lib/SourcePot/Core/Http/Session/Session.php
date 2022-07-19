@@ -32,6 +32,33 @@ class Session
     {
         return $this->session->id();
     }
+
+    public function initialise(): void
+    {
+        // do we have an active session?
+        if ($this->session->id() === null) {
+            // no, what do we do?
+            // create an id
+            $this->session->regenerate();
+            return;
+        }
+
+        // yes, already have an active session
+        // check if it's timed out
+        $now = time();
+        if ($now > $this->session->retrieve('ttl') + self::TIMEOUT_IN_SECONDS) {
+            // yes, we have timed out
+            $this->session->clear();
+            $this->session->regenerate();
+            return;
+        }
+
+        // yes, we have an active session
+        // no, it's not timed out
+
+        // move timeout on
+        $this->session->store('ttl', time());
+    }
     
     public function validate(): void
     {

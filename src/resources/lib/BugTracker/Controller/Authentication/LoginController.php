@@ -41,11 +41,6 @@ class LoginController implements ControllerInterface
         $database = (new DatabaseAdapterFactory(Container::get(Config::class)))->build();
         $user = $database->query(new FindUserByUsernameQuery($username));
 
-        echo '<pre>';
-        var_dump($user);
-        echo '</pre>';
-        exit;
-
         if ($user === false) {
             return (new RedirectResponse())->setBody('/login/error');
         }
@@ -55,7 +50,6 @@ class LoginController implements ControllerInterface
             return (new RedirectResponse())->setBody('/login/error');
         }
 
-        $token = new JWT($user);
         Session::store('jwt', $token);
 
         if ($params->has('target-page')) {
