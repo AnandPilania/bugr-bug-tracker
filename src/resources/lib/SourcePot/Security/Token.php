@@ -10,12 +10,14 @@ class Token
     public function setBody(string $body): self
     {
         $this->body = $body;
+
         return $this;
     }
 
     public function setSecret(string $secret): self
     {
         $this->secret = $secret;
+
         return $this;
     }
 

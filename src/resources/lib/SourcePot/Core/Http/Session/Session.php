@@ -59,7 +59,7 @@ class Session
         // move timeout on
         $this->session->store('ttl', time());
     }
-    
+
     public function validate(): void
     {
         $now = time();
