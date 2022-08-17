@@ -1,2 +1,2 @@
 #!/bin/bash
-docker compose --file docker-compose.test.yml run phpunit-test /var/www/tests/vendor/bin/phpcs --standard=PSR12 ./lib
+docker compose --file docker-compose.test.yml exec phpunit-test /var/www/tests/vendor/bin/phpcs --standard=PSR12 ./lib
