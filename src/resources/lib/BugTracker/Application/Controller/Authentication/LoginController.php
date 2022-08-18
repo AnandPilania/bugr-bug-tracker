@@ -11,6 +11,7 @@ use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Core\Http\Response\BasicResponse;
 use SourcePot\Core\Http\Response\RedirectResponse;
+use SourcePot\Core\Http\Session\RealSession;
 use SourcePot\Core\Http\Session\Session;
 use SourcePot\TemplateEngine\Template;
 
@@ -50,7 +51,8 @@ class LoginController implements ControllerInterface
             return (new RedirectResponse())->setBody('/login/error');
         }
 
-        Session::store('jwt', $token);
+        $session = new Session(new RealSession());
+        $session->store('jwt', $token);
 
         if ($params->has('target-page')) {
             return (new RedirectResponse())->setBody($params->get('target-page'));
