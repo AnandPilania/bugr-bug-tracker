@@ -1,2 +1,2 @@
 #!/bin/bash
-docker exec -it bugr-test-www bash
+docker compose exec -it trackr-test-www bash

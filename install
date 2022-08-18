@@ -5,18 +5,18 @@ if [ "x$(which docker)" == "x" ]; then
   exit 1
 fi
 
-# Check that containers are running, assume if bugr-php is running then they all will be
-RUNNING=$(docker inspect --format="{{.State.Running}}" bugr-php 2> /dev/null)
+# Check that containers are running, assume if trackr-php is running then they all will be
+RUNNING=$(docker inspect --format="{{.State.Running}}" trackr-php 2> /dev/null)
 
 if [ $? -eq 1 ]; then
-  echo "bugr-php container does not exist."
+  echo "trackr-php container does not exist."
   exit 3
 fi
 
 if [ "$RUNNING" == "false" ]; then
-  echo "bugr-php is not running."
+  echo "trackr-php is not running."
   exit 2
 fi
 
 # Connect to container and run setup script
-docker exec -it bugr-php php /var/www/install.php
+docker compose exec -it trackr-php php /var/www/install.php

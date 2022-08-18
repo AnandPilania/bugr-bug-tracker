@@ -1,2 +1,2 @@
-# bugr-bug-tracker
-My final year Open University project: Bugr - a bug tracker
+# trackr-bug-tracker
+My final year Open University project: Trackr - a bug tracker

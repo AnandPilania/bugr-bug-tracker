@@ -23,7 +23,7 @@ echo 'Installing...'."\n";
  * - ...
  */
 
-$db = new PDO('mysql:host=bugr-mysql', 'root', 'password');
+$db = new PDO('mysql:host=trackr-mysql', 'root', 'password');
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
 # Create database if we need to
@@ -45,7 +45,7 @@ if($user_exists === false) {
     file_put_contents(__DIR__.'/resources/database_password', $password);
 }
 
-# From now on we can use the bugr database for queries
+# From now on we can use the trackr database for queries
 $db->query('USE bugr');
 
 # Create tables by importing database migrations

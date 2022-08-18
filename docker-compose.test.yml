@@ -4,31 +4,31 @@ services:
     build:
       context: ./build
       dockerfile: phpunit.dockerfile
-    container_name: bugr-test-www
+    container_name: trackr-test-www
     tty: true # holds the container open once it's started
     working_dir: /var/www/tests/tests
     volumes:
       - ./tests:/var/www/tests/tests
       - ./src/resources/lib:/var/www/tests/tests/lib
     networks:
-      - bugr_test
+      - trackr_test
 
   redis-test:
     image: redis:7
-    container_name: bugr-test-redis
+    container_name: trackr-test-redis
     networks:
-      - bugr_test
+      - trackr_test
 
   mysql-test:
     image: mysql:8
-    container_name: bugr-test-mysql
+    container_name: trackr-test-mysql
     environment:
       - MYSQL_USER=test
       - MYSQL_PASSWORD=test
       - MYSQL_ROOT_PASSWORD=test
       - MYSQL_DATABASE=bugr
     networks:
-      - bugr_test
+      - trackr_test
 
 networks:
-  bugr_test:
+  trackr_test:
