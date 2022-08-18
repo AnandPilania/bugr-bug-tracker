@@ -2,8 +2,6 @@
 
 namespace SourcePot\Core\Http\Session;
 
-use SourcePot\Pattern\StaticClassTrait;
-
 class Session
 {
     private const TIMEOUT_IN_SECONDS = 3600;
@@ -46,7 +44,7 @@ class Session
         // yes, already have an active session
         // check if it's timed out
         $now = time();
-        if ($now > $this->session->retrieve('ttl') + self::TIMEOUT_IN_SECONDS) {
+        if ($now > (int)$this->session->retrieve('ttl') + self::TIMEOUT_IN_SECONDS) {
             // yes, we have timed out
             $this->session->clear();
             $this->session->regenerate();
@@ -57,7 +55,7 @@ class Session
         // no, it's not timed out
 
         // move timeout on
-        $this->session->store('ttl', time());
+        $this->session->store('ttl', (string)time());
     }
 
     public function validate(): void
@@ -67,7 +65,7 @@ class Session
         if ($this->session->id() === null) {
             // first time access
             $this->session->regenerate();
-            $this->session->store('ttl', $now + self::TIMEOUT_IN_SECONDS);
+            $this->session->store('ttl', (string)($now + self::TIMEOUT_IN_SECONDS));
             return;
         }
 
@@ -78,7 +76,7 @@ class Session
             $this->session->regenerate();
         }
 
-        $this->session->store('ttl', $now + self::TIMEOUT_IN_SECONDS);
+        $this->session->store('ttl', (string)($now + self::TIMEOUT_IN_SECONDS));
 
         return;
     }

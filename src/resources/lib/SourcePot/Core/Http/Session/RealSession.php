@@ -11,7 +11,7 @@ class RealSession implements SessionInterface
 
     public function has(string $key): bool
     {
-        return array_key_exists($key, $_SESSION);
+        return array_key_exists($key, $_SESSION ?? []);
     }
 
     public function retrieve(string $key, string $defaultValue = null): ?string
@@ -32,7 +32,6 @@ class RealSession implements SessionInterface
 
     public function clear(): void
     {
-        unset($_SESSION);
         $_SESSION = [];
     }
 }

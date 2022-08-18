@@ -5,6 +5,7 @@ namespace BugTracker\Persistence\Query\Token;
 use SourcePot\Persistence\DatabaseAdapter;
 use SourcePot\Persistence\QueryInterface;
 
+// @todo this should be a command, not a query!
 class StoreToken implements QueryInterface
 {
     public function __construct(
@@ -17,5 +18,7 @@ class StoreToken implements QueryInterface
     {
         $statement = $database->prepare('INSERT INTO token SET user_id = :user_id, token = :token');
         $statement->execute(['user_id' => $this->userId, 'token' => $this->token]);
+
+        return null;
     }
 }
