@@ -4,6 +4,7 @@ namespace SourcePot\Core;
 
 use SourcePot\Container\Container;
 use SourcePot\Core\Config\Config;
+use SourcePot\Core\Http\Response\UnauthenticatedResponse;
 use SourcePot\Core\Storage\Storage;
 use SourcePot\Core\Http\Response\ErrorResponse;
 use SourcePot\Core\Http\Response\UnauthorisedResponse;
@@ -63,10 +64,10 @@ class Core implements CoreInterface
                 ->setBody($e->getMessage())
                 ->send();
         } catch (Http\Exception\UnauthorisedException $e) {
-            UnauthorisedResponse::create()
+            UnauthenticatedResponse::create()
                 ->setBody($e->getMessage())
                 ->send();
-        } catch (Http\Exception\ForbiddenException $e) {
+        } catch (Http\Exception\UnauthenticatedException $e) {
             UnauthorisedResponse::create()
                 ->setBody($e->getMessage())
                 ->send();

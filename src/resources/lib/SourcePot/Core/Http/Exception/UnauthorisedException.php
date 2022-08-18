@@ -6,8 +6,8 @@ use SourcePot\Core\Exception\DebugLogException;
 
 class UnauthorisedException extends DebugLogException
 {
-    public function __construct()
+    public function __construct(string $username, string $accessCode)
     {
-        parent::__construct('This resource requires a logged in user');
+        parent::__construct("User $username needs access to $accessCode to access this resource");
     }
 }

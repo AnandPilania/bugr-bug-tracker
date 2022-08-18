@@ -2,9 +2,9 @@
 
 namespace SourcePot\Core\Http\Response;
 
-class UnauthorisedResponse extends ErrorResponse
+class UnauthenticatedResponse extends ErrorResponse
 {
-    protected int $statusCode = 403;
+    protected int $statusCode = 401;
     protected array $headers = [
         'content-type' => 'text/plain'
     ];

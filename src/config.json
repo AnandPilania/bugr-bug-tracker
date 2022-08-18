@@ -1,9 +1,9 @@
 {
     "routes": [
-        ["/", "BugTracker\\Controller\\IndexController"],
-        ["/login", "BugTracker\\Controller\\Authentication\\LoginPageController"],
-        ["/login", "BugTracker\\Controller\\Authentication\\LoginController", ["POST"]],
-        ["/bugs/(\\d+)", "BugTracker\\Controller\\Bug\\GetBugController"]
+        ["/", "BugTracker\\Application\\Controller\\IndexController"],
+        ["/login", "BugTracker\\Application\\Controller\\Authentication\\LoginPageController"],
+        ["/login", "BugTracker\\Application\\Controller\\Authentication\\LoginController", ["POST"]],
+        ["/bugs/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController"]
     ],
     "listeners": [
         ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\RequestStartedListener"],

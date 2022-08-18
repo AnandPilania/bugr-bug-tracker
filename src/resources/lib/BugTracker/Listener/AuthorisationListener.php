@@ -2,7 +2,7 @@
 
 namespace BugTracker\Listener;
 
-use SourcePot\Core\Http\Exception\ForbiddenException;
+use SourcePot\Core\Http\Exception\UnauthenticatedException;
 use SourcePot\Core\Http\Exception\UnauthorisedException;
 use SourcePot\Core\EventDispatcher\ListenerInterface;
 use SourcePot\Core\EventDispatcher\EventInterface;
@@ -33,13 +33,13 @@ class AuthorisationListener implements ListenerInterface
         // yes: check user has access to this page
         // controller should store something to show access requirement
         if (!in_array($accessCode, $accessCodes)) {
-            throw new ForbiddenException($username, $accessCode);
+            throw new UnauthorisedException($username, $accessCode);
         }
 
         // no: check anon users can access this page
         // controller should store something to show access requirement
         if ($accessCode !== null) {
-            throw new UnauthorisedException();
+            throw new UnauthenticatedException();
         }
 
         return $event;

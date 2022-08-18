@@ -4,10 +4,10 @@ namespace SourcePot\Core\Http\Exception;
 
 use SourcePot\Core\Exception\DebugLogException;
 
-class ForbiddenException extends DebugLogException
+class UnauthenticatedException extends DebugLogException
 {
-    public function __construct(string $username, string $accessCode)
+    public function __construct()
     {
-        parent::__construct("User $username needs access to $accessCode to access this resource");
+        parent::__construct("This resource required a logged-in user");
     }
 }
