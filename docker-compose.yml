@@ -1,14 +1,14 @@
 version: "3.0"
 services:
-  www:
+  webserver:
     build:
       context: ./build
       dockerfile: nginx.dockerfile
     container_name: trackr-www
     volumes:
-      - ./src:/var/www
+      - ./src/backend:/var/www
     ports:
-      - 10000:80
+      - "8000:80"
     networks:
       - trackr_external
       - trackr_internal
@@ -22,6 +22,19 @@ services:
       - ./src:/var/www
     networks:
       - trackr_internal
+
+  frontend:
+    build:
+      context: ./build
+      dockerfile: react.dockerfile
+    container_name: trackr-front
+    volumes:
+      - ./src/frontend:/app
+    ports:
+      - "3000:3000"
+    networks:
+      - trackr_external
+    tty: true
 
   redis:
     image: redis:7

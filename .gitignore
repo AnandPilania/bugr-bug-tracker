@@ -6,7 +6,7 @@ data/redis/*
 .idea
 
 # Ignore installed packages from Composer
-src/tests/vendor
+src/backend/tests/vendor
 
 # Ignore the database access password
 src/resources/database_password
