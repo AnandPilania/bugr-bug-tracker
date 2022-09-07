@@ -1,6 +1,8 @@
 <?php
 
-function random_string(int $length) {
+const DATABASE_NAME = 'trackr';
+
+function random_string(int $length): string {
     $chars = 'abcdefghijklmnopqrstuvwxyz'
             .'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
             .'1234567890'
@@ -8,7 +10,8 @@ function random_string(int $length) {
     $chars_max_index = mb_strlen($chars, 'ascii');
     
     $string = '';
-    for($counter = 0; $counter < $length; $counter++) {
+    $counter = 0;
+    while($counter++ < $length) {
         $string .= $chars[random_int(0, $chars_max_index-1)];
     }
     return $string;
@@ -28,33 +31,33 @@ $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
 # Create database if we need to
 $databases = array_column($db->query('SHOW DATABASES')->fetchAll(), 'Database');
-if(!in_array('bugr', $databases)) {
+if(!in_array(DATABASE_NAME, $databases)) {
     echo "Creating bug tracker database\n";
-    $db->query('CREATE DATABASE bugr');
+    $db->query('CREATE DATABASE '.DATABASE_NAME);
 }
 
-$user_exists = (bool) $db->query('SELECT 1 FROM mysql.user WHERE user = "bugr"')->rowCount();
+$user_exists = (bool) $db->query('SELECT 1 FROM mysql.user WHERE user = "trackr"')->rowCount();
 if($user_exists === false) {
     echo "Creating database access credentials\n";
     # Create username/password with basic access
     $password = random_string(64);
-    $db->query("CREATE USER IF NOT EXISTS bugr IDENTIFIED BY '$password'");
-    $db->query("GRANT select,insert,update ON bugr.* TO bugr");
+    $db->query("CREATE USER IF NOT EXISTS trackr IDENTIFIED BY '$password'");
+    $db->query('GRANT select,insert,update ON '.DATABASE_NAME.'.* TO trackr');
 
     # Store password in php config
-    file_put_contents(__DIR__.'/resources/database_password', $password);
+    file_put_contents(__DIR__ . '/resources/database_password', $password);
 }
 
 # From now on we can use the trackr database for queries
-$db->query('USE bugr');
+$db->query('USE '.DATABASE_NAME);
 
 # Create tables by importing database migrations
-$migrations_dir = __DIR__.'/resources/migrations';
+$migrations_dir = __DIR__ . '/resources/migrations';
 $migrations = scandir($migrations_dir);
 foreach($migrations as $migration) {
     if ($migration[0] === '.') continue;
 
     echo "Importing migration $migration\n";
-    $sql = include $migrations_dir."/$migration";
+    $sql = include "$migrations_dir/$migration";
     $db->query($sql);
 }

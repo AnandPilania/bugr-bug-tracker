@@ -9,7 +9,7 @@ services:
     working_dir: /var/www/tests/tests
     volumes:
       - ./tests:/var/www/tests/tests
-      - ./src/resources/lib:/var/www/tests/tests/lib
+      - ./src/backend/resources/lib:/var/www/tests/tests/lib
     networks:
       - trackr_test
 

@@ -19,7 +19,7 @@ services:
       dockerfile: php.dockerfile
     container_name: trackr-php
     volumes:
-      - ./src:/var/www
+      - ./src/backend:/var/www
     networks:
       - trackr_internal
 
@@ -35,6 +35,16 @@ services:
     networks:
       - trackr_external
     tty: true
+
+  frontend-build:
+    build:
+      context: ./build
+      dockerfile: thttpd.dockerfile
+    container_name: trackr-live
+    volumes:
+      - ./src/frontend/build:/home/www
+    ports:
+      - "3001:80"
 
   redis:
     image: redis:7

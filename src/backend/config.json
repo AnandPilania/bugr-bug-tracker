@@ -3,7 +3,8 @@
         ["/", "BugTracker\\Application\\Controller\\IndexController"],
         ["/login", "BugTracker\\Application\\Controller\\Authentication\\LoginPageController"],
         ["/login", "BugTracker\\Application\\Controller\\Authentication\\LoginController", ["POST"]],
-        ["/bugs/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController"]
+        ["/bugs/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController"],
+        ["/api/register", "BugTracker\\Application\\Controller\\Authentication\\RegisterController", ["POST"]]
     ],
     "listeners": [
         ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\RequestStartedListener"],
@@ -17,10 +18,11 @@
     ],
     "database": {
         "credentials": {
-            "username": "bugr",
+            "username": "trackr",
             "password-file": "resources/database_password"
         },
-        "host": "bugr-mysql",
-        "database": "bugr"
-    }
+        "host": "trackr-mysql",
+        "database": "trackr"
+    },
+    "apikey": "1234567890"
 }

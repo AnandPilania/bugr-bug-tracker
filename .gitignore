@@ -2,7 +2,7 @@
 data/mysql/*
 data/redis/*
 
-# Ignore PHPStorm project directory
+# Ignore PHPStorm project directories
 .idea
 
 # Ignore installed packages from Composer
