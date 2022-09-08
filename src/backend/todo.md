@@ -1,3 +1,4 @@
 # Todo list for the back end
 
-* Make sure LoginController only returns JSONResponse or ErrorResponse.  Never RedirectResponse
+* Update LoginController to create JWT and return to client
+* Create `tokens` table to store created tokens (migration)

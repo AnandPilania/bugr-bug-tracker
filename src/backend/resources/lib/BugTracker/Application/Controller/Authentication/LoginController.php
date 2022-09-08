@@ -8,8 +8,9 @@ use BugTracker\Persistence\Query\User\FindUserByUsernameQuery;
 use SourcePot\Container\Container;
 use SourcePot\Core\Config\Config;
 use SourcePot\Core\Http\RequestInterface;
+use SourcePot\Core\Http\Response\ErrorResponse;
+use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
-use SourcePot\Core\Http\Response\BasicResponse;
 use SourcePot\Core\Http\Session\RealSession;
 use SourcePot\Core\Http\Session\Session;
 use SourcePot\Security\Password;
@@ -31,7 +32,7 @@ class LoginController implements ControllerInterface
         $params = $request->params();
 
         if (!$params->has('username') || !$params->has('password')) {
-            return (new RedirectResponse())->setBody('/login/error');
+            return (new ErrorResponse())->setBody('Missing parameters from request');
         }
 
         $username = $params->get('username');
@@ -42,24 +43,29 @@ class LoginController implements ControllerInterface
         $user = $database->query(new FindUserByUsernameQuery($username));
 
         if ($user === false) {
-            return (new RedirectResponse())->setBody('/login/error');
+            return (new ErrorResponse())->setBody('Username does not exist');
         }
 
         $valid_password = Password::validate($password, $user['password']);
         if ($valid_password === false) {
-            return (new RedirectResponse())->setBody('/login/error');
+            return (new ErrorResponse())->setBody('Invalid username/password combination');
         }
 
-        $session = new Session(new RealSession());
-        $session->store('jwt', $token);
+//        $session = new Session(new RealSession());
+//        $session->store('jwt', $token);
+
+        $response = [
+            'user' => [
+                'username' => $user['username'],
+                'displayName' => $user['displayName']
+            ]
+        ];
 
         if ($params->has('target-page')) {
-            return (new RedirectResponse())->setBody($params->get('target-page'));
+           $response['redirect'] = $params->get('target-page');
         }
 
-        $params = print_r($user, true);
-        return (new BasicResponse())
-            ->setHeader('content-type', 'text/plain')
-            ->setBody($params);
+        return (new JSONResponse())
+            ->setBody($response);
     }
 }

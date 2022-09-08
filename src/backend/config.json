@@ -1,28 +1,27 @@
 {
-    "routes": [
-        ["/", "BugTracker\\Application\\Controller\\IndexController"],
-        ["/login", "BugTracker\\Application\\Controller\\Authentication\\LoginPageController"],
-        ["/login", "BugTracker\\Application\\Controller\\Authentication\\LoginController", ["POST"]],
-        ["/bugs/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController"],
-        ["/api/register", "BugTracker\\Application\\Controller\\Authentication\\RegisterController", ["POST"]]
-    ],
-    "listeners": [
-        ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\RequestStartedListener"],
-        ["SourcePot\\Core\\Event\\CoreShutdownEvent", "BugTracker\\Listener\\AutoloaderDebugListener"],
-        ["SourcePot\\Core\\Event\\RouteDecidedEvent", "BugTracker\\Listener\\AuthorisationListener"],
-        ["SourcePot\\Core\\Event\\CoreStartedEvent", "BugTracker\\Listener\\DebugLogListener"],
-        ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\DebugLogListener"],
-        ["SourcePot\\Core\\Event\\RequestFinishedEvent", "BugTracker\\Listener\\DebugLogListener"],
-        ["SourcePot\\Core\\Event\\CoreShutdownEvent", "BugTracker\\Listener\\DebugLogListener"],
-        ["SourcePot\\Core\\Event\\RouteDecidedEvent", "BugTracker\\Listener\\DebugLogListener"]
-    ],
-    "database": {
-        "credentials": {
-            "username": "trackr",
-            "password-file": "resources/database_password"
-        },
-        "host": "trackr-mysql",
-        "database": "trackr"
+  "routes": [
+    ["/", "BugTracker\\Application\\Controller\\IndexController"],
+    ["/bugs/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController"],
+    ["/api/login", "BugTracker\\Application\\Controller\\Authentication\\LoginController", ["POST"]],
+    ["/api/register", "BugTracker\\Application\\Controller\\Authentication\\RegisterController", ["POST"]]
+  ],
+  "listeners": [
+    ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\RequestStartedListener"],
+    ["SourcePot\\Core\\Event\\CoreShutdownEvent", "BugTracker\\Listener\\AutoloaderDebugListener"],
+    ["SourcePot\\Core\\Event\\RouteDecidedEvent", "BugTracker\\Listener\\AuthorisationListener"],
+    ["SourcePot\\Core\\Event\\CoreStartedEvent", "BugTracker\\Listener\\DebugLogListener"],
+    ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\DebugLogListener"],
+    ["SourcePot\\Core\\Event\\RequestFinishedEvent", "BugTracker\\Listener\\DebugLogListener"],
+    ["SourcePot\\Core\\Event\\CoreShutdownEvent", "BugTracker\\Listener\\DebugLogListener"],
+    ["SourcePot\\Core\\Event\\RouteDecidedEvent", "BugTracker\\Listener\\DebugLogListener"]
+  ],
+  "database": {
+    "credentials": {
+      "username": "trackr",
+      "password-file": "resources/database_password"
     },
-    "apikey": "1234567890"
+    "host": "trackr-mysql",
+    "database": "trackr"
+  },
+  "apikey": "1234567890"
 }

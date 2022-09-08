@@ -2,14 +2,31 @@ import {
     Box,
     TextField,
     Typography,
-    Link as MuiLink
+    Link as MuiLink, Button
 } from "@mui/material";
 import {useState} from "react";
 import {Link} from "react-router-dom";
+import useApi from "../hooks/useApi";
 
 const LoginPage = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+
+    const Api = useApi()
+
+    const login = () => {
+        const data = {
+            username,
+            password
+        }
+
+        Api.post(
+            '/login',
+            data,
+            (response) => console.log(response),
+            (err) => console.log(err)
+        )
+    }
 
     return <>
         <Typography>Log in here to access the full Bug Trackr system</Typography>
@@ -17,6 +34,8 @@ const LoginPage = () => {
         <Box>
             <TextField label="Username" margin="dense" type="text" value={username} onChange={e => setUsername(e.target.value)} fullWidth variant="standard"></TextField>
             <TextField label="Password" margin="dense" type="password" value={password} onChange={e => setPassword(e.target.value)} fullWidth variant="standard"></TextField>
+
+            <Button variant="contained" onClick={login}>Log in</Button>
         </Box>
 
         <Typography>If you haven't set up a user, or have forgotten your details, <MuiLink  component={Link} to="/register">create a new one here</MuiLink>.</Typography>
