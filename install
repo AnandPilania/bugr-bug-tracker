@@ -19,4 +19,4 @@ if [ "$RUNNING" == "false" ]; then
 fi
 
 # Connect to container and run setup script
-docker compose exec -it trackr-php php /var/www/install.php
+docker exec -it trackr-php php /var/www/install.php
