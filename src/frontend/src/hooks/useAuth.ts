@@ -1,21 +1,31 @@
-import {useState} from "react";
+import {useContext} from "react";
+import useApi from "./useApi";
+import {AuthContext, AuthContextType, UserType} from "../contexts/AuthContext";
 
 const useAuth = () => {
-    const [user, setUser] = useState(null)
+    const Api = useApi()
+    const authContext: AuthContextType = useContext(AuthContext)
 
-    const login = (user: String, password: String) => {
-        // do login
-        setUser({
-            user, password
-        })
+    const login = (username: String, password: String, callback: Function) => {
+        Api.post(
+            '/login',
+            {username, password},
+            (response) => {
+                authContext.setUser(response.data.user as UserType)
+                callback()
+            },
+            (err) => {
+                authContext.setUser(null)
+                console.log(err)
+            }
+        )
     }
 
     const logout = () => {
-        setUser(null)
+        authContext.setUser(null)
     }
 
     return {
-        user,
         login,
         logout
     }

@@ -1,7 +1,10 @@
 import {Navigate} from "react-router-dom"
+import useAuth from "../hooks/useAuth";
 
 const LogoutPage = () => {
-    // @todo logout
+    const Auth = useAuth()
+
+    Auth.logout()
 
     return <Navigate to="/"></Navigate>
 }

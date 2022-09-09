@@ -5,27 +5,21 @@ import {
     Link as MuiLink, Button
 } from "@mui/material";
 import {useState} from "react";
-import {Link} from "react-router-dom";
-import useApi from "../hooks/useApi";
+import {Link, useNavigate} from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const LoginPage = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    const Api = useApi()
+    const navigateTo = useNavigate()
+
+    const Auth = useAuth()
 
     const login = () => {
-        const data = {
-            username,
-            password
-        }
-
-        Api.post(
-            '/login',
-            data,
-            (response) => console.log(response),
-            (err) => console.log(err)
-        )
+        Auth.login(username, password, () => {
+            navigateTo('/')
+        })
     }
 
     return <>
@@ -38,7 +32,7 @@ const LoginPage = () => {
             <Button variant="contained" onClick={login}>Log in</Button>
         </Box>
 
-        <Typography>If you haven't set up a user, or have forgotten your details, <MuiLink  component={Link} to="/register">create a new one here</MuiLink>.</Typography>
+        <Typography>If you haven't set up a user, or have forgotten your details, <MuiLink component={Link} to="/register">create a new one here</MuiLink>.</Typography>
     </>
 }
 
