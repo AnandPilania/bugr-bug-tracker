@@ -2,7 +2,7 @@ version: "3.0"
 services:
   webserver:
     build:
-      context: ./build
+      context: ./docker
       dockerfile: nginx.dockerfile
     container_name: trackr-www
     volumes:
@@ -15,7 +15,7 @@ services:
 
   php:
     build:
-      context: ./build
+      context: ./docker
       dockerfile: php.dockerfile
     container_name: trackr-php
     volumes:
@@ -25,7 +25,7 @@ services:
 
   frontend:
     build:
-      context: ./build
+      context: ./docker
       dockerfile: react.dockerfile
     container_name: trackr-front
     volumes:
@@ -36,13 +36,15 @@ services:
       - trackr_external
     tty: true
 
+  # Need to revisit this another time.
+  # The server needs to serve index.html if a requested file doesn't exist already (e.g. js/css resources)
   frontend-build:
     build:
-      context: ./build
-      dockerfile: thttpd.dockerfile
+      context: ./docker
+      dockerfile: build-server.dockerfile
     container_name: trackr-live
     volumes:
-      - ./src/frontend/build:/home/www
+      - ./src/frontend/build:/app
     ports:
       - "3001:80"
 

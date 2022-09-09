@@ -5,4 +5,4 @@ COPY --from=composer /usr/bin/composer /usr/bin/
 
 WORKDIR /app
 
-ENTRYPOINT npm start
+ENTRYPOINT npm install && npm start
