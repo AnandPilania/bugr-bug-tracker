@@ -1,5 +1,7 @@
 <?php
 
+use BugTracker\Persistence\Command\Token\StoreTokenCommand;
+use BugTracker\Persistence\Query\Token\FindTokenQuery;
 use PHPUnit\Framework\TestCase;
 use BugTracker\Security\TokenStorage;
 use SourcePot\Persistence\DatabaseAdapter;
@@ -48,8 +50,8 @@ class TokenStorageTest extends TestCase
 
         $this->db->expects(self::exactly(2))->method('query')
             ->withConsecutive(
-                [new \BugTracker\Persistence\Query\Token\StoreToken($userId, $token)],
-                [new \BugTracker\Persistence\Query\Token\FindToken($token)]
+                [new StoreTokenCommand($userId, $token)],
+                [new FindTokenQuery($token)]
             )->willReturn(
                 null, true
             );
