@@ -2,6 +2,9 @@ import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
+    typography: {
+        fontFamily: 'Montserrat'
+    },
     palette: {
         primary: {
             main: '#4169E1',

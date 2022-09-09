@@ -1,6 +1,15 @@
 import Axios from "axios";
 
-const useApi = () => {
+type UseApiType = {
+    get: Function,
+    post: Function,
+    put: Function,
+    patch: Function,
+    delete: Function,
+    config: {}
+}
+
+const useApi = (): UseApiType => {
 
     let config = {
         apikey: '',

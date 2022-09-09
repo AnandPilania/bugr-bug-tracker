@@ -1,4 +1,4 @@
-import React from "react";
+import {createContext} from "react";
 
 type UserType = {
     username: string,
@@ -10,9 +10,9 @@ type AuthContextType = {
     setUser: Function
 }
 
-const AuthContext = React.createContext({
+const AuthContext = createContext({
     user: null,
-    setUser: () => {}
+    setUser: (user: UserType) => {}
 })
 
 export {

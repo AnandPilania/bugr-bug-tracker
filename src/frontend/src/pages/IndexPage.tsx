@@ -1,20 +1,18 @@
 import {Link as MuiLink, Typography} from "@mui/material";
 import {useContext} from "react";
-import {AuthContext} from "../contexts/AuthContext";
+import {AuthContext, AuthContextType} from "../contexts/AuthContext";
 import {Link} from "react-router-dom";
+import URLs from "../config/URLs";
 
 const IndexPage = () => {
-    const {user} = useContext(AuthContext)
+    const {user} = useContext<AuthContextType>(AuthContext)
 
-    return (
+    return <>
+        <Typography>{user && `Hello ${user.displayName}, `}Welcome to Bug Tracker.</Typography>
         <Typography>
-            Welcome to Bug Tracker. &nbsp;
-            { user
-                ? `Hello, ${user.displayName}.`
-                : <MuiLink component={Link} to="/login">Log in here</MuiLink>
-            }
+            {!user && <MuiLink component={Link} to={URLs.auth.login}>Log in here</MuiLink>}
         </Typography>
-    )
+    </>
 }
 
 export default IndexPage

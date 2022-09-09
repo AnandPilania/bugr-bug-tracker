@@ -1,55 +1,54 @@
 import {useState} from "react";
-import {Alert, Box, Button, Snackbar, TextField, Typography} from "@mui/material";
-import useApi from "../hooks/useApi";
+import {Alert, Box, Snackbar, Typography} from "@mui/material";
+import FormButton from "../components/FormButton";
+import FormInput from "../components/FormInput";
+import useAuth from "../hooks/useAuth";
 
 const RegisterPage = () => {
-    const [username, setUsername] = useState('')
-    const [displayName, setDisplayName] = useState('')
-    const [password, setPassword] = useState('')
-    const [uniqueKey, setUniqueKey] = useState('')
+    const [username, setUsername] = useState<string>('')
+    const [displayName, setDisplayName] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [uniqueKey, setUniqueKey] = useState<string>('')
 
-    const [error, setError] = useState<String>('')
-    const clearError = () => setError('')
+    const [error, setError] = useState<string|null>(null)
 
+    const Auth = useAuth()
+
+    // @todo extract this to a different component
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
-        clearError()
+        setError(null)
     }
 
-    const Api = useApi()
-
     const createUser = () => {
-        const user = {
+        setError(null)
+
+        Auth.register(
             username,
             password,
-            displayName
-        }
-
-        const apikey = uniqueKey
-
-        Api.post(
-            '/register',
-            {...user, apikey},
-            response => {
-                clearError()
+            displayName,
+            uniqueKey,
+            () => {
+                alert('User created!')
             },
-            err => {
-                setError(err.data ?? (err.status.toString() + ': ' + err.statusText))
-            })
+            (err) => {
+                setError(err)
+            }
+        )
     }
 
     return <>
         <Typography>Create a new use here by completing the form below (you'll need the unique key given to you when you installed the app)</Typography>
 
         <Box>
-            <TextField label="Username" margin="dense" type="text" value={username} onChange={e => setUsername(e.target.value)} fullWidth variant="standard"></TextField>
-            <TextField label="Display Name" margin="dense" type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} fullWidth variant="standard"></TextField>
-            <TextField label="Password" margin="dense" type="password" value={password} onChange={e => setPassword(e.target.value)} fullWidth variant="standard"></TextField>
-            <TextField label="Unique Key" margin="dense" type="text" value={uniqueKey} onChange={e => setUniqueKey(e.target.value)} fullWidth variant="standard"></TextField>
+            <FormInput label="Username" type="text" value={username} onChange={e => setUsername(e.target.value)} />
+            <FormInput label="Display Name" value={displayName} onChange={e => setDisplayName(e.target.value)} type="text" />
+            <FormInput label="Password" value={password} onChange={e => setPassword(e.target.value)} type="password" />
+            <FormInput label="Unique Key" value={uniqueKey} onChange={e => setUniqueKey(e.target.value)} type="text" />
 
-            <Button variant="contained" onClick={createUser}>Create user</Button>
+            <FormButton variant="contained" onClick={createUser}>Create user</FormButton>
         </Box>
 
         <Typography>If you don't know your unique key, I cannot help you.</Typography>

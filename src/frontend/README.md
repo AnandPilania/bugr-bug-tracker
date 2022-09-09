@@ -6,3 +6,4 @@ This is the front end for Bug Trackr, written in React using Material Components
 ## Todo
 
 * Create Notification component with hook to add notifications that disappear automatically
+* Stop form submissions for required fields (Login: `username` and `password`)
