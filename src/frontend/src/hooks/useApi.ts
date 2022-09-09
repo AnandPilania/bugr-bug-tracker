@@ -10,7 +10,7 @@ const useApi = () => {
     const makeRequest = (method: string, url: string, data: Object = {}, onSuccess: Function = () => {}, onError: Function = () => {}) => {
         // check request method is acceptable
         if (!['get', 'post', 'put', 'patch', 'delete'].includes(method.toLowerCase())) {
-            throw `Invalid request method: ${method}`
+            throw new Error(`Invalid request method: ${method}`)
         }
 
         return (
