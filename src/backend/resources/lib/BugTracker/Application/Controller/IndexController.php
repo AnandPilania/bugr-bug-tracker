@@ -22,7 +22,7 @@ class IndexController implements ControllerInterface
     public function execute(RequestInterface $request): ResponseInterface
     {
         return (new TextResponse())->setBody(
-            'Hello, world!'
+            'This is an API server, it should not be accessed directly.'
         );
     }
 }
