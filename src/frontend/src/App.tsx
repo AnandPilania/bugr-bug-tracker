@@ -10,6 +10,7 @@ import RegisterPage from "./pages/RegisterPage";
 import URLs from "./config/URLs";
 import UserProfilePage from "./pages/UserProfilePage";
 import AuthProvider from "./providers/AuthProvider";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
     return (
@@ -23,7 +24,7 @@ const App = () => {
                             <Route path={URLs.auth.login} element={<LoginPage />} />
                             <Route path={URLs.auth.register} element={<RegisterPage />} />
                             <Route path={URLs.auth.logout} element={<LogoutPage />} />
-                            <Route path={URLs.auth.profile} element={<UserProfilePage />} />
+                            <Route path={URLs.auth.profile} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
                             <Route path="*" element={<NotFoundPage />} />
                         </Routes>
                     </Container>
