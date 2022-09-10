@@ -48,7 +48,7 @@ const RegisterPage = () => {
             <FormInput label="Password" value={password} onChange={e => setPassword(e.target.value)} type="password" />
             <FormInput label="Unique Key" value={uniqueKey} onChange={e => setUniqueKey(e.target.value)} type="text" />
 
-            <FormButton variant="contained" onClick={createUser}>Create user</FormButton>
+            <FormButton onClick={createUser}>Create user</FormButton>
         </Box>
 
         <Typography>If you don't know your unique key, I cannot help you.</Typography>

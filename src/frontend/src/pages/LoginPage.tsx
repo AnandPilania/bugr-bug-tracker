@@ -42,7 +42,7 @@ const LoginPage = () => {
             <TextField label="Username" margin="dense" type="text" value={username} onChange={e => setUsername(e.target.value)} fullWidth variant="standard"></TextField>
             <TextField label="Password" margin="dense" type="password" value={password} onChange={e => setPassword(e.target.value)} fullWidth variant="standard"></TextField>
 
-            <FormButton variant="contained" onClick={login}>Log in</FormButton>
+            <FormButton onClick={login}>Log in</FormButton>
         </Box>
 
         <Typography>If you haven't set up a user, or have forgotten your details, <MuiLink component={Link} to={URLs.auth.register}>create a new one here</MuiLink>.</Typography>
