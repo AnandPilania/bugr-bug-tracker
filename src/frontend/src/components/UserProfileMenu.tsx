@@ -3,7 +3,7 @@ import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import LoginButton from "./Buttons/LoginButton";
 import {Divider, IconButton, Menu, MenuItem, Tooltip} from "@mui/material";
-import {ArrowRight, Logout, PagesRounded, Person} from "@mui/icons-material";
+import {Logout, Person} from "@mui/icons-material";
 import URLs from "../config/URLs";
 
 const UserProfileMenu = () => {

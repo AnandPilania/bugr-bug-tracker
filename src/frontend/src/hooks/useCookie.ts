@@ -1,17 +1,22 @@
 
 const useCookie = (key: string, defaultValue: string) => {
     const createCookieObject = () => {
-        const cookies = document.cookie.split(';').map(item => item.split('='))
-        // @todo re-write this as cookies.reduce(...)
-        let cookieObj = {}
-        cookies.every(item => cookieObj[item[0].trim()] = item[1].trim())
-        return cookieObj
+        return document.cookie
+            .split(';')
+            .filter(item => !!item?.trim())
+            .map(item => item.split('='))
+            .filter(item => item?.length > 1)
+            .reduce((previous,current) => {
+                return {
+                    ...previous,
+                    [current[0].trim()]: current[1].trim()
+                }
+            }, {})
     }
 
     const setCookieString = (cookieObj) => {
         const cookieArr = Object.entries(cookieObj).map(item => item[0]+'='+item[1])
         document.cookie = cookieArr.join(';')
-        console.log(document.cookie)
     }
 
     const get = () => {
@@ -27,8 +32,9 @@ const useCookie = (key: string, defaultValue: string) => {
 
     const del = () => {
         const cookieObj = createCookieObject()
-        delete cookieObj[key]
-        console.log(cookieObj)
+        // @todo refactor this to properly deal with deleting a cookie entry
+        // looks like it needs to have an expiry set on it with a negative time
+        cookieObj[key] = ''
         setCookieString(cookieObj)
     }
 
