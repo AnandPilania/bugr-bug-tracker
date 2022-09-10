@@ -1,5 +1,5 @@
 import {useContext} from "react";
-import useApi from "../Core/hooks/useApi";
+import useApi from "../Api/useApi";
 import {AuthContext, AuthContextType, UserType} from "./AuthContext";
 import URLs from "../URLs";
 

@@ -10,24 +10,27 @@ import URLs from "./URLs";
 import UserProfilePage from "./User/pages/UserProfilePage";
 import AuthProvider from "./Auth/AuthProvider";
 import ProtectedRoute from "./Auth/components/ProtectedRoute";
+import LoadingOverlayProvider from "./Api/LoadingOverlayProvider";
 
 const App = () => {
     return (
-        <AuthProvider>
-            <BrowserRouter>
-                <Navbar />
-                <Container maxWidth="xl" sx={{paddingTop: 3}}>
-                    <Routes>
-                        <Route path={URLs.root} element={<IndexPage />} />
-                        <Route path={URLs.auth.login} element={<LoginPage />} />
-                        <Route path={URLs.auth.register} element={<RegisterPage />} />
-                        <Route path={URLs.auth.logout} element={<LogoutPage />} />
-                        <Route path={URLs.auth.profile} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
-                </Container>
-            </BrowserRouter>
-        </AuthProvider>
+        <LoadingOverlayProvider>
+            <AuthProvider>
+                <BrowserRouter>
+                    <Navbar />
+                    <Container maxWidth="xl" sx={{paddingTop: 3}}>
+                        <Routes>
+                            <Route path={URLs.root} element={<IndexPage />} />
+                            <Route path={URLs.auth.login} element={<LoginPage />} />
+                            <Route path={URLs.auth.register} element={<RegisterPage />} />
+                            <Route path={URLs.auth.logout} element={<LogoutPage />} />
+                            <Route path={URLs.auth.profile} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
+                            <Route path="*" element={<NotFoundPage />} />
+                        </Routes>
+                    </Container>
+                </BrowserRouter>
+            </AuthProvider>
+        </LoadingOverlayProvider>
     )
 }
 

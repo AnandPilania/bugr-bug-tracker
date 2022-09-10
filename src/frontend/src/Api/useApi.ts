@@ -1,4 +1,6 @@
 import Axios, {AxiosError, AxiosResponse} from "axios";
+import {LoadingOverlayContext, LoadingOverlayContextType} from "./LoadingOverlayContext";
+import {useContext} from "react";
 
 type UseApiType = {
     get: Function,
@@ -10,6 +12,7 @@ type UseApiType = {
 }
 
 const useApi = (): UseApiType => {
+    const loadingOverlay = useContext<LoadingOverlayContextType>(LoadingOverlayContext)
 
     let config = {
         apikey: '',
@@ -21,6 +24,8 @@ const useApi = (): UseApiType => {
         if (!['get', 'post', 'put', 'patch', 'delete'].includes(method.toLowerCase())) {
             throw new Error(`Invalid request method: ${method}`)
         }
+
+        loadingOverlay.show()
 
         const axiosController = new AbortController()
 
@@ -37,6 +42,7 @@ const useApi = (): UseApiType => {
                 if (err.code === 'ERR_CANCELED') {
                     return
                 }
+                // @todo one day I'll remove this debugging code. But not this day
                 console.log(err)
                 onError({
                     status: err.response?.status,
@@ -44,6 +50,9 @@ const useApi = (): UseApiType => {
                     data: err.response?.data,
                     headers: err.response?.headers
                 })
+            })
+            .finally(() => {
+                loadingOverlay.hide()
             })
 
         return axiosController
