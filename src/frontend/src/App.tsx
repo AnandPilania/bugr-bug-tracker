@@ -1,5 +1,4 @@
-import {Container, ThemeProvider} from "@mui/material";
-import theme from './theme'
+import {Container} from "@mui/material";
 import Navbar from "./components/Navbar";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import IndexPage from "./pages/IndexPage";
@@ -14,23 +13,21 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
     return (
-        <ThemeProvider theme={theme}>
-            <AuthProvider>
-                <BrowserRouter>
-                    <Navbar />
-                    <Container maxWidth="xl" sx={{paddingTop: 3}}>
-                        <Routes>
-                            <Route path={URLs.root} element={<IndexPage />} />
-                            <Route path={URLs.auth.login} element={<LoginPage />} />
-                            <Route path={URLs.auth.register} element={<RegisterPage />} />
-                            <Route path={URLs.auth.logout} element={<LogoutPage />} />
-                            <Route path={URLs.auth.profile} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
-                            <Route path="*" element={<NotFoundPage />} />
-                        </Routes>
-                    </Container>
-                </BrowserRouter>
-            </AuthProvider>
-        </ThemeProvider>
+        <AuthProvider>
+            <BrowserRouter>
+                <Navbar />
+                <Container maxWidth="xl" sx={{paddingTop: 3}}>
+                    <Routes>
+                        <Route path={URLs.root} element={<IndexPage />} />
+                        <Route path={URLs.auth.login} element={<LoginPage />} />
+                        <Route path={URLs.auth.register} element={<RegisterPage />} />
+                        <Route path={URLs.auth.logout} element={<LogoutPage />} />
+                        <Route path={URLs.auth.profile} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
+                        <Route path="*" element={<NotFoundPage />} />
+                    </Routes>
+                </Container>
+            </BrowserRouter>
+        </AuthProvider>
     )
 }
 

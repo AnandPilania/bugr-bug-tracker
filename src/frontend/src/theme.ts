@@ -1,20 +1,24 @@
-import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
     typography: {
-        fontFamily: 'Montserrat'
+        fontFamily: 'Montserrat',
+        fontWeightRegular: 400
+    },
+    components: {
+        MuiLink: {
+            styleOverrides: {
+                root: {
+                    fontWeight: 600
+                }
+            }
+        }
     },
     palette: {
+        mode: "dark",
         primary: {
-            main: '#4169E1',
-        },
-        secondary: {
-            main: '#008080',
-        },
-        error: {
-            main: red.A400,
-        },
+            main: '#FF69B4',
+        }
     },
 });
 
