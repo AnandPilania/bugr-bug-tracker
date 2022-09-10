@@ -12,8 +12,6 @@ let timesShown: number = 0
 const LoadingOverlayProvider = ({children}) => {
     const [visible, setVisible] = useState<boolean>(false)
 
-    console.log('LoadingOverlayProvider rendering')
-
     const show = () => {
         ++timesShown
         if (timesShown > 0) {

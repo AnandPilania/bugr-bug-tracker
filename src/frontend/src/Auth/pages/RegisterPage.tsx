@@ -1,8 +1,9 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {Alert, Box, Snackbar, Typography} from "@mui/material";
 import FormButton from "../../Core/components/FormButton";
 import FormInput from "../../Core/components/FormInput";
 import useAuth from "../useAuth";
+import {ErrorPopupContext, ErrorPopupContextType} from "../../Core/contexts/ErrorPopupContext";
 
 const RegisterPage = () => {
     const [username, setUsername] = useState<string>('')
@@ -10,20 +11,12 @@ const RegisterPage = () => {
     const [password, setPassword] = useState<string>('')
     const [uniqueKey, setUniqueKey] = useState<string>('')
 
-    const [error, setError] = useState<string|null>(null)
+    const {setError} = useContext<ErrorPopupContextType>(ErrorPopupContext)
 
     const Auth = useAuth()
 
-    // @todo extract this to a different component
-    const handleSnackbarClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setError(null)
-    }
-
     const createUser = () => {
-        setError(null)
+        setError('')
 
         Auth.register(
             username,
@@ -52,8 +45,6 @@ const RegisterPage = () => {
         </Box>
 
         <Typography>If you don't know your unique key, I cannot help you.</Typography>
-
-        {error && <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={!!error} autoHideDuration={5000} onClose={handleSnackbarClose}><Alert severity="error" variant="filled">{error}</Alert></Snackbar>}
     </>
 }
 

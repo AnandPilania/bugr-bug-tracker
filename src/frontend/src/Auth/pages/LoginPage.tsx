@@ -4,24 +4,23 @@ import {
     Typography,
     Link as MuiLink
 } from "@mui/material";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import useAuth from "../useAuth";
 import FormButton from "../../Core/components/FormButton";
 import URLs from "../../URLs";
+import {ErrorPopupContext, ErrorPopupContextType} from "../../Core/contexts/ErrorPopupContext";
 
 const LoginPage = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [error, setError] = useState(null)
-    const clearError = () => setError(null)
 
+    const {setError} = useContext<ErrorPopupContextType>(ErrorPopupContext)
     const navigateTo = useNavigate()
-
     const Auth = useAuth()
 
     const login = () => {
-        clearError()
+        setError('')
 
         Auth.login(
             username,
@@ -36,8 +35,6 @@ const LoginPage = () => {
 
     return <>
         <Typography>Log in here to access the full Bug Trackr system</Typography>
-
-        {error && <Typography>{error}</Typography>}
 
         <Box>
             <TextField label="Username" margin="dense" type="text" value={username} onChange={e => setUsername(e.target.value)} fullWidth variant="standard"></TextField>
