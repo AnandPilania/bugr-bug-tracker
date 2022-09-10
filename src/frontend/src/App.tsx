@@ -1,15 +1,15 @@
 import {Container} from "@mui/material";
-import Navbar from "./components/Navbar";
+import Navbar from "./Core/components/Navbar";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import IndexPage from "./pages/IndexPage";
-import LoginPage from "./pages/LoginPage";
-import LogoutPage from "./pages/LogoutPage";
-import NotFoundPage from "./pages/NotFoundPage";
-import RegisterPage from "./pages/RegisterPage";
-import URLs from "./config/URLs";
-import UserProfilePage from "./pages/UserProfilePage";
-import AuthProvider from "./providers/AuthProvider";
-import ProtectedRoute from "./components/ProtectedRoute";
+import IndexPage from "./Core/pages/IndexPage";
+import LoginPage from "./Auth/pages/LoginPage";
+import LogoutPage from "./Auth/pages/LogoutPage";
+import NotFoundPage from "./Core/pages/NotFoundPage";
+import RegisterPage from "./Auth/pages/RegisterPage";
+import URLs from "./URLs";
+import UserProfilePage from "./User/pages/UserProfilePage";
+import AuthProvider from "./Auth/AuthProvider";
+import ProtectedRoute from "./Auth/components/ProtectedRoute";
 
 const App = () => {
     return (

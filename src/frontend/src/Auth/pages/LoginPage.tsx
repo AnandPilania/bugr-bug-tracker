@@ -6,9 +6,9 @@ import {
 } from "@mui/material";
 import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import FormButton from "../components/FormButton";
-import URLs from "../config/URLs";
+import useAuth from "../useAuth";
+import FormButton from "../../Core/components/FormButton";
+import URLs from "../../URLs";
 
 const LoginPage = () => {
     const [username, setUsername] = useState('')

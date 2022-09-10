@@ -1,7 +1,7 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import {IconButton} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import URLs from "../config/URLs";
+import URLs from "../../URLs";
 
 const MainMenu = () => {
     const navigateTo = useNavigate()

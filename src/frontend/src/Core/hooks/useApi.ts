@@ -1,4 +1,4 @@
-import Axios from "axios";
+import Axios, {AxiosError, AxiosResponse} from "axios";
 
 type UseApiType = {
     get: Function,
@@ -25,7 +25,7 @@ const useApi = (): UseApiType => {
         const axiosController = new AbortController()
 
         Axios[method](config.baseUrl + url, data, {signal: axiosController.signal})
-            .then(response => {
+            .then((response: AxiosResponse) => {
                 onSuccess({
                     data: response.data,
                     status: response.status,
@@ -33,9 +33,8 @@ const useApi = (): UseApiType => {
                     headers: response.headers
                 })
             })
-            .catch(err => {
+            .catch((err: AxiosError) => {
                 if (err.code === 'ERR_CANCELED') {
-                    console.log('API request cancelled')
                     return
                 }
                 console.log(err)

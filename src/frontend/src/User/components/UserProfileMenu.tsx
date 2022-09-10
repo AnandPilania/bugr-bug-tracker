@@ -1,10 +1,10 @@
-import {AuthContext, AuthContextType} from "../contexts/AuthContext";
+import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
 import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import LoginButton from "./Buttons/LoginButton";
+import LoginButton from "../../Auth/components/buttons/LoginButton";
 import {Divider, IconButton, Menu, MenuItem, Tooltip} from "@mui/material";
 import {Logout, Person} from "@mui/icons-material";
-import URLs from "../config/URLs";
+import URLs from "../../URLs";
 
 const UserProfileMenu = () => {
     const [menuOpen, setMenuOpen] = useState(false)

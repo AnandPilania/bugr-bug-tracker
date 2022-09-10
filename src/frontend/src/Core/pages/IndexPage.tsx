@@ -1,8 +1,8 @@
 import {Link as MuiLink, Typography} from "@mui/material";
 import {useContext} from "react";
-import {AuthContext, AuthContextType} from "../contexts/AuthContext";
+import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
 import {Link} from "react-router-dom";
-import URLs from "../config/URLs";
+import URLs from "../../URLs";
 
 const IndexPage = () => {
     const {user} = useContext<AuthContextType>(AuthContext)

@@ -1,7 +1,7 @@
 import {SetStateAction, useEffect, useState} from "react";
-import {AuthContext, UserType} from "../contexts/AuthContext"
-import useCookie from "../hooks/useCookie";
-import useAuth from "../hooks/useAuth";
+import {AuthContext, UserType} from "./AuthContext"
+import useCookie from "../Core/hooks/useCookie";
+import useAuth from "./useAuth";
 
 const AuthProvider = ({children}) => {
     const storedToken = useCookie('token', null)

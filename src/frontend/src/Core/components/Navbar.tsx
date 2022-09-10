@@ -1,5 +1,5 @@
 import {AppBar, Toolbar, Typography} from "@mui/material";
-import UserProfileMenu from "./UserProfileMenu";
+import UserProfileMenu from "../../User/components/UserProfileMenu";
 import MainMenu from "./MainMenu";
 
 const Navbar = () => (

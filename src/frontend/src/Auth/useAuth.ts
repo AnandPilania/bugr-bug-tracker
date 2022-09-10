@@ -1,7 +1,7 @@
 import {useContext} from "react";
-import useApi from "./useApi";
-import {AuthContext, AuthContextType, UserType} from "../contexts/AuthContext";
-import URLs from "../config/URLs";
+import useApi from "../Core/hooks/useApi";
+import {AuthContext, AuthContextType, UserType} from "./AuthContext";
+import URLs from "../URLs";
 
 const useAuth = () => {
     const api = useApi()

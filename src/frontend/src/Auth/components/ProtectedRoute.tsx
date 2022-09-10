@@ -1,5 +1,4 @@
-import {Route} from "react-router-dom";
-import {AuthContext, AuthContextType} from "../contexts/AuthContext";
+import {AuthContext, AuthContextType} from "../AuthContext";
 import {useContext} from "react";
 import NotAuthorisedPage from "../pages/NotAuthorisedPage";
 

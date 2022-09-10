@@ -1,8 +1,8 @@
 import {useState} from "react";
 import {Alert, Box, Snackbar, Typography} from "@mui/material";
-import FormButton from "../components/FormButton";
-import FormInput from "../components/FormInput";
-import useAuth from "../hooks/useAuth";
+import FormButton from "../../Core/components/FormButton";
+import FormInput from "../../Core/components/FormInput";
+import useAuth from "../useAuth";
 
 const RegisterPage = () => {
     const [username, setUsername] = useState<string>('')

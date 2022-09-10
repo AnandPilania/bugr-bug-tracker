@@ -1,7 +1,7 @@
 import {IconButton, Tooltip} from "@mui/material";
 import {Login} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
-import URLs from "../../config/URLs";
+import URLs from "../../../URLs";
 
 const LoginButton = () => {
     const navigateTo = useNavigate()
