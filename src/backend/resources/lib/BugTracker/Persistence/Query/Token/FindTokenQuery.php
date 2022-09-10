@@ -8,15 +8,16 @@ use SourcePot\Persistence\QueryInterface;
 class FindTokenQuery implements QueryInterface
 {
     public function __construct(
-        private string $token
+        private readonly string $token
     ) {
     }
 
     public function execute(DatabaseAdapter $database): mixed
     {
+        // @todo handle timezones in the expiry date
         $statement = $database->prepare('SELECT * FROM tokens WHERE token=:token');
         $statement->execute(['token' => $this->token]);
 
-        return $statement->fetch()->rowCount() === 1;
+        return $statement->fetch();
     }
 }

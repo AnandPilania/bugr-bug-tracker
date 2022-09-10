@@ -14,19 +14,20 @@ const LoginPage = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
+    const clearError = () => setError(null)
 
     const navigateTo = useNavigate()
 
     const Auth = useAuth()
 
     const login = () => {
-        setError(null)
+        clearError()
 
         Auth.login(
             username,
             password,
             () => {
-                navigateTo('/')
+                navigateTo(URLs.auth.profile)
             },
             (err) => {
                 setError(err)

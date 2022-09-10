@@ -5,6 +5,8 @@ namespace BugTracker\Application\Controller\Authentication;
 use BugTracker\Factory\DatabaseAdapterFactory;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Token\StoreTokenCommand;
+use BugTracker\Persistence\Query\Token\FindTokenQuery;
+use BugTracker\Persistence\Query\User\FindUserByIdQuery;
 use BugTracker\Persistence\Query\User\FindUserByUsernameQuery;
 use DateInterval;
 use DateTimeImmutable;
@@ -16,7 +18,7 @@ use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Security\Password;
 
-class LoginController implements ControllerInterface
+class ValidateTokenController implements ControllerInterface
 {
     public function accessCode(): string
     {
@@ -32,40 +34,29 @@ class LoginController implements ControllerInterface
     {
         $params = $request->params();
 
-        if (!$params->has('username') || !$params->has('password')) {
+        if (!$params->has('token')) {
             return (new ErrorResponse())->setBody('Missing parameters from request');
         }
 
-        $username = $params->get('username');
-        $password = $params->get('password');
+        $tokenToCheck = $params->get('token');
 
-        // query database with username/password to check user exists
         $database = (new DatabaseAdapterFactory(Container::get(Config::class)))->build();
-        $user = $database->query(new FindUserByUsernameQuery($username));
+        $token = $database->query(new FindTokenQuery($tokenToCheck));
 
+        if ($token === false) {
+            return (new ErrorResponse())->setBody('Token does not exist or has expired');
+        }
+
+        $user = $database->query(new FindUserByIdQuery($token['user_id']));
         if ($user === false) {
-            return (new ErrorResponse())->setBody('Username does not exist');
+            return (new ErrorResponse())->setBody('Token does not match to existing user');
         }
-
-        $valid_password = Password::validate($password, $user['password']);
-        if ($valid_password === false) {
-            return (new ErrorResponse())->setBody('Invalid username/password combination');
-        }
-
-        // @todo create more interesting random token
-        $token = uniqid('token-');
-        // @todo figure out TimeZone storage - custom transformer that appends timezone to a date string
-        $expiry = (new DateTimeImmutable())->add(new DateInterval('PT5M'));
-        // store in database with expiry date
-        $database->query(new StoreTokenCommand($user['id'], $token, $expiry->format('Y-m-d H:i-s')));
 
         $response = [
             'user' => [
                 'username' => $user['username'],
                 'displayName' => $user['displayName']
-            ],
-            'token' => $token,
-            'expiry' => $expiry->format('Y-m-d H:i:s')
+            ]
         ];
 
         return (new JSONResponse())

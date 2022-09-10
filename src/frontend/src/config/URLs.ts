@@ -10,7 +10,8 @@ const URLs = {
     api: {
         login: '/login',
         logout: '/logout',
-        register: '/register'
+        register: '/register',
+        validateToken: '/validate'
     }
 }
 

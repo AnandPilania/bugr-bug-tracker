@@ -7,8 +7,8 @@ const MainMenu = () => {
     const navigateTo = useNavigate()
 
     return (
-        <IconButton edge="start" color="inherit">
-            <MenuIcon onClick={() => navigateTo(URLs.root)} />
+        <IconButton edge="start" color="inherit" onClick={() => navigateTo(URLs.root)}>
+            <MenuIcon />
         </IconButton>
     )
 }

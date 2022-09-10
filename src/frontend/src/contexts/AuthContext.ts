@@ -7,12 +7,16 @@ type UserType = {
 
 type AuthContextType = {
     user: UserType,
+    token: string,
     setUser: Function
+    setToken: Function
 }
 
 const AuthContext = createContext({
     user: null,
-    setUser: (user: UserType) => {}
+    token: null,
+    setUser: (user: UserType) => {},
+    setToken: (token: string) => {}
 })
 
 export {

@@ -22,26 +22,32 @@ const useApi = (): UseApiType => {
             throw new Error(`Invalid request method: ${method}`)
         }
 
-        return (
-            Axios[method](config.baseUrl + url, data)
-                .then(response => {
-                    onSuccess({
-                        data: response.data,
-                        status: response.status,
-                        statusText: response.statusText,
-                        headers: response.headers
-                    })
+        const axiosController = new AbortController()
+
+        Axios[method](config.baseUrl + url, data, {signal: axiosController.signal})
+            .then(response => {
+                onSuccess({
+                    data: response.data,
+                    status: response.status,
+                    statusText: response.statusText,
+                    headers: response.headers
                 })
-                .catch(err => {
-                    console.log(err)
-                    onError({
-                        status: err.response.status,
-                        statusText: err.response.statusText,
-                        data: err.response.data,
-                        headers: err.response.headers
-                    })
+            })
+            .catch(err => {
+                if (err.code === 'ERR_CANCELED') {
+                    console.log('API request cancelled')
+                    return
+                }
+                console.log(err)
+                onError({
+                    status: err.response?.status,
+                    statusText: err.response?.statusText,
+                    data: err.response?.data,
+                    headers: err.response?.headers
                 })
-        )
+            })
+
+        return axiosController
     }
 
     const get = (url: string, data: Object, onSuccess: Function = () => {}, onError: Function = () => {}) => {
