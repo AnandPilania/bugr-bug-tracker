@@ -6,7 +6,7 @@ type FormButtonProps = {
 }
 
 const FormButton = ({children, onClick}: FormButtonProps) => (
-    <Button onClick={onClick} variant="outlined" style={{marginTop:"1rem", marginBottom:"1rem"}}>{children}</Button>
+    <Button onClick={onClick} type="submit" variant="outlined" style={{marginTop:"1rem", marginBottom:"1rem"}}>{children}</Button>
 )
 
 export default FormButton

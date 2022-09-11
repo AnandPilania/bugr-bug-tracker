@@ -5,11 +5,12 @@ type FormInputProps = {
     label: string,
     value: string,
     onChange: ChangeEventHandler,
-    type: string
+    type: string,
+    helperText: string
 }
 
-const FormInput = ({label, value, onChange, type}: FormInputProps) => (
-    <TextField label={label} margin="dense" type={type} value={value} onChange={onChange} fullWidth variant="standard"></TextField>
+const FormInput = (props: FormInputProps) => (
+    <TextField {...props} margin="dense" fullWidth variant="standard"></TextField>
 )
 
 export default FormInput

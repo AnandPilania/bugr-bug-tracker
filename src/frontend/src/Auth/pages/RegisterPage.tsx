@@ -16,6 +16,15 @@ const RegisterPage = () => {
     const Auth = useAuth()
 
     const createUser = () => {
+        if (username.length === 0 || password.length === 0 || uniqueKey.length === 0) {
+            setError('Username, Password and Unique Key are all required fields', {variant: "error"})
+            return
+        }
+
+        if (displayName.length === 0) {
+            displayName = username
+        }
+
         Auth.register(
             username,
             password,
@@ -36,7 +45,7 @@ const RegisterPage = () => {
 
         <Box>
             <FormInput label="Username" type="text" value={username} onChange={e => setUsername(e.target.value)} />
-            <FormInput label="Display Name" value={displayName} onChange={e => setDisplayName(e.target.value)} type="text" />
+            <FormInput label="Display Name" value={displayName} onChange={e => setDisplayName(e.target.value)} type="text" helperText="Defaults to username if not given" />
             <FormInput label="Password" value={password} onChange={e => setPassword(e.target.value)} type="password" />
             <FormInput label="Unique Key" value={uniqueKey} onChange={e => setUniqueKey(e.target.value)} type="text" />
 

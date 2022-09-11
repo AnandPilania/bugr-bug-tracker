@@ -1,5 +1,4 @@
 import {
-    Box,
     TextField,
     Typography,
     Link as MuiLink
@@ -10,6 +9,7 @@ import useAuth from "../useAuth";
 import FormButton from "../../Core/components/FormButton";
 import URLs from "../../URLs";
 import {useSnackbar} from "notistack";
+import Form from "../../Core/components/Form";
 
 const LoginPage = () => {
     const [username, setUsername] = useState('')
@@ -21,6 +21,11 @@ const LoginPage = () => {
     const {enqueueSnackbar: setError} = useSnackbar()
 
     const login = () => {
+        if (username.length === 0 || password.length === 0) {
+            setError('Username and Password must be given', {variant:"error"})
+            return
+        }
+
         Auth.login(
             username,
             password,
@@ -36,12 +41,12 @@ const LoginPage = () => {
     return <>
         <Typography>Log in here to access the full Bug Trackr system</Typography>
 
-        <Box>
+        <Form>
             <TextField label="Username" margin="dense" type="text" value={username} onChange={e => setUsername(e.target.value)} fullWidth variant="standard"></TextField>
             <TextField label="Password" margin="dense" type="password" value={password} onChange={e => setPassword(e.target.value)} fullWidth variant="standard"></TextField>
 
             <FormButton onClick={login}>Log in</FormButton>
-        </Box>
+        </Form>
 
         <Typography>If you haven't set up a user, or have forgotten your details, <MuiLink component={Link} to={URLs.auth.register}>create a new one here</MuiLink>.</Typography>
     </>
