@@ -1,6 +1,6 @@
 import {StrictMode} from "react";
 import {createRoot} from 'react-dom/client';
-import App from './App';
+import App from './Core/App';
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import '@fontsource/montserrat/300.css';
 import '@fontsource/montserrat/400.css';
