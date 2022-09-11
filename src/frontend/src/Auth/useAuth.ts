@@ -52,13 +52,14 @@ const useAuth = () => {
         username: string,
         password: string,
         displayName: string,
+        isAdmin: boolean,
         apikey: string,
         onSuccess: Function = () => {},
         onError: Function = () => {}
     ) => {
         api.post(
             URLs.api.register,
-            {username, displayName, password, apikey},
+            {username, displayName, password, isAdmin, apikey},
             () => {
                 // this is deliberately nested to ensure our api provider response doesn't leak out
                 // if we need to get some of that out in the future, here is where we'll do it

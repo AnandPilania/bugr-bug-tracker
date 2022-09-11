@@ -56,6 +56,7 @@ class RegisterController implements ControllerInterface
             username: $username,
             password: $params->get('password'),
             displayName: $params->get('displayName'),
+            isAdmin: (bool)$params->get('isAdmin')
         ));
 
         return (new JSONResponse())

@@ -2,7 +2,8 @@ import {createContext} from "react";
 
 type UserType = {
     username: string,
-    displayName: string
+    displayName: string,
+    isAdmin: boolean
 }
 
 type AuthContextType = {

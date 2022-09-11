@@ -55,7 +55,8 @@ class ValidateTokenController implements ControllerInterface
         $response = [
             'user' => [
                 'username' => $user['username'],
-                'displayName' => $user['displayName']
+                'displayName' => $user['display_name'],
+                'isAdmin' => $user['is_admin'],
             ]
         ];
 
