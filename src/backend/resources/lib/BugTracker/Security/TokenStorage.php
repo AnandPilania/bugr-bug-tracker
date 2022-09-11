@@ -17,6 +17,8 @@ class TokenStorage implements TokenStorageInterface
 
     public function getUserOfToken(string $token): ?array
     {
+        // @todo WHAT IS THIS
+        // name implies it gets a user, but it actually returns a bool
         return $this->db->query(new GetUserOfTokenQuery($token));
     }
 

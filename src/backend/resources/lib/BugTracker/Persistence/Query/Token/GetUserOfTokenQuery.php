@@ -8,7 +8,7 @@ use SourcePot\Persistence\QueryInterface;
 class GetUserOfTokenQuery implements QueryInterface
 {
     public function __construct(
-        private string $token
+        private readonly string $token
     ) {
     }
 

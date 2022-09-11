@@ -3,6 +3,7 @@
 use SourcePot\Autoloader;
 use SourcePot\Container\Container;
 use SourcePot\Core\Config\Config;
+use SourcePot\Core\Core;
 use SourcePot\IO\FileLoader;
 
 define('ROOT_DIR', dirname(__DIR__));
@@ -26,5 +27,5 @@ $config = new Config();
 $config->setMany(FileLoader::loadJsonFromFile(dirname(__DIR__).'/config.json'));
 Container::put($config);
 
-$core = new \SourcePot\Core\Core();
+$core = new Core();
 $core->execute();

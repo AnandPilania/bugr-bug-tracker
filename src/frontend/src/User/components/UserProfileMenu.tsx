@@ -1,14 +1,13 @@
 import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
 import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import LoginButton from "../../Auth/components/buttons/LoginButton";
-import {Divider, IconButton, Menu, MenuItem, Tooltip} from "@mui/material";
-import {Logout, Person} from "@mui/icons-material";
+import {Divider, IconButton, Menu, MenuItem, PopoverProps, Tooltip} from "@mui/material";
+import {Logout, Person, PersonAdd} from "@mui/icons-material";
 import URLs from "../../URLs";
 
 const UserProfileMenu = () => {
     const [menuOpen, setMenuOpen] = useState(false)
-    const [anchorElement, setAnchorElement] = useState(null)
+    const [anchorElement, setAnchorElement] = useState<PopoverProps[anchorElement]>(null)
     const {user} = useContext<AuthContextType>(AuthContext)
     const navigateTo = useNavigate()
 
@@ -22,8 +21,7 @@ const UserProfileMenu = () => {
         setMenuOpen(false)
     }
 
-    return !user ? <LoginButton /> :
-        <>
+    return <>
         <Tooltip title="Account settings">
             <IconButton edge="end" color="inherit" onClick={showMenu}>
                 <Person/>
@@ -31,10 +29,12 @@ const UserProfileMenu = () => {
         </Tooltip>
 
         <Menu anchorEl={anchorElement} open={menuOpen} onClick={hideMenu} onClose={hideMenu}>
-            <MenuItem style={{textAlign: "right"}}>{user.displayName}</MenuItem>
-            <MenuItem onClick={() => navigateTo(URLs.auth.profile)}><Person /> Profile</MenuItem>
+            <Tooltip title="View your profile">
+                <MenuItem onClick={() => navigateTo(URLs.auth.profile)}><Person sx={{marginRight:"0.5rem"}} />{user.displayName}</MenuItem>
+            </Tooltip>
+            {!!user.isAdmin && <MenuItem onClick={() => navigateTo(URLs.auth.register)}><PersonAdd sx={{marginRight:"0.5rem"}} />Create new user</MenuItem> }
             <Divider />
-            <MenuItem onClick={() => navigateTo(URLs.auth.logout)}><Logout /> Log out</MenuItem>
+            <MenuItem onClick={() => navigateTo(URLs.auth.logout)}><Logout sx={{marginRight:"0.5rem"}} />Log out</MenuItem>
         </Menu>
     </>
 }

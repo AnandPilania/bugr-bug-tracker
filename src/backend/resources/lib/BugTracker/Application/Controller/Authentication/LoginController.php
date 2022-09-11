@@ -43,11 +43,11 @@ class LoginController implements ControllerInterface
         $database = (new DatabaseAdapterFactory(Container::get(Config::class)))->build();
         $user = $database->query(new FindUserByUsernameQuery($username));
 
-        if ($user === false) {
+        if ($user === null) {
             return (new ErrorResponse())->setBody('Username does not exist');
         }
 
-        $valid_password = Password::validate($password, $user['password']);
+        $valid_password = Password::validate($password, $user->password);
         if ($valid_password === false) {
             return (new ErrorResponse())->setBody('Invalid username/password combination');
         }
@@ -57,14 +57,10 @@ class LoginController implements ControllerInterface
         // @todo figure out TimeZone storage - custom transformer that appends timezone to a date string
         $expiry = (new DateTimeImmutable())->add(new DateInterval('PT5M'));
         // store in database with expiry date
-        $database->query(new StoreTokenCommand($user['id'], $token, $expiry->format('Y-m-d H:i-s')));
+        $database->query(new StoreTokenCommand($user->id, $token, $expiry->format('Y-m-d H:i-s')));
 
         $response = [
-            'user' => [
-                'username' => $user['username'],
-                'displayName' => $user['display_name'],
-                'isAdmin' => $user['is_admin'],
-            ],
+            'user' => $user->toArray(),
             'token' => $token,
             'expiry' => $expiry->format('Y-m-d H:i:s')
         ];

@@ -20,7 +20,7 @@ const App = () => {
                     <Routes>
                         <Route path={URLs.root} element={<IndexPage />} />
                         <Route path={URLs.auth.login} element={<LoginPage />} />
-                        <Route path={URLs.auth.register} element={<RegisterPage />} />
+                        <Route path={URLs.auth.register} element={<ProtectedRoute requiresAdmin><RegisterPage /></ProtectedRoute>} />
                         <Route path={URLs.auth.logout} element={<LogoutPage />} />
                         <Route path={URLs.auth.profile} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
                         <Route path="*" element={<NotFoundPage />} />

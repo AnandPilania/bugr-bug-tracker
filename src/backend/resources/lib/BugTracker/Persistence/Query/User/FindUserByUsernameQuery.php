@@ -2,6 +2,7 @@
 
 namespace BugTracker\Persistence\Query\User;
 
+use BugTracker\Domain\Entity\User;
 use SourcePot\Persistence\DatabaseAdapter;
 use SourcePot\Persistence\QueryInterface;
 
@@ -17,6 +18,10 @@ class FindUserByUsernameQuery implements QueryInterface
         $statement = $database->prepare('SELECT * FROM users WHERE username=:username');
         $statement->execute(['username' => $this->username]);
 
-        return $statement->fetch();
+        if ($statement->rowCount() === 0) {
+            return null;
+        }
+
+        return User::populate($statement->fetch());
     }
 }

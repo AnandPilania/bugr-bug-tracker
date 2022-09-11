@@ -48,16 +48,12 @@ class ValidateTokenController implements ControllerInterface
         }
 
         $user = $database->query(new FindUserByIdQuery($token['user_id']));
-        if ($user === false) {
+        if ($user === null) {
             return (new ErrorResponse())->setBody('Token does not match to existing user');
         }
 
         $response = [
-            'user' => [
-                'username' => $user['username'],
-                'displayName' => $user['display_name'],
-                'isAdmin' => $user['is_admin'],
-            ]
+            'user' => $user->toArray()
         ];
 
         return (new JSONResponse())
