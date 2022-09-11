@@ -11,12 +11,12 @@ import UserProfilePage from "./User/pages/UserProfilePage";
 import AuthProvider from "./Auth/AuthProvider";
 import ProtectedRoute from "./Auth/components/ProtectedRoute";
 import LoadingOverlayProvider from "./Api/LoadingOverlayProvider";
-import ErrorPopupProvider from "./Core/ErrorPopupProvider";
+import {SnackbarProvider} from "notistack";
 
 const App = () => {
     return (
         <LoadingOverlayProvider>
-            <ErrorPopupProvider>
+            <SnackbarProvider maxSnack="3" autoHideDuration="3000" anchorOrigin={{vertical:"bottom", horizontal:"right"}}>
                 <AuthProvider>
                     <BrowserRouter>
                         <Navbar />
@@ -32,7 +32,7 @@ const App = () => {
                         </Container>
                     </BrowserRouter>
                 </AuthProvider>
-            </ErrorPopupProvider>
+            </SnackbarProvider>
         </LoadingOverlayProvider>
     )
 }

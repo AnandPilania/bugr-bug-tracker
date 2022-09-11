@@ -1,9 +1,9 @@
-import {useContext, useState} from "react";
-import {Alert, Box, Snackbar, Typography} from "@mui/material";
+import {useState} from "react";
+import {Box, Typography} from "@mui/material";
 import FormButton from "../../Core/components/FormButton";
 import FormInput from "../../Core/components/FormInput";
 import useAuth from "../useAuth";
-import {ErrorPopupContext, ErrorPopupContextType} from "../../Core/contexts/ErrorPopupContext";
+import {useSnackbar} from "notistack";
 
 const RegisterPage = () => {
     const [username, setUsername] = useState<string>('')
@@ -11,23 +11,22 @@ const RegisterPage = () => {
     const [password, setPassword] = useState<string>('')
     const [uniqueKey, setUniqueKey] = useState<string>('')
 
-    const {setError} = useContext<ErrorPopupContextType>(ErrorPopupContext)
+    const {enqueueSnackbar: setError} = useSnackbar()
 
     const Auth = useAuth()
 
     const createUser = () => {
-        setError('')
-
         Auth.register(
             username,
             password,
             displayName,
             uniqueKey,
             () => {
-                alert('User created!')
+                setError('User created successfully', {variant: "success"})
+                // @todo show some other confirmation message
             },
             (err) => {
-                setError(err)
+                setError(err, {variant:"error"})
             }
         )
     }

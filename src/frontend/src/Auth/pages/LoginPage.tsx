@@ -4,32 +4,32 @@ import {
     Typography,
     Link as MuiLink
 } from "@mui/material";
-import {useContext, useState} from "react";
+import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import useAuth from "../useAuth";
 import FormButton from "../../Core/components/FormButton";
 import URLs from "../../URLs";
-import {ErrorPopupContext, ErrorPopupContextType} from "../../Core/contexts/ErrorPopupContext";
+import {useSnackbar} from "notistack";
 
 const LoginPage = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    const {setError} = useContext<ErrorPopupContextType>(ErrorPopupContext)
     const navigateTo = useNavigate()
     const Auth = useAuth()
 
-    const login = () => {
-        setError('')
+    const {enqueueSnackbar: setError} = useSnackbar()
 
+    const login = () => {
         Auth.login(
             username,
             password,
             () => {
+                setError('Log in successful!', {variant:"success"})
                 navigateTo(URLs.auth.profile)
             },
             (err) => {
-                setError(err)
+                setError(err, {variant:"error"})
             })
     }
 

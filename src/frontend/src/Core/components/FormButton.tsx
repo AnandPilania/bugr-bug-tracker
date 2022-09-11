@@ -1,6 +1,11 @@
 import {Button} from "@mui/material";
 
-const FormButton = ({children, onClick}) => (
+type FormButtonProps = {
+    children: any,
+    onClick: Function
+}
+
+const FormButton = ({children, onClick}: FormButtonProps) => (
     <Button onClick={onClick} variant="outlined" style={{marginTop:"1rem", marginBottom:"1rem"}}>{children}</Button>
 )
 
