@@ -16,6 +16,7 @@ use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\ErrorResponse;
 use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
+use SourcePot\Core\Http\Response\UnauthenticatedResponse;
 use SourcePot\Security\Password;
 
 class ValidateTokenController implements ControllerInterface
@@ -35,7 +36,7 @@ class ValidateTokenController implements ControllerInterface
         $params = $request->params();
 
         if (!$params->has('token')) {
-            return (new ErrorResponse())->setBody('Missing parameters from request');
+            return (new UnauthenticatedResponse())->setBody('Missing parameters from request');
         }
 
         $tokenToCheck = $params->get('token');
@@ -44,12 +45,12 @@ class ValidateTokenController implements ControllerInterface
         $token = $database->query(new FindTokenQuery($tokenToCheck));
 
         if ($token === false) {
-            return (new ErrorResponse())->setBody('Token does not exist or has expired');
+            return (new UnauthenticatedResponse())->setBody('Token does not exist or has expired');
         }
 
         $user = $database->query(new FindUserByIdQuery($token['user_id']));
         if ($user === null) {
-            return (new ErrorResponse())->setBody('Token does not match to existing user');
+            return (new UnauthenticatedResponse())->setBody('Token does not match to existing user');
         }
 
         $response = [

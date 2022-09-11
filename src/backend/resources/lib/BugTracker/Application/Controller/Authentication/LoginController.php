@@ -11,9 +11,9 @@ use DateTimeImmutable;
 use SourcePot\Container\Container;
 use SourcePot\Core\Config\Config;
 use SourcePot\Core\Http\RequestInterface;
-use SourcePot\Core\Http\Response\ErrorResponse;
 use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
+use SourcePot\Core\Http\Response\UnauthenticatedResponse;
 use SourcePot\Security\Password;
 
 class LoginController implements ControllerInterface
@@ -33,7 +33,7 @@ class LoginController implements ControllerInterface
         $params = $request->params();
 
         if (!$params->has('username') || !$params->has('password')) {
-            return (new ErrorResponse())->setBody('Missing parameters from request');
+            return (new UnauthenticatedResponse())->setBody('Missing parameters from request');
         }
 
         $username = $params->get('username');
@@ -44,12 +44,12 @@ class LoginController implements ControllerInterface
         $user = $database->query(new FindUserByUsernameQuery($username));
 
         if ($user === null) {
-            return (new ErrorResponse())->setBody('Username does not exist');
+            return (new UnauthenticatedResponse())->setBody('Username does not exist');
         }
 
         $valid_password = Password::validate($password, $user->password);
         if ($valid_password === false) {
-            return (new ErrorResponse())->setBody('Invalid username/password combination');
+            return (new UnauthenticatedResponse())->setBody('Invalid username/password combination');
         }
 
         // @todo create more interesting random token
