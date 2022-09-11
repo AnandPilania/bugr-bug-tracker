@@ -16,7 +16,7 @@ class Bag implements BagInterface
 
     public function hasAll(array $keys): bool
     {
-       return count(array_intersect(array_keys($this->contents), $keys)) === count($keys);
+        return count(array_intersect(array_keys($this->contents), $keys)) === count($keys);
     }
 
     public function add(string $key, mixed $content): void

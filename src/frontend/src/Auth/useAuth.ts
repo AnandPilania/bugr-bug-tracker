@@ -31,6 +31,13 @@ const useAuth = () => {
             URLs.api.login,
             {username, password},
             (response) => {
+                // check a user object was returned!
+                // It is sufficient to say that if a user property exists in the returned data, that is a valid user object
+                if (!response.data.user) {
+                    onError("Unexpected data returned from the server")
+                    return
+                }
+
                 authContext.setUser(response.data.user as UserType)
                 authContext.setToken(response.data.token as string)
                 onSuccess()

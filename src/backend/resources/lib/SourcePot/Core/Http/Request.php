@@ -26,11 +26,11 @@ class Request implements RequestInterface
 
         // If JSON content is given, we need to decode the param data from a different source
         if (strtolower($request->headers->get('Content-Type', '')) === 'application/json') {
-           // Takes raw data from the request
-           $request->params = new Bag(json_decode(file_get_contents('php://input'), true, JSON_THROW_ON_ERROR));
+            // Takes raw data from the request
+            $request->params = new Bag(json_decode(file_get_contents('php://input'), true, JSON_THROW_ON_ERROR));
         } else {
-           // Otherwise just use $_REQUEST as default
-           $request->params = new Bag($_REQUEST);
+            // Otherwise just use $_REQUEST as default
+            $request->params = new Bag($_REQUEST);
         }
 
         $request->cookies = new Bag($_COOKIE);
