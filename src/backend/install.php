@@ -21,14 +21,14 @@ echo 'Installing...'."\n";
  * This script needs to:
  * - connect to the mysql server and configure a new database with username and password
  * - store the password in a config file that we can use for connecting to the database later
- * - ...
+ * - run migrations to build database structure
  */
 
 $db = new PDO('mysql:host=trackr-mysql', 'root', 'password');
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
 $user_exists = (bool) $db->query('SELECT 1 FROM mysql.user WHERE user = "trackr"')->rowCount();
-if($user_exists === false) {
+if ($user_exists === false) {
     echo "Creating database access credentials\n";
     # Create username/password with basic access
     $password = random_string(64);
@@ -43,4 +43,3 @@ if($user_exists === false) {
 # Run this like an external program so I can also run it separately
 $command = 'php ' . __DIR__ . '/migrate.php';
 passthru($command);
-
