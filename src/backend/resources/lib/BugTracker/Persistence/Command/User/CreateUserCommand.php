@@ -18,7 +18,7 @@ class CreateUserCommand implements QueryInterface
     public function execute(DatabaseAdapter $database): mixed
     {
         $password = Password::encrypt($this->password);
-        $statement = $database->prepare('INSERT INTO users SET username=:username, password=:password, displayName=:displayName, active=1');
+        $statement = $database->prepare('INSERT INTO users SET username=:username, password=:password, display_name=:displayName, active=1');
         $statement->execute(['username' => $this->username, 'password' => $password, 'displayName' => $this->displayName]);
         return null;
     }

@@ -1,7 +1,7 @@
 <?php
 return <<<SQL
 
-    CREATE TABLE IF NOT EXISTS tokens (
+    CREATE TABLE IF NOT EXISTS trackr.tokens (
         id int not null auto_increment,
         user_id int not null,
         token varchar(255) not null,

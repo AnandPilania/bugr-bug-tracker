@@ -1,7 +1,5 @@
 <?php
 
-const DATABASE_NAME = 'trackr';
-
 function random_string(int $length): string {
     $chars = 'abcdefghijklmnopqrstuvwxyz'
             .'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -29,35 +27,20 @@ echo 'Installing...'."\n";
 $db = new PDO('mysql:host=trackr-mysql', 'root', 'password');
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-# Create database if we need to
-$databases = array_column($db->query('SHOW DATABASES')->fetchAll(), 'Database');
-if(!in_array(DATABASE_NAME, $databases)) {
-    echo "Creating bug tracker database\n";
-    $db->query('CREATE DATABASE '.DATABASE_NAME);
-}
-
 $user_exists = (bool) $db->query('SELECT 1 FROM mysql.user WHERE user = "trackr"')->rowCount();
 if($user_exists === false) {
     echo "Creating database access credentials\n";
     # Create username/password with basic access
     $password = random_string(64);
     $db->query("CREATE USER IF NOT EXISTS trackr IDENTIFIED BY '$password'");
-    $db->query('GRANT select,insert,update ON '.DATABASE_NAME.'.* TO trackr');
+    $db->query('GRANT select,insert,update ON trackr.* TO trackr');
 
     # Store password in php config
     file_put_contents(__DIR__ . '/resources/database_password', $password);
 }
 
-# From now on we can use the trackr database for queries
-$db->query('USE '.DATABASE_NAME);
+# Run migrations (this includes creating the database)
+# Run this like an external program so I can also run it separately
+$command = 'php ' . __DIR__ . '/migrate.php';
+passthru($command);
 
-# Create tables by importing database migrations
-$migrations_dir = __DIR__ . '/resources/migrations';
-$migrations = scandir($migrations_dir);
-foreach($migrations as $migration) {
-    if ($migration[0] === '.') continue;
-
-    echo "Importing migration $migration\n";
-    $sql = include "$migrations_dir/$migration";
-    $db->query($sql);
-}

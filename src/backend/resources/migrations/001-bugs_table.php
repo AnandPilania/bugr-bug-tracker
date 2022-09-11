@@ -1,7 +1,7 @@
 <?php
 return <<<SQL
 
-    CREATE TABLE IF NOT EXISTS bugs (
+    CREATE TABLE IF NOT EXISTS trackr.bugs (
         id int not null auto_increment,
         title varchar(50) not null,
         content text null,
