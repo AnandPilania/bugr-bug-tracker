@@ -9,6 +9,7 @@ import RegisterPage from "../Auth/pages/RegisterPage";
 import UserProfilePage from "../User/pages/UserProfilePage";
 import ProtectedRoute from "../Auth/components/ProtectedRoute";
 import ProviderWrapper from "./ProviderWrapper";
+import ChangePasswordPage from "../Auth/pages/ChangePasswordPage";
 import URLs from "../URLs";
 
 const App = () => {

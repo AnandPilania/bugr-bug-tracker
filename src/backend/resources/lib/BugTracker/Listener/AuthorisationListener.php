@@ -2,9 +2,11 @@
 
 namespace BugTracker\Listener;
 
+use BugTracker\Domain\Entity\User;
 use BugTracker\Factory\DatabaseAdapterFactory;
 use BugTracker\Persistence\Query\Token\FindTokenQuery;
 use BugTracker\Persistence\Query\User\FindUserByIdQuery;
+use SourcePot\Bag\Bag;
 use SourcePot\Container\Container;
 use SourcePot\Core\Config\Config;
 use SourcePot\Core\Http\Exception\UnauthenticatedException;
@@ -18,8 +20,22 @@ class AuthorisationListener implements ListenerInterface
     {
         $params = $event->get('request')->params();
 
-        if (!$params->has('token')) {
-            throw new UnauthenticatedException();
+        $user = $this->getUserOfToken($params);
+
+        $authorised = $event->get('controller')->authorise($user);
+
+        if (!$authorised) {
+            throw new UnauthorisedException($user->username);
+        }
+
+        return $event;
+    }
+
+    private function getUserOfToken(Bag $params): ?User
+    {
+        // This case means we don't have a logged-in user.  This is not an error by itself
+        if (!$params->has('token') || $params->get('token') === '') {
+            return null;
         }
 
         $tokenToCheck = $params->get('token');
@@ -32,18 +48,13 @@ class AuthorisationListener implements ListenerInterface
         }
 
         $user = $database->query(new FindUserByIdQuery($token['user_id']));
+        // If we don't find a user based on a given token, this is an error as the token is invalid
         if ($user === null) {
             throw new UnauthenticatedException();
         }
 
         // @todo if token is valid, move expiry forwards
 
-        $authorised = $event->get('controller')->authorise($user);
-
-        if (!$authorised) {
-            throw new UnauthorisedException($user->username);
-        }
-
-        return $event;
+        return $user;
     }
 }

@@ -1,6 +1,7 @@
 import Axios, {AxiosError, AxiosResponse} from "axios";
 import {LoadingOverlayContext, LoadingOverlayContextType} from "./LoadingOverlayContext";
 import {useContext} from "react";
+import {AuthContext, AuthContextType} from "../Auth/AuthContext";
 
 type UseApiType = {
     get: Function,
@@ -12,6 +13,7 @@ type UseApiType = {
 }
 
 const useApi = (): UseApiType => {
+    const {token} = useContext<AuthContextType>(AuthContext)
     const loadingOverlay = useContext<LoadingOverlayContextType>(LoadingOverlayContext)
 
     let config = {
@@ -23,6 +25,10 @@ const useApi = (): UseApiType => {
         // check request method is acceptable
         if (!['get', 'post', 'put', 'patch', 'delete'].includes(method.toLowerCase())) {
             throw new Error(`Invalid request method: ${method}`)
+        }
+
+        if (method.toLowerCase() !== 'get' && token) {
+            data.token = token
         }
 
         loadingOverlay.show()

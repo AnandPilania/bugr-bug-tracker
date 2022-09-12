@@ -19,11 +19,11 @@ use SourcePot\Security\Password;
 
 class LoginController implements ControllerInterface
 {
-    private User $user;
+    private ?User $user;
 
     public function authorise(?User $user): bool
     {
-        // store the logged in user for later use
+        // store the logged-in user for later use
         $this->user = $user;
         return true;
     }

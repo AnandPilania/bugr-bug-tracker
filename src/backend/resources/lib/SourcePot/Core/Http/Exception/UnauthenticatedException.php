@@ -8,6 +8,6 @@ class UnauthenticatedException extends DebugLogException
 {
     public function __construct()
     {
-        parent::__construct("This resource required a logged-in user");
+        parent::__construct("This resource requires a logged-in user");
     }
 }

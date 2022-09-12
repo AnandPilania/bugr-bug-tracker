@@ -4,14 +4,15 @@ const URLs = {
     auth: {
         login: '/login',
         logout: '/logout',
-        profile: '/profile',
-        register: '/register'
+        profile: '/user/profile',
+        register: '/register',
     },
     api: {
         login: '/login',
         logout: '/logout',
         register: '/register',
-        validateToken: '/validate'
+        validateToken: '/user/validate',
+        changePassword: '/user/password'
     }
 }
 

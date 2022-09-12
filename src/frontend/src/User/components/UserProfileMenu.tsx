@@ -32,7 +32,8 @@ const UserProfileMenu = () => {
             <Tooltip title="View your profile">
                 <MenuItem onClick={() => navigateTo(URLs.auth.profile)}><Person sx={{marginRight:"0.5rem"}} />{user.displayName}</MenuItem>
             </Tooltip>
-            {!!user.isAdmin && <MenuItem onClick={() => navigateTo(URLs.auth.register)}><PersonAdd sx={{marginRight:"0.5rem"}} />Create new user</MenuItem> }
+
+            {user.isAdmin && <MenuItem onClick={() => navigateTo(URLs.auth.register)}><PersonAdd sx={{marginRight:"0.5rem"}} />Create new user</MenuItem> }
             <Divider />
             <MenuItem onClick={() => navigateTo(URLs.auth.logout)}><Logout sx={{marginRight:"0.5rem"}} />Log out</MenuItem>
         </Menu>
