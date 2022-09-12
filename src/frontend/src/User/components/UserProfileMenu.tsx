@@ -2,8 +2,9 @@ import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
 import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {Divider, IconButton, Menu, MenuItem, PopoverProps, Tooltip} from "@mui/material";
-import {Logout, Person, PersonAdd} from "@mui/icons-material";
+import {Logout, PersonAdd} from "@mui/icons-material";
 import URLs from "../../URLs";
+import UserTypeIcon from "./UserTypeIcon";
 
 const UserProfileMenu = () => {
     const [menuOpen, setMenuOpen] = useState(false)
@@ -24,13 +25,13 @@ const UserProfileMenu = () => {
     return <>
         <Tooltip title="Account settings">
             <IconButton edge="end" color="inherit" onClick={showMenu}>
-                <Person/>
+                <UserTypeIcon />
             </IconButton>
         </Tooltip>
 
         <Menu anchorEl={anchorElement} open={menuOpen} onClick={hideMenu} onClose={hideMenu}>
             <Tooltip title="View your profile">
-                <MenuItem onClick={() => navigateTo(URLs.auth.profile)}><Person sx={{marginRight:"0.5rem"}} />{user.displayName}</MenuItem>
+                <MenuItem onClick={() => navigateTo(URLs.auth.profile)}><UserTypeIcon sx={{marginRight:"0.5rem"}} />{user.displayName}</MenuItem>
             </Tooltip>
 
             {user.isAdmin && <MenuItem onClick={() => navigateTo(URLs.auth.register)}><PersonAdd sx={{marginRight:"0.5rem"}} />Create new user</MenuItem> }

@@ -1,7 +1,6 @@
 import {useContext, useState} from "react";
 import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
 import {Divider, TextField, Typography} from "@mui/material";
-import {useNavigate} from "react-router-dom";
 import FormButton from "../../Core/components/FormButton";
 import Form from "../../Core/components/Form";
 import URLs from "../../URLs";
@@ -16,6 +15,11 @@ const UserProfilePage = () => {
     const {enqueueSnackbar: setError} = useSnackbar()
 
     const changePassword = () => {
+        if (newPassword === '') {
+            setError('Be sure to enter a new password before trying to change it!', {variant: "error"})
+            return
+        }
+
         if (newPassword !== newPasswordConfirm) {
             setError('Passwords entered do not match', {variant: "error"})
             return
@@ -31,6 +35,8 @@ const UserProfilePage = () => {
                 }
 
                 setError('Password changed!', {variant: "success"})
+                setNewPassword('')
+                setNewPasswordConfirm('')
             },
             err => setError(err.data, {variant: "error"})
         )
@@ -41,7 +47,7 @@ const UserProfilePage = () => {
         <Typography>Display name: {user.displayName}</Typography>
         <Typography>You are {user.isAdmin ? "an Administrator" : "a Normal user"}</Typography>
 
-        <Divider />
+        <Divider sx={{marginY: "1rem"}} />
 
         <Typography>Change your password</Typography>
         <Form>
