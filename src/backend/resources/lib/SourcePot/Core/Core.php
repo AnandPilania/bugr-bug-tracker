@@ -48,20 +48,26 @@ class Core implements CoreInterface
     protected function setupListeners(): void
     {
         foreach ($this->config->get('listeners') as $listenerObject) {
-            [$eventName, $listenerClass] = $listenerObject;
-            $this->listenerProvider->registerListenerForEvent(
-                $eventName,
-                $listenerClass
-            );
+            try {
+                [$eventName, $listenerClass] = $listenerObject;
+                $this->listenerProvider->registerListenerForEvent(
+                    $eventName,
+                    $listenerClass
+                );
+            } catch (\Throwable $t) {
+                // @todo do we want to do anything else with this error?
+                error_log($t->getMessage());
+            }
         }
     }
 
     public function execute(): void
     {
-        try {
-            $eventDispatcher = new EventDispatcher($this->listenerProvider);
-            $this->setupListeners();
+        // These parts cannot fail
+        $eventDispatcher = new EventDispatcher($this->listenerProvider);
+        $this->setupListeners();
 
+        try {
             $eventDispatcher->dispatch(new CoreStartedEvent());
 
             $router = Router::create();
@@ -76,8 +82,6 @@ class Core implements CoreInterface
             $response = $controller->execute($request);
             $eventDispatcher->dispatch(new RequestFinishedEvent());
             $response->send();
-
-            $eventDispatcher->dispatch(new CoreShutdownEvent());
         } catch (Http\Exception\NoRouteForPathException $e) {
             ErrorResponse::create()
                 ->setBody($e->getMessage())
@@ -94,6 +98,8 @@ class Core implements CoreInterface
             ErrorResponse::create()
                 ->setBody('ERROR: ' . $t::class . "\n" . $t->getMessage())
                 ->send();
+        } finally {
+            $eventDispatcher->dispatch(new CoreShutdownEvent());
         }
     }
 }

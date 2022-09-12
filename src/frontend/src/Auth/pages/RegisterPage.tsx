@@ -11,7 +11,6 @@ const RegisterPage = () => {
     const [username, setUsername] = useState<string>('')
     const [displayName, setDisplayName] = useState<string>('')
     const [password, setPassword] = useState<string>('')
-    const [uniqueKey, setUniqueKey] = useState<string>('')
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
 
     const {enqueueSnackbar: setError} = useSnackbar()
@@ -19,8 +18,8 @@ const RegisterPage = () => {
     const Auth = useAuth()
 
     const createUser = () => {
-        if (username.length === 0 || password.length === 0 || uniqueKey.length === 0) {
-            setError('Username, Password and Unique Key are all required fields', {variant: "error"})
+        if (username.length === 0 || password.length === 0) {
+            setError('Username and Password are required fields', {variant: "error"})
             return
         }
 
@@ -33,14 +32,12 @@ const RegisterPage = () => {
             password,
             displayName,
             isAdmin,
-            uniqueKey,
             () => {
                 setError('User created successfully', {variant: "success"})
                 setUsername('')
                 setPassword('')
                 setDisplayName('')
                 setIsAdmin(false)
-                // @todo show some other confirmation message
             },
             (err) => {
                 setError(err, {variant:"error"})
@@ -57,10 +54,6 @@ const RegisterPage = () => {
             <FormInput label="Password" value={password} onChange={e => setPassword(e.target.value)} type="password" />
 
             <FormCheckbox label="Make this user an Admin User" checked={isAdmin} onChange={e => setIsAdmin(e.target.checked)} />
-
-            <Divider />
-
-            <FormInput label="Unique Key" value={uniqueKey} onChange={e => setUniqueKey(e.target.value)} type="text" />
 
             <FormButton onClick={createUser}>Create user</FormButton>
         </Form>

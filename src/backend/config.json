@@ -24,6 +24,5 @@
     },
     "host": "trackr-mysql",
     "database": "trackr"
-  },
-  "apikey": "1234567890"
+  }
 }

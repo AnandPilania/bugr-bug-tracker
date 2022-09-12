@@ -5,6 +5,7 @@ import {Divider, IconButton, Menu, MenuItem, PopoverProps, Tooltip} from "@mui/m
 import {Logout, PersonAdd} from "@mui/icons-material";
 import URLs from "../../URLs";
 import UserTypeIcon from "./UserTypeIcon";
+import AdminMenu from "./AdminMenu";
 
 const UserProfileMenu = () => {
     const [menuOpen, setMenuOpen] = useState(false)
@@ -34,8 +35,10 @@ const UserProfileMenu = () => {
                 <MenuItem onClick={() => navigateTo(URLs.auth.profile)}><UserTypeIcon sx={{marginRight:"0.5rem"}} />{user.displayName}</MenuItem>
             </Tooltip>
 
-            {user.isAdmin && <MenuItem onClick={() => navigateTo(URLs.auth.register)}><PersonAdd sx={{marginRight:"0.5rem"}} />Create new user</MenuItem> }
             <Divider />
+
+            {user.isAdmin && <AdminMenu />}
+
             <MenuItem onClick={() => navigateTo(URLs.auth.logout)}><Logout sx={{marginRight:"0.5rem"}} />Log out</MenuItem>
         </Menu>
     </>

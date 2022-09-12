@@ -39,13 +39,8 @@ class RegisterController implements ControllerInterface
     {
         $params = $request->params();
 
-        if (!$params->hasAll(['username', 'password', 'displayName', 'isAdmin', 'apikey'])) {
+        if (!$params->hasAll(['username', 'password', 'displayName', 'isAdmin'])) {
             return (new ErrorResponse())->setBody('Missing parameters from request');
-        }
-
-        $apikey = $params->get('apikey');
-        if ((string)$apikey !== Container::get(Config::class)->get('apikey')) {
-            return (new ErrorResponse())->setBody('Invalid API Key provided');
         }
 
         $username = $params->get('username');
