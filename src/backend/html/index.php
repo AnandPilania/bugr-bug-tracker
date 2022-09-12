@@ -22,17 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
    exit;
 }
 
-// Load configuration and setup dependency injection container
-try {
-    $config = new Config();
-    $config->setMany(FileLoader::loadJsonFromFile(dirname(__DIR__) . '/config.json'));
-    Container::put($config);
-}
-catch (JsonException $e) {
-    http_response_code(500);
-    echo "Error loading site config, cannot service requests";
-    exit;
-}
-
 $core = new Core();
+$core->loadConfig(dirname(__DIR__) . '/config.json');
 $core->execute();

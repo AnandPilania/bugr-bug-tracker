@@ -4,7 +4,8 @@
     ["/bugs/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController"],
     ["/api/login", "BugTracker\\Application\\Controller\\Authentication\\LoginController", ["POST"]],
     ["/api/register", "BugTracker\\Application\\Controller\\Authentication\\RegisterController", ["POST"]],
-    ["/api/validate", "BugTracker\\Application\\Controller\\Authentication\\ValidateTokenController", ["POST"]]
+    ["/api/user/validate", "BugTracker\\Application\\Controller\\Authentication\\ValidateTokenController", ["POST"]],
+    ["/api/user/password", "BugTracker\\Application\\Controller\\Authentication\\ChangePasswordController", ["POST"]]
   ],
   "listeners": [
     ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\RequestStartedListener"],

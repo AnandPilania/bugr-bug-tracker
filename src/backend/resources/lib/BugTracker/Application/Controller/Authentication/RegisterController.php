@@ -2,6 +2,7 @@
 
 namespace BugTracker\Application\Controller\Authentication;
 
+use BugTracker\Domain\Entity\User;
 use BugTracker\Factory\DatabaseAdapterFactory;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\User\CreateUserCommand;
@@ -15,9 +16,18 @@ use SourcePot\Core\Http\Response\ResponseInterface;
 
 class RegisterController implements ControllerInterface
 {
-    public function accessCode(): string
+    private User $user;
+
+    public function authorise(?User $user): bool
     {
-        return '';
+        // Requires an admin user to use this feature
+        if ($user === null || !$user->isAdmin) {
+            return false;
+        }
+
+        $this->user = $user;
+
+        return true;
     }
 
     public static function create(...$args): self
@@ -29,14 +39,10 @@ class RegisterController implements ControllerInterface
     {
         $params = $request->params();
 
-        if (!$params->hasAll(['username', 'password', 'displayName', 'apikey'])) {
+        if (!$params->hasAll(['username', 'password', 'displayName', 'isAdmin', 'apikey'])) {
             return (new ErrorResponse())->setBody('Missing parameters from request');
         }
 
-        /**
-         * This API needs to be deliberately left open for access from all.  The user will provide an API key that was
-         * set up during the installation process.  This needs to be checked here.
-         */
         $apikey = $params->get('apikey');
         if ((string)$apikey !== Container::get(Config::class)->get('apikey')) {
             return (new ErrorResponse())->setBody('Invalid API Key provided');
@@ -52,6 +58,7 @@ class RegisterController implements ControllerInterface
             return (new ErrorResponse())->setBody('Username already exists');
         }
 
+        // @todo add some logging to show who created this user
         $database->query(new CreateUserCommand(
             username: $username,
             password: $params->get('password'),
@@ -60,6 +67,6 @@ class RegisterController implements ControllerInterface
         ));
 
         return (new JSONResponse())
-           ->setBody(['result' => 'success']);
+            ->setBody(['result' => 'success']);
     }
 }

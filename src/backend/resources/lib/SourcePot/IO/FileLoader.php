@@ -2,6 +2,7 @@
 
 namespace SourcePot\IO;
 
+use JsonException;
 use SourcePot\IO\Exception\FileNotFoundException;
 use SourcePot\IO\Exception\UnableToOpenFileException;
 
@@ -14,6 +15,9 @@ class FileLoader
     {
     }
 
+    /**
+     * @throws JsonException
+     */
     public static function loadJsonFromFile(string $filename): array
     {
         // detect whether the file actually exists first
@@ -21,7 +25,7 @@ class FileLoader
             throw new FileNotFoundException($filename);
         }
 
-        // suppress warnings to avoid unneccesary output
+        // suppress warnings to avoid unnecessary output
         $contents = @file_get_contents($filename);
 
         // catch file loading failure
@@ -30,9 +34,6 @@ class FileLoader
         }
 
         // use JSON_THROW_ON_ERROR so we'll get an exception if the decode doesn't work
-        $json = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
-
-        // happy path
-        return $json;
+        return json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
     }
 }

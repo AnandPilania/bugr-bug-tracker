@@ -2,6 +2,7 @@
 
 namespace BugTracker\Application\Controller;
 
+use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Controller\ControllerInterface;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\ResponseInterface;
@@ -9,9 +10,9 @@ use SourcePot\Core\Http\Response\TextResponse;
 
 class IndexController implements ControllerInterface
 {
-    public function accessCode(): string
+    public function authorise(?User $user): bool
     {
-        return '';
+        return true;
     }
 
     public static function create(...$args): self

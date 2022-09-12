@@ -2,6 +2,7 @@
 
 namespace BugTracker\Application\Controller\Bug;
 
+use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Controller\ControllerInterface;
 use InvalidArgumentException;
 use SourcePot\Core\Http\RequestInterface;
@@ -10,9 +11,9 @@ use SourcePot\Core\Http\Response\BasicResponse;
 
 class GetBugController implements ControllerInterface
 {
-    public function accessCode(): string
+    public function authorise(?User $user): bool
     {
-        return 'bug.load';
+        return $user !== null;
     }
 
     public function __construct(

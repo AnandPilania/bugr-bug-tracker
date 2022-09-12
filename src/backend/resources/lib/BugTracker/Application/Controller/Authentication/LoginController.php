@@ -2,6 +2,7 @@
 
 namespace BugTracker\Application\Controller\Authentication;
 
+use BugTracker\Domain\Entity\User;
 use BugTracker\Factory\DatabaseAdapterFactory;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Token\StoreTokenCommand;
@@ -18,9 +19,13 @@ use SourcePot\Security\Password;
 
 class LoginController implements ControllerInterface
 {
-    public function accessCode(): string
+    private User $user;
+
+    public function authorise(?User $user): bool
     {
-        return '';
+        // store the logged in user for later use
+        $this->user = $user;
+        return true;
     }
 
     public static function create(...$args): self
@@ -30,6 +35,8 @@ class LoginController implements ControllerInterface
 
     public function execute(RequestInterface $request): ResponseInterface
     {
+        // @todo if we already have a logged in use, expire their token first
+
         $params = $request->params();
 
         if (!$params->has('username') || !$params->has('password')) {
@@ -52,7 +59,7 @@ class LoginController implements ControllerInterface
             return (new UnauthenticatedResponse())->setBody('Invalid username/password combination');
         }
 
-        // @todo create more interesting random token
+        // @todo delegate token creation
         $token = uniqid('token-');
         // @todo figure out TimeZone storage - custom transformer that appends timezone to a date string
         $expiry = (new DateTimeImmutable())->add(new DateInterval('PT5M'));
@@ -61,8 +68,7 @@ class LoginController implements ControllerInterface
 
         $response = [
             'user' => $user->toArray(),
-            'token' => $token,
-            'expiry' => $expiry->format('Y-m-d H:i:s')
+            'token' => $token
         ];
 
         return (new JSONResponse())

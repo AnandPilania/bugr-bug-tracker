@@ -2,10 +2,10 @@
 
 namespace SourcePot\Core;
 
+use JsonException;
 use SourcePot\Container\Container;
 use SourcePot\Core\Config\Config;
 use SourcePot\Core\Http\Response\UnauthenticatedResponse;
-use SourcePot\Core\Storage\Storage;
 use SourcePot\Core\Http\Response\ErrorResponse;
 use SourcePot\Core\Http\Response\UnauthorisedResponse;
 use SourcePot\Core\Http\Request;
@@ -21,6 +21,7 @@ use SourcePot\IO\FileLoader;
 
 class Core implements CoreInterface
 {
+    private Config $config;
     private readonly ListenerProvider $listenerProvider;
 
     public function __construct()
@@ -28,25 +29,43 @@ class Core implements CoreInterface
         $this->listenerProvider = new ListenerProvider();
     }
 
+    public function loadConfig(string $configFilename): self
+    {
+        // Load configuration and setup dependency injection container
+        try {
+            $this->config = new Config();
+            $this->config->setMany(FileLoader::loadJsonFromFile($configFilename));
+            Container::put($this->config);
+        } catch (JsonException $e) {
+            http_response_code(500);
+            echo "Error loading site config, cannot service requests ({$e->getMessage()}";
+            exit;
+        }
+
+        return $this;
+    }
+
+    protected function setupListeners(): void
+    {
+        foreach ($this->config->get('listeners') as $listenerObject) {
+            [$eventName, $listenerClass] = $listenerObject;
+            $this->listenerProvider->registerListenerForEvent(
+                $eventName,
+                $listenerClass
+            );
+        }
+    }
+
     public function execute(): void
     {
         try {
-            $config = Container::get(Config::class);
-
             $eventDispatcher = new EventDispatcher($this->listenerProvider);
-
-            foreach ($config->get('listeners') as $listenerObject) {
-                [$eventName, $listenerClass] = $listenerObject;
-                $this->listenerProvider->registerListenerForEvent(
-                    $eventName,
-                    $listenerClass
-                );
-            }
+            $this->setupListeners();
 
             $eventDispatcher->dispatch(new CoreStartedEvent());
 
             $router = Router::create();
-            $router->addRoutes($config->get('routes'));
+            $router->addRoutes($this->config->get('routes'));
 
             $request = Request::create();
             $controller = $router->getControllerForRoute($request->path(), $request->method());

@@ -2,6 +2,11 @@
 
 namespace BugTracker\Listener;
 
+use BugTracker\Factory\DatabaseAdapterFactory;
+use BugTracker\Persistence\Query\Token\FindTokenQuery;
+use BugTracker\Persistence\Query\User\FindUserByIdQuery;
+use SourcePot\Container\Container;
+use SourcePot\Core\Config\Config;
 use SourcePot\Core\Http\Exception\UnauthenticatedException;
 use SourcePot\Core\Http\Exception\UnauthorisedException;
 use SourcePot\Core\EventDispatcher\ListenerInterface;
@@ -11,35 +16,32 @@ class AuthorisationListener implements ListenerInterface
 {
     public function handle(EventInterface $event): EventInterface
     {
-        // todo handle authorisation
-        $accessCode = $event->get('controller')->accessCode();
+        $params = $event->get('request')->params();
 
-        // if controller has no access requirements, automatically pass
-        if ($accessCode === '') {
-            return $event;
-        }
-
-        // request should have auth token
-        // validate auth token against database
-
-        // is user logged in?
-        $username = 'rob.watson';
-
-        // get list of accessCodes this user can access
-        $accessCodes = [
-            'bug.save'
-        ];
-
-        // yes: check user has access to this page
-        // controller should store something to show access requirement
-        if (!in_array($accessCode, $accessCodes)) {
-            throw new UnauthorisedException($username, $accessCode);
-        }
-
-        // no: check anon users can access this page
-        // controller should store something to show access requirement
-        if ($accessCode !== null) {
+        if (!$params->has('token')) {
             throw new UnauthenticatedException();
+        }
+
+        $tokenToCheck = $params->get('token');
+
+        $database = (new DatabaseAdapterFactory(Container::get(Config::class)))->build();
+        $token = $database->query(new FindTokenQuery($tokenToCheck));
+
+        if ($token === false) {
+            throw new UnauthenticatedException();
+        }
+
+        $user = $database->query(new FindUserByIdQuery($token['user_id']));
+        if ($user === null) {
+            throw new UnauthenticatedException();
+        }
+
+        // @todo if token is valid, move expiry forwards
+
+        $authorised = $event->get('controller')->authorise($user);
+
+        if (!$authorised) {
+            throw new UnauthorisedException($user->username);
         }
 
         return $event;
