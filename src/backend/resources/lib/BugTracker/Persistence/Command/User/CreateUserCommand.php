@@ -11,7 +11,7 @@ class CreateUserCommand implements QueryInterface
     public function __construct(
         private readonly string $username,
         private readonly string $password,
-        private readonly string $displayName,
+        private readonly string $friendlyName,
         private readonly bool $isAdmin
     ) {
     }
@@ -21,12 +21,12 @@ class CreateUserCommand implements QueryInterface
         $password = Password::encrypt($this->password);
         $statement = $database->prepare(
             'INSERT INTO users SET username=:username, password=:password, '
-            . 'display_name=:displayName, is_admin=:isAdmin, active=1'
+            . 'friendly_name=:friendlyName, is_admin=:isAdmin, active=1'
         );
         $statement->execute([
             'username' => $this->username,
             'password' => $password,
-            'displayName' => $this->displayName,
+            'friendlyName' => $this->friendlyName,
             'isAdmin' => (int) $this->isAdmin    // need to force this into an int for mysql
         ]);
         return null;

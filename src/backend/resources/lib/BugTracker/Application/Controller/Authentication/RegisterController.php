@@ -39,7 +39,7 @@ class RegisterController implements ControllerInterface
     {
         $params = $request->params();
 
-        if (!$params->hasAll(['username', 'password', 'displayName', 'isAdmin'])) {
+        if (!$params->hasAll(['username', 'password', 'friendlyName', 'isAdmin'])) {
             return (new ErrorResponse())->setBody('Missing parameters from request');
         }
 
@@ -57,7 +57,7 @@ class RegisterController implements ControllerInterface
         $database->query(new CreateUserCommand(
             username: $username,
             password: $params->get('password'),
-            displayName: $params->get('displayName'),
+            friendlyName: $params->get('friendlyName'),
             isAdmin: (bool)$params->get('isAdmin')
         ));
 

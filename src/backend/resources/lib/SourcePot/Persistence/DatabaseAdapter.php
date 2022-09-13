@@ -15,11 +15,6 @@ class DatabaseAdapter
     private string $host;
     private int $port;
 
-    private string $username;
-    private string $password;
-
-    private string $database;
-
     public function setup(string $host, int $port = 3306): self
     {
         $this->host = $host;
@@ -40,7 +35,8 @@ class DatabaseAdapter
 
     public function connect(string $username, string $password, ?string $database = null): self
     {
-        $dsn = 'mysql:host=' . $this->host;
+        // @todo add Port to this dsn
+        $dsn = 'mysql:host=' . $this->host();
         if ($database !== null) {
             $dsn .= ';dbname=' . $database;
         }

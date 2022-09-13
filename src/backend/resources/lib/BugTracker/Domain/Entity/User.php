@@ -7,7 +7,7 @@ class User
     public function __construct(
         public readonly int $id,
         public readonly string $username,
-        public readonly string $displayName,
+        public readonly string $friendlyName,
         public readonly bool $isAdmin,
         public readonly string $password
     ) {
@@ -18,7 +18,7 @@ class User
         return new self(
             (int)$args['id'],
             $args['username'],
-            $args['display_name'],
+            $args['friendly_name'],
             (bool)$args['is_admin'],
             $args['password']
         );
@@ -29,7 +29,7 @@ class User
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'displayName' => $this->displayName,
+            'friendlyName' => $this->friendlyName,
             'isAdmin' => $this->isAdmin
         ];
     }

@@ -2,7 +2,7 @@ import {createContext} from "react";
 
 type UserType = {
     username: string,
-    displayName: string,
+    friendlyName: string,
     isAdmin: boolean
 }
 

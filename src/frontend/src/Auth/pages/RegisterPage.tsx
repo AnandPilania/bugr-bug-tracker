@@ -9,7 +9,7 @@ import Form from "../../Core/components/Form";
 
 const RegisterPage = () => {
     const [username, setUsername] = useState<string>('')
-    const [displayName, setDisplayName] = useState<string>('')
+    const [friendlyName, setFriendlyName] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
 
@@ -23,20 +23,20 @@ const RegisterPage = () => {
             return
         }
 
-        if (displayName.length === 0) {
-            setDisplayName(username)
+        if (friendlyName.length === 0) {
+            setFriendlyName(username)
         }
 
         Auth.register(
             username,
             password,
-            displayName,
+            friendlyName,
             isAdmin,
             () => {
                 setError('User created successfully', {variant: "success"})
                 setUsername('')
                 setPassword('')
-                setDisplayName('')
+                setFriendlyName('')
                 setIsAdmin(false)
             },
             (err) => {
@@ -50,7 +50,7 @@ const RegisterPage = () => {
 
         <Form>
             <FormInput label="Username" type="text" value={username} onChange={e => setUsername(e.target.value)} />
-            <FormInput label="Display Name" value={displayName} onChange={e => setDisplayName(e.target.value)} type="text" helperText="Defaults to username if not given" />
+            <FormInput label="Display Name" value={friendlyName} onChange={e => setFriendlyName(e.target.value)} type="text" helperText="Defaults to username if not given" />
             <FormInput label="Password" value={password} onChange={e => setPassword(e.target.value)} type="password" />
 
             <FormCheckbox label="Make this user an Admin User" checked={isAdmin} onChange={e => setIsAdmin(e.target.checked)} />

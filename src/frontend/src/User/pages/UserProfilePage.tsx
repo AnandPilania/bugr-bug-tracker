@@ -44,7 +44,7 @@ const UserProfilePage = () => {
 
     return <>
         <Typography>Username: {user.username}</Typography>
-        <Typography>Display name: {user.displayName}</Typography>
+        <Typography>Display name: {user.friendlyName}</Typography>
         <Typography>You are {user.isAdmin ? "an Administrator" : "a Normal user"}</Typography>
 
         <Divider sx={{marginY: "1rem"}} />

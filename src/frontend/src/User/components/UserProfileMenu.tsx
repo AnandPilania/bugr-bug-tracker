@@ -32,7 +32,7 @@ const UserProfileMenu = () => {
 
         <Menu anchorEl={anchorElement} open={menuOpen} onClick={hideMenu} onClose={hideMenu}>
             <Tooltip title="View your profile">
-                <MenuItem onClick={() => navigateTo(URLs.auth.profile)}><UserTypeIcon sx={{marginRight:"0.5rem"}} />{user.displayName}</MenuItem>
+                <MenuItem onClick={() => navigateTo(URLs.auth.profile)}><UserTypeIcon sx={{marginRight:"0.5rem"}} />{user.friendlyName}</MenuItem>
             </Tooltip>
 
             <Divider />
