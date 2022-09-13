@@ -13,6 +13,7 @@ use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\ErrorResponse;
 use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
+use SourcePot\Persistence\DatabaseAdapter;
 
 class RegisterController implements ControllerInterface
 {
@@ -46,7 +47,7 @@ class RegisterController implements ControllerInterface
         $username = $params->get('username');
 
         // Make sure user doesn't exist
-        $database = (new DatabaseAdapterFactory(Container::get(Config::class)))->build();
+        $database = Container::get(DatabaseAdapter::class);
         $user = $database->query(new FindUserByUsernameQuery($username));
 
         if ($user !== false) {

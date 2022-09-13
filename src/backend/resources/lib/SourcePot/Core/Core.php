@@ -2,6 +2,7 @@
 
 namespace SourcePot\Core;
 
+use BugTracker\Factory\DatabaseAdapterFactory;
 use JsonException;
 use SourcePot\Container\Container;
 use SourcePot\Core\Config\Config;
@@ -61,6 +62,12 @@ class Core implements CoreInterface
         }
     }
 
+    private function initiateDatabaseConnection(): void
+    {
+        $database = (new DatabaseAdapterFactory(Container::get(Config::class)))->build();
+        Container::put($database);
+    }
+
     public function execute(): void
     {
         // These parts cannot fail
@@ -68,6 +75,8 @@ class Core implements CoreInterface
         $this->setupListeners();
 
         try {
+            $this->initiateDatabaseConnection();
+
             $eventDispatcher->dispatch(new CoreStartedEvent());
 
             $router = Router::create();

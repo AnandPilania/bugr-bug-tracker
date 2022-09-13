@@ -5,10 +5,7 @@ This is the front end for Bug Trackr, written in React using Material Components
 
 ## Todo
 
-* Create Change Password, Forgotten Password, and Update Profile views
-* Create "admin" user
-  * Add link to Create User in Profile Menu if user is an admin
-  * Add checkbox to Create User form for "is admin"
-  * Update ProtectedRoute component to detect Admin User
-  * Restrict `/register` route to admins only
-  * Update `/validate` route to return Admin status
+* Create list of Users view for Admins only
+* Create method for Admin users to change other user password
+* Create caching method on Repositories.  Perhaps chain the Repository call through a Cache service?
+* Add Token to header (token)

@@ -13,6 +13,7 @@ use SourcePot\Core\Http\Exception\UnauthenticatedException;
 use SourcePot\Core\Http\Exception\UnauthorisedException;
 use SourcePot\Core\EventDispatcher\ListenerInterface;
 use SourcePot\Core\EventDispatcher\EventInterface;
+use SourcePot\Persistence\DatabaseAdapter;
 
 class AuthorisationListener implements ListenerInterface
 {
@@ -40,7 +41,7 @@ class AuthorisationListener implements ListenerInterface
 
         $tokenToCheck = $params->get('token');
 
-        $database = (new DatabaseAdapterFactory(Container::get(Config::class)))->build();
+        $database = Container::get(DatabaseAdapter::class);
         $token = $database->query(new FindTokenQuery($tokenToCheck));
 
         if ($token === false) {

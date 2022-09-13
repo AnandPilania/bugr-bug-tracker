@@ -3,7 +3,7 @@ import {LoadingOverlayContext, LoadingOverlayContextType} from "./LoadingOverlay
 import {useContext} from "react";
 import {AuthContext, AuthContextType} from "../Auth/AuthContext";
 
-type UseApiType = {
+export type UseApiType = {
     get: Function,
     post: Function,
     put: Function,

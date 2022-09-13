@@ -2,25 +2,23 @@ import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
 import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {Divider, IconButton, Menu, MenuItem, PopoverProps, Tooltip} from "@mui/material";
-import {Logout, PersonAdd} from "@mui/icons-material";
+import {Logout} from "@mui/icons-material";
 import URLs from "../../URLs";
 import UserTypeIcon from "./UserTypeIcon";
 import AdminMenu from "./AdminMenu";
 
 const UserProfileMenu = () => {
-    const [menuOpen, setMenuOpen] = useState(false)
     const [anchorElement, setAnchorElement] = useState<PopoverProps[anchorElement]>(null)
     const {user} = useContext<AuthContextType>(AuthContext)
     const navigateTo = useNavigate()
+    const menuOpen = Boolean(anchorElement)
 
     const showMenu = (e) => {
         setAnchorElement(e.currentTarget)
-        setMenuOpen(true)
     }
 
     const hideMenu = () => {
         setAnchorElement(null)
-        setMenuOpen(false)
     }
 
     return <>

@@ -4,6 +4,7 @@ import MainMenu from "./MainMenu";
 import {useContext} from "react";
 import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
 import LoginButton from "../../Auth/components/buttons/LoginButton";
+import Config from "../../config";
 
 const Navbar = () => {
     const {user} = useContext<AuthContextType>(AuthContext)
@@ -12,7 +13,7 @@ const Navbar = () => {
         <AppBar position="static">
             <Toolbar variant="dense">
                 <MainMenu/>
-                <Typography align="center" width="100%">Bug Tracker</Typography>
+                <Typography align="center" width="100%">{Config.app_title}</Typography>
                 {user ? <UserProfileMenu/> : <LoginButton />}
             </Toolbar>
         </AppBar>

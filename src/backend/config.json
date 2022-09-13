@@ -1,7 +1,9 @@
 {
   "routes": [
     ["/", "BugTracker\\Application\\Controller\\IndexController"],
-    ["/bugs/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController"],
+    ["/api/bugs/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController"],
+    ["/api/projects", "BugTracker\\Application\\Controller\\Project\\GetAllProjectsController", ["POST"]],
+    ["/api/dashboard", "BugTracker\\Application\\Controller\\DashboardController", ["POST"]],
     ["/api/login", "BugTracker\\Application\\Controller\\Authentication\\LoginController", ["POST"]],
     ["/api/register", "BugTracker\\Application\\Controller\\Authentication\\RegisterController", ["POST"]],
     ["/api/user/validate", "BugTracker\\Application\\Controller\\Authentication\\ValidateTokenController", ["POST"]],

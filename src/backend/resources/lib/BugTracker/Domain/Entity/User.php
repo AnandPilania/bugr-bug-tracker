@@ -2,7 +2,9 @@
 
 namespace BugTracker\Domain\Entity;
 
-class User
+use BugTracker\Persistence\Entity\EntityInterface;
+
+class User implements EntityInterface
 {
     public function __construct(
         public readonly int $id,
@@ -13,14 +15,14 @@ class User
     ) {
     }
 
-    public static function populate(array $args): self
+    public static function populate(array $args): static
     {
         return new self(
-            (int)$args['id'],
-            $args['username'],
-            $args['friendly_name'],
-            (bool)$args['is_admin'],
-            $args['password']
+            id: (int)$args['id'],
+            username: $args['username'],
+            friendlyName: $args['friendly_name'],
+            isAdmin: (bool)$args['is_admin'],
+            password: $args['password']
         );
     }
 

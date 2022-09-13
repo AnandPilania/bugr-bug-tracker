@@ -9,8 +9,10 @@ import RegisterPage from "../Auth/pages/RegisterPage";
 import UserProfilePage from "../User/pages/UserProfilePage";
 import ProtectedRoute from "../Auth/components/ProtectedRoute";
 import ProviderWrapper from "./ProviderWrapper";
-import ChangePasswordPage from "../Auth/pages/ChangePasswordPage";
 import URLs from "../URLs";
+import IfLoggedInRoute from "../Auth/components/IfLoggedInRoute";
+import DashboardPage from "./pages/DashboardPage";
+import ProjectPage from "../Project/pages/ProjectPage";
 
 const App = () => {
     return (
@@ -19,11 +21,12 @@ const App = () => {
                 <Navbar />
                 <Container maxWidth="xl" sx={{paddingTop: 3}}>
                     <Routes>
-                        <Route path={URLs.root} element={<IndexPage />} />
+                        <Route path={URLs.root} element={<IfLoggedInRoute notLoggedIn={<IndexPage />} loggedIn={<DashboardPage />} />} />
                         <Route path={URLs.auth.login} element={<LoginPage />} />
                         <Route path={URLs.auth.register} element={<ProtectedRoute requiresAdmin><RegisterPage /></ProtectedRoute>} />
                         <Route path={URLs.auth.logout} element={<LogoutPage />} />
                         <Route path={URLs.auth.profile} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
+                        <Route path={URLs.projects.all} element={<ProtectedRoute><ProjectPage /></ProtectedRoute>} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </Container>

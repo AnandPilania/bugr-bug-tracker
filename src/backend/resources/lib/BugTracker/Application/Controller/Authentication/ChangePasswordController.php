@@ -12,6 +12,7 @@ use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Core\Http\Response\UnauthenticatedResponse;
+use SourcePot\Persistence\DatabaseAdapter;
 
 class ChangePasswordController implements ControllerInterface
 {
@@ -52,7 +53,7 @@ class ChangePasswordController implements ControllerInterface
             }
         }
 
-        $database = (new DatabaseAdapterFactory(Container::get(Config::class)))->build();
+        $database = Container::get(DatabaseAdapter::class);
 
         $database->query(new ChangePasswordCommand($username, $password));
 

@@ -15,6 +15,7 @@ use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Core\Http\Response\UnauthenticatedResponse;
+use SourcePot\Persistence\DatabaseAdapter;
 use SourcePot\Security\Password;
 
 class LoginController implements ControllerInterface
@@ -47,7 +48,7 @@ class LoginController implements ControllerInterface
         $password = $params->get('password');
 
         // query database with username/password to check user exists
-        $database = (new DatabaseAdapterFactory(Container::get(Config::class)))->build();
+        $database = Container::get(DatabaseAdapter::class);
         $user = $database->query(new FindUserByUsernameQuery($username));
 
         if ($user === null) {
