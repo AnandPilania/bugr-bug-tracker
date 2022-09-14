@@ -48,7 +48,7 @@ class Router implements RouterInterface
             }
         }
 
-        throw new NoRouteForPathException($path);
+        throw new NoRouteForPathException($path, $method);
     }
 
     public function addRoutes(array $routes): self

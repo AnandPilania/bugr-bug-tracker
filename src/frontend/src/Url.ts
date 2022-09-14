@@ -16,7 +16,9 @@ const Url = {
         dashboard: '/dashboard',
         projects: {
             all: '/projects',
-            create: '/projects/create'
+            create: '/projects/create',
+            get: (id: number) => `/project/${id}`,
+            delete: (id: number) => `/project/${id}`
         }
     },
     bugs: {

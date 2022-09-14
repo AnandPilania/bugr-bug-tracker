@@ -31,7 +31,7 @@ const LoginPage = () => {
             password,
             () => {
                 setError('Log in successful!', {variant:"success"})
-                navigateTo(Url.auth.profile)
+                navigateTo(Url.root)
             },
             (err) => {
                 setError(err, {variant:"error"})

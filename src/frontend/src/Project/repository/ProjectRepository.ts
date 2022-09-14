@@ -11,11 +11,25 @@ const ProjectRepository = (api: useApi) => {
         )
     }
 
-    const get = (id: number) => {
-        console.log('Getting bug with id', id)
+    const get = (id: number, onSuccess: Function = (project) => {}, onError: Function = (err) => {}) => {
+        api.get(
+            Url.api.projects.get(id),
+            {},
+            res => onSuccess(res.data),
+            err => onError(err.data)
+        )
     }
 
-    const getWithBugs = (): ProjectType[] => {
+    const deleteProject = (id: number, onSuccess: Function = () => {}, onError: Function = (err) => {}) => {
+        api.delete(
+            Url.api.projects.delete(id),
+            {},
+            () => onSuccess(),
+            err => onError(err.data)
+        )
+    }
+
+    const getWithBugs = () => {
         return []
     }
 
@@ -32,7 +46,8 @@ const ProjectRepository = (api: useApi) => {
         get,
         getAll,
         getWithBugs,
-        create
+        create,
+        delete: deleteProject
     }
 }
 
