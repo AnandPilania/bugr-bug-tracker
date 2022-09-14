@@ -28,7 +28,7 @@ const App = () => {
                         <Route path={Url.auth.logout} element={<LogoutPage />} />
                         <Route path={Url.auth.profile} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
                         <Route path={Url.projects.all} element={<ProtectedRoute><ProjectListPage /></ProtectedRoute>} />
-                        <Route path={Url.projects.one} element={<ProtectedRoute><ProjectPage projectId="4" /></ProtectedRoute>} />
+                        <Route path={Url.projects.one} element={<ProtectedRoute><ProjectPage /></ProtectedRoute>} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </Container>

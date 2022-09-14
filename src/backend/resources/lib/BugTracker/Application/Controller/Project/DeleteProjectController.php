@@ -4,22 +4,25 @@ namespace BugTracker\Application\Controller\Project;
 
 use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Controller\ControllerInterface;
+use BugTracker\Persistence\Command\Project\CreateProjectCommand;
+use BugTracker\Persistence\Command\Project\DeleteProjectCommand;
 use BugTracker\Persistence\Query\Project\GetProjectQuery;
 use InvalidArgumentException;
 use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
+use SourcePot\Core\Http\Response\BasicResponse;
 use SourcePot\Core\Http\Response\ErrorResponse;
 use SourcePot\Core\Http\Response\JSONResponse;
-use SourcePot\Core\Http\Response\NotFoundResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Persistence\DatabaseAdapter;
 
-class GetSingleProjectController implements ControllerInterface
+class DeleteProjectController implements ControllerInterface
 {
     private ?User $user = null;
 
-    public function __construct(private readonly int $projectId)
-    {
+    public function __construct(
+        private readonly int $projectId
+    ) {
     }
 
     public static function create(...$args): ControllerInterface
@@ -39,22 +42,25 @@ class GetSingleProjectController implements ControllerInterface
     {
         $database = Container::get(DatabaseAdapter::class);
 
-        $project = $database->query(new GetProjectQuery($this->projectId));
+        $project = $database->query(new DeleteProjectCommand($this->projectId));
 
-        if ($project === false) {
-            return (new NotFoundResponse())
-                ->setBody('The requested resource could not be located');
-        }
-
-        return (new JSONResponse())
-            ->setBody($project);
+        return (new BasicResponse())
+            ->setBody('Project deleted');
     }
 
     public function authorise(?User $user): bool
     {
-        // @todo this requires token to be passed in via header (already on todo list)
-        return true;
+        /**
+         * Must be an Admin user to create a project
+         */
+        if ($user === null) {
+            return false;
+        }
+        if (!$user->isAdmin) {
+            return false;
+        }
+
         $this->user = $user;
-        return $user !== null;
+        return true;
     }
 }

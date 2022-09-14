@@ -52,7 +52,7 @@ import Url from "../../Url";
 
 const DashboardRepository = (api: UseApiType) => {
     const getDashboardData = (onSuccess: Function, onError: Function) => {
-        api.post(
+        return api.post(
             Url.api.dashboard,
             {},
             response => {

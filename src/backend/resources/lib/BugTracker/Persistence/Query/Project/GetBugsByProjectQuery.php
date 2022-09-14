@@ -5,7 +5,7 @@ namespace BugTracker\Persistence\Query\Project;
 use SourcePot\Persistence\DatabaseAdapter;
 use SourcePot\Persistence\QueryInterface;
 
-class GetProjectQuery implements QueryInterface
+class GetBugsByProjectQuery implements QueryInterface
 {
     public function __construct(
         private readonly int $projectId
@@ -14,8 +14,8 @@ class GetProjectQuery implements QueryInterface
 
     public function execute(DatabaseAdapter $database): mixed
     {
-        $statement = $database->prepare('SELECT * FROM projects WHERE id = :id AND deleted = 0');
-        $statement->execute(['id' => $this->projectId]);
-        return $statement->fetch();
+        $statement = $database->prepare('SELECT * FROM bugs WHERE project_id = :projectId AND deleted = 0 ORDER BY title');
+        $statement->execute(['projectId' => $this->projectId]);
+        return $statement->fetchAll();
     }
 }

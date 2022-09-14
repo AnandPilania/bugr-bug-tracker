@@ -12,7 +12,7 @@ const ProjectRepository = (api: useApi) => {
     }
 
     const get = (id: number, onSuccess: Function = (project) => {}, onError: Function = (err) => {}) => {
-        api.get(
+        return api.get(
             Url.api.projects.get(id),
             {},
             res => onSuccess(res.data),
@@ -23,14 +23,17 @@ const ProjectRepository = (api: useApi) => {
     const deleteProject = (id: number, onSuccess: Function = () => {}, onError: Function = (err) => {}) => {
         api.delete(
             Url.api.projects.delete(id),
-            {},
-            () => onSuccess(),
+            response => onSuccess(response.data),
             err => onError(err.data)
         )
     }
 
-    const getWithBugs = () => {
-        return []
+    const getBugs = (projectId: number, onSuccess: Function = (bugs) => {}, onError: Function = (err) => {}) => {
+        return api.get(
+            Url.api.projects.bugs(projectId),
+            response => onSuccess(response.data),
+            err => onError(err.data)
+        )
     }
 
     const create = (projectName: string, onSuccess: (response) => {}, onError: (err) => {}) => {
@@ -45,7 +48,7 @@ const ProjectRepository = (api: useApi) => {
     return {
         get,
         getAll,
-        getWithBugs,
+        getBugs,
         create,
         delete: deleteProject
     }

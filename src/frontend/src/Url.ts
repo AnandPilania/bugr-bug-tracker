@@ -18,7 +18,8 @@ const Url = {
             all: '/projects',
             create: '/projects/create',
             get: (id: number) => `/project/${id}`,
-            delete: (id: number) => `/project/${id}`
+            delete: (id: number) => `/project/${id}`,
+            bugs: (id: number) => `/project/${id}/bugs`
         }
     },
     bugs: {
@@ -27,8 +28,8 @@ const Url = {
     },
     projects: {
         all: '/projects',
-        view: (id: number) => `/project/${id}`,
-        one: '/project/:projectId'
+        view: (id: number) => `/project/${id}`,  // this is a function to use to generate a url
+        one: '/project/:projectId'         // this is the url that the above function generates to we can navigate to it
     }
 }
 

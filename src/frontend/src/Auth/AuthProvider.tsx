@@ -14,7 +14,7 @@ const AuthProvider = ({children}) => {
         // This hook will fire after every render of the AuthProvider, which should be once per app load
         // If we fished a token out of the cookie, we'll query the API to fetch the User for that token
         if (token) {
-            const apiRequest = auth.validateToken(
+            return auth.validateToken(
                 token,
                 user => setUser(user),
                 err => {
@@ -23,8 +23,6 @@ const AuthProvider = ({children}) => {
                     setUser(null)
                 }
             )
-
-            return () => apiRequest.abort()
         }
         // I acknowledge that this dependency array is deliberately empty as we only want this hook to run once
         //eslint-disable-next-line

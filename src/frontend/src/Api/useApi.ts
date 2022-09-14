@@ -35,7 +35,12 @@ const useApi = (): UseApiType => {
 
         const axiosController = new AbortController()
 
-        Axios[method](config.baseUrl + url, data, {signal: axiosController.signal})
+        Axios({
+            method,
+            url: config.baseUrl + url,
+            data,
+            signal: axiosController.signal
+        })
             .then((response: AxiosResponse) => {
                 onSuccess({
                     data: response.data,
@@ -45,9 +50,10 @@ const useApi = (): UseApiType => {
                 })
             })
             .catch((err: AxiosError) => {
-                if (err.code === 'ERR_CANCELED') {
+                if (axiosController.signal.aborted) {
                     return
                 }
+
                 // @todo one day I'll remove this debugging code. But not this day
                 console.log(err)
                 onError({
@@ -61,7 +67,7 @@ const useApi = (): UseApiType => {
                 loadingOverlay.hide()
             })
 
-        return axiosController
+        return () => axiosController.abort()
     }
 
     const get = (url: string, data: Object, onSuccess: Function = () => {}, onError: Function = () => {}) => {

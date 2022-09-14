@@ -6,27 +6,42 @@ import useRepository from "../../Core/hooks/useRepository";
 import ProjectRepository from "../repository/ProjectRepository";
 import {useSnackbar} from "notistack";
 import {Delete} from "@mui/icons-material";
+import Form from "../../Core/components/Form";
+import FormInput from "../../Core/components/FormInput";
+import FormButton from "../../Core/components/FormButton";
+import BugRepository from "../../Bug/repository/BugRepository";
 
 const ProjectPage = () => {
     const {projectId} = useParams()
-    const repository = useRepository(ProjectRepository)
+    const projectRepository = useRepository(ProjectRepository)
     const [project, setProject] = useState(null)
     const {enqueueSnackbar: setError} = useSnackbar()
 
     useEffect(() => {
-        // fetch project details
-        repository.get(
+        console.log('Fetching project data')
+        return projectRepository.get(
             projectId,
-            project => setProject(project),
+            project => {
+                setProject(project)
+            },
             err => setError(err, {variant:"error"})
         )
     }, [])
 
+    useEffect(() => {
+        if (project !== null) {
+            console.log('Fetching bugs for project')
+            return projectRepository.getBugs(project.id)
+        }
+    }, [project])
+
     const deleteProject = () => {
         // make API call to delete a project
-        repository.delete(
+        projectRepository.delete(
             projectId,
-            () => setError('Project deleted', {variant:"success"}),
+            response => {
+                setError(response, {variant: "success"})
+            },
             err => setError(err, {variant:"error"})
         )
     }
@@ -37,10 +52,11 @@ const ProjectPage = () => {
 
     return (
         <>
-            <Typography>{project.title}</Typography>
-            <Divider sx={{marginY: "1rem"}} />
-
+            <Typography variant="h2">{project.title}</Typography>
             <Typography><Button onClick={deleteProject}><Delete />Delete project</Button> </Typography>
+
+            <Divider sx={{marginY:"1rem"}} />
+            <Typography>Some other information about the project</Typography>
         </>
     )
 }

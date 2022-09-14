@@ -10,7 +10,7 @@ class GetProjectsQuery implements QueryInterface
 
     public function execute(DatabaseAdapter $database): mixed
     {
-        $statement = $database->prepare('SELECT * FROM projects ORDER BY title');
+        $statement = $database->prepare('SELECT * FROM projects WHERE deleted = 0 ORDER BY title');
         $statement->execute();
         return $statement->fetchAll();
     }

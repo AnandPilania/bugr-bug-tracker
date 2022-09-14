@@ -25,7 +25,7 @@ const DashboardPage = () => {
     const dashboardRepository = useRepository(DashboardRepository)
 
     useEffect(() => {
-        dashboardRepository.getDashboardData(
+        return dashboardRepository.getDashboardData(
             response => console.log(response),
             err => setError(err)
         )

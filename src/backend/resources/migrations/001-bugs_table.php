@@ -8,6 +8,7 @@ return <<<SQL
         status_id int not null,
         project_id int not null,
         assignee_id int default null,
+        deleted int(1) not null default 0,
         primary key (id)
     )
 
