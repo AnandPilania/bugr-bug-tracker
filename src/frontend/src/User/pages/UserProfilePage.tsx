@@ -3,7 +3,7 @@ import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
 import {Divider, TextField, Typography} from "@mui/material";
 import FormButton from "../../Core/components/FormButton";
 import Form from "../../Core/components/Form";
-import URLs from "../../URLs";
+import Url from "../../Url";
 import useApi from "../../Api/useApi";
 import {useSnackbar} from "notistack";
 
@@ -26,7 +26,7 @@ const UserProfilePage = () => {
         }
 
         api.post(
-            URLs.api.changePassword,
+            Url.api.changePassword,
             { password: newPassword },
             response => {
                 if (!response.data.result) {

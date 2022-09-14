@@ -1,7 +1,7 @@
 import {useContext} from "react";
 import useApi from "../Api/useApi";
 import {AuthContext, AuthContextType, UserType} from "./AuthContext";
-import URLs from "../URLs";
+import Url from "../Url";
 
 const useAuth = () => {
     const api = useApi()
@@ -9,7 +9,7 @@ const useAuth = () => {
 
     const validateToken = (token: string, onSuccess: Function = () => {}, onError: Function = () => {}) => {
         return api.post(
-            URLs.api.validateToken,
+            Url.api.validateToken,
             {token},
             response => {
                 onSuccess(response.data.user as UserType)
@@ -28,7 +28,7 @@ const useAuth = () => {
         onError: Function = () => {}
     ) => {
         api.post(
-            URLs.api.login,
+            Url.api.login,
             {username, password},
             (response) => {
                 // check a user object was returned!
@@ -64,7 +64,7 @@ const useAuth = () => {
         onError: Function = () => {}
     ) => {
         api.post(
-            URLs.api.register,
+            Url.api.register,
             {username, friendlyName, password, isAdmin},
             () => {
                 // this is deliberately nested to ensure our api provider response doesn't leak out

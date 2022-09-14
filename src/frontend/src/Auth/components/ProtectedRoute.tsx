@@ -7,7 +7,7 @@ type ProtectedRouteProps = {
     requiresAdmin: boolean
 }
 
-const ProtectedRoute = ({children, requiresAdmin}) => {
+const ProtectedRoute = ({children, requiresAdmin}: ProtectedRouteProps) => {
     const {user} = useContext<AuthContextType>(AuthContext)
 
     if (!user) {

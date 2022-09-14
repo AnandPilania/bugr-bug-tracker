@@ -1,33 +1,9 @@
-import {Button, Typography} from "@mui/material";
-import ProjectRepository from "../repository/ProjectRepository";
-import useRepository from "../../Core/hooks/useRepository";
-import {useEffect, useState} from "react";
-import {useSnackbar} from "notistack";
-import {PlusOneOutlined} from "@mui/icons-material";
+import {Typography} from "@mui/material";
+import {useParams} from "react-router-dom";
 
 const ProjectPage = () => {
-    const {enqueueSnackbar: setError} = useSnackbar()
-    const repository = useRepository(ProjectRepository)
-    const [projects, setProjects] = useState([])
-
-    useEffect(() => {
-        repository.getAll(
-            projects => setProjects(projects),
-            err => setError(err)
-        )
-    }, [])
-
-    const showNewProjectModal = () => {
-        // @todo
-    }
-
-    return (
-        <>
-            <Typography variant="h2">Projects</Typography>
-            <Typography><Button variant="outlined" onClick={() => showNewProjectModal()}><PlusOneOutlined />Create new Project</Button></Typography>
-            <Typography variant="code">{JSON.stringify(projects)}</Typography>
-        </>
-    )
+    const {projectId} = useParams()
+    return <Typography>{projectId}</Typography>
 }
 
 export default ProjectPage

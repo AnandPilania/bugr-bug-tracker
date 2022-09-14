@@ -1,8 +1,8 @@
-import {Navigate, useNavigate} from "react-router-dom"
+import {useNavigate} from "react-router-dom"
 import useAuth from "../useAuth";
 import {useEffect} from "react";
 import {Typography} from "@mui/material";
-import URLs from "../../URLs";
+import Url from "../../Url";
 
 const LogoutPage = () => {
     const navigateTo = useNavigate()
@@ -10,7 +10,7 @@ const LogoutPage = () => {
 
     useEffect(() => {
         Auth.logout()
-        navigateTo(URLs.root)
+        navigateTo(Url.root)
     })
 
     return <Typography>Logging out...</Typography>

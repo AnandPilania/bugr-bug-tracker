@@ -3,12 +3,10 @@
 namespace BugTracker\Application\Controller\Authentication;
 
 use BugTracker\Domain\Entity\User;
-use BugTracker\Factory\DatabaseAdapterFactory;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\User\CreateUserCommand;
 use BugTracker\Persistence\Query\User\FindUserByUsernameQuery;
 use SourcePot\Container\Container;
-use SourcePot\Core\Config\Config;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\ErrorResponse;
 use SourcePot\Core\Http\Response\JSONResponse;

@@ -1,10 +1,10 @@
 import useApi from "../../Api/useApi";
-import URLs from "../../URLs";
+import Url from "../../Url";
 
 const ProjectRepository = (api: useApi) => {
     const getAll = (onSuccess: Function, onError: Function) => {
         api.post(
-            URLs.api.projects.all,
+            Url.api.projects.all,
             {},
             response => onSuccess(response.data),
             err => onError(err.data)
@@ -19,10 +19,20 @@ const ProjectRepository = (api: useApi) => {
         return []
     }
 
+    const create = (projectName: string, onSuccess: (response) => {}, onError: (err) => {}) => {
+        api.post(
+            Url.api.projects.create,
+            {projectName},
+            res => onSuccess(res.data),
+            err => onError(err.data)
+        )
+    }
+
     return {
         get,
         getAll,
-        getWithBugs
+        getWithBugs,
+        create
     }
 }
 

@@ -7,7 +7,8 @@
     ["/api/login", "BugTracker\\Application\\Controller\\Authentication\\LoginController", ["POST"]],
     ["/api/register", "BugTracker\\Application\\Controller\\Authentication\\RegisterController", ["POST"]],
     ["/api/user/validate", "BugTracker\\Application\\Controller\\Authentication\\ValidateTokenController", ["POST"]],
-    ["/api/user/password", "BugTracker\\Application\\Controller\\Authentication\\ChangePasswordController", ["POST"]]
+    ["/api/user/password", "BugTracker\\Application\\Controller\\Authentication\\ChangePasswordController", ["POST"]],
+    ["/api/projects/create", "BugTracker\\Application\\Controller\\Project\\CreateProjectController", ["POST"]]
   ],
   "listeners": [
     ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\RequestStartedListener"],

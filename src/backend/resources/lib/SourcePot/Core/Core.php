@@ -6,6 +6,7 @@ use BugTracker\Factory\DatabaseAdapterFactory;
 use JsonException;
 use SourcePot\Container\Container;
 use SourcePot\Core\Config\Config;
+use SourcePot\Core\Http\Response\NotFoundResponse;
 use SourcePot\Core\Http\Response\UnauthenticatedResponse;
 use SourcePot\Core\Http\Response\ErrorResponse;
 use SourcePot\Core\Http\Response\UnauthorisedResponse;
@@ -92,7 +93,7 @@ class Core implements CoreInterface
             $eventDispatcher->dispatch(new RequestFinishedEvent());
             $response->send();
         } catch (Http\Exception\NoRouteForPathException $e) {
-            ErrorResponse::create()
+            NotFoundResponse::create()
                 ->setBody($e->getMessage())
                 ->send();
         } catch (Http\Exception\UnauthorisedException $e) {

@@ -1,5 +1,5 @@
 
-const URLs = {
+const Url = {
     root: '/',
     auth: {
         login: '/login',
@@ -15,7 +15,8 @@ const URLs = {
         changePassword: '/user/password',
         dashboard: '/dashboard',
         projects: {
-            all: '/projects'
+            all: '/projects',
+            create: '/projects/create'
         }
     },
     bugs: {
@@ -24,8 +25,9 @@ const URLs = {
     },
     projects: {
         all: '/projects',
-        view: (id: number) => `/project/${id}`
+        view: (id: number) => `/project/${id}`,
+        one: '/project/:projectId'
     }
 }
 
-export default URLs
+export default Url

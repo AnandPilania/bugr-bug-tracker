@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Divider, Typography} from "@mui/material";
+import {Typography} from "@mui/material";
 import FormButton from "../../Core/components/FormButton";
 import FormInput from "../../Core/components/FormInput";
 import useAuth from "../useAuth";

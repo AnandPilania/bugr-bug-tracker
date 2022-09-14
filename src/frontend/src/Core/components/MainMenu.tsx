@@ -1,7 +1,7 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import {IconButton, ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
+import {IconButton, Menu} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import URLs from "../../URLs";
+import Url from "../../Url";
 import {useState} from "react";
 import {BugReportOutlined, DashboardOutlined, PagesOutlined} from "@mui/icons-material";
 import MenuItemWithIcon from "./MenuItemWithIcon";
@@ -33,8 +33,8 @@ const MainMenu = () => {
             <MenuIcon />
         </IconButton>
         <Menu open={menuOpen} anchorEl={anchorEl} onClose={closeMenu} onClick={closeMenu}>
-            <MenuItemWithIcon onClick={() => navigateTo(URLs.root)} icon={<DashboardOutlined />} text="Dashboard" />
-            <MenuItemWithIcon onClick={() => navigateTo(URLs.projects.all)} icon={<PagesOutlined />} text="Projects" />
+            <MenuItemWithIcon onClick={() => navigateTo(Url.root)} icon={<DashboardOutlined />} text="Dashboard" />
+            <MenuItemWithIcon onClick={() => navigateTo(Url.projects.all)} icon={<PagesOutlined />} text="Projects" />
             <MenuItemWithIcon onClick={closeMenu} icon={<BugReportOutlined />} text="Bugs" />
         </Menu>
     </>

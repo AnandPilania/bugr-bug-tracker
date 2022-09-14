@@ -14,7 +14,7 @@ import useRepository from "../hooks/useRepository";
 import Config from "../../config";
 import DashboardRepository from "../../Bug/repository/DashboardRepository";
 import {Link, useNavigate} from "react-router-dom";
-import URLs from "../../URLs";
+import Url from "../../Url";
 import {useSnackbar} from "notistack";
 
 const DashboardPage = () => {
@@ -29,6 +29,7 @@ const DashboardPage = () => {
             response => console.log(response),
             err => setError(err)
         )
+        // eslint-disable-next-line
     }, [])
 
     return <>
@@ -42,7 +43,7 @@ const DashboardPage = () => {
             const statusColumnWidth = (100 / project.statuses.length) + '%';
             return (
                 <Box key={`p${key}`}>
-                    <Typography variant="h4"><MuiLink component={Link} to={URLs.projects.view(project.id)}>{project.title}</MuiLink></Typography>
+                    <Typography variant="h4"><MuiLink component={Link} to={Url.projects.view(project.id)}>{project.title}</MuiLink></Typography>
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
@@ -58,7 +59,7 @@ const DashboardPage = () => {
                                         <TableCell key={`s${key}`}>
                                             {project.bugs.filter(bug => bug.statusName === status && bug.assigneeName === 'rwatson').map((bug, key) => (
                                                 <Card variant="outlined" key={`b${key}`}>
-                                                    <CardActionArea onClick={() => navigateTo(URLs.bugs.view(bug.id))}>
+                                                    <CardActionArea onClick={() => navigateTo(Url.bugs.view(bug.id))}>
                                                         <CardContent>
                                                             <Typography color="primary">{bug.title}</Typography>
                                                             <Typography>{bug.description}</Typography>

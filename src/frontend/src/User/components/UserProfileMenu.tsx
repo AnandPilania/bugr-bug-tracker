@@ -3,7 +3,7 @@ import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {Divider, IconButton, Menu, MenuItem, PopoverProps, Tooltip} from "@mui/material";
 import {Logout} from "@mui/icons-material";
-import URLs from "../../URLs";
+import Url from "../../Url";
 import UserTypeIcon from "./UserTypeIcon";
 import AdminMenu from "./AdminMenu";
 
@@ -30,14 +30,14 @@ const UserProfileMenu = () => {
 
         <Menu anchorEl={anchorElement} open={menuOpen} onClick={hideMenu} onClose={hideMenu}>
             <Tooltip title="View your profile">
-                <MenuItem onClick={() => navigateTo(URLs.auth.profile)}><UserTypeIcon sx={{marginRight:"0.5rem"}} />{user.friendlyName}</MenuItem>
+                <MenuItem onClick={() => navigateTo(Url.auth.profile)}><UserTypeIcon sx={{marginRight:"0.5rem"}} />{user.friendlyName}</MenuItem>
             </Tooltip>
 
             <Divider />
 
             {user.isAdmin && <AdminMenu />}
 
-            <MenuItem onClick={() => navigateTo(URLs.auth.logout)}><Logout sx={{marginRight:"0.5rem"}} />Log out</MenuItem>
+            <MenuItem onClick={() => navigateTo(Url.auth.logout)}><Logout sx={{marginRight:"0.5rem"}} />Log out</MenuItem>
         </Menu>
     </>
 }

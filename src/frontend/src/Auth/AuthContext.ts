@@ -7,8 +7,8 @@ type UserType = {
 }
 
 type AuthContextType = {
-    user: UserType,
-    token: string,
+    user: UserType|null,
+    token: string|null,
     setUser: Function
     setToken: Function
 }

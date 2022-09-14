@@ -1,5 +1,5 @@
 import {UseApiType} from "../../Api/useApi";
-import URLs from "../../URLs";
+import Url from "../../Url";
 
 // return [{
 //     id: 1,
@@ -53,7 +53,7 @@ import URLs from "../../URLs";
 const DashboardRepository = (api: UseApiType) => {
     const getDashboardData = (onSuccess: Function, onError: Function) => {
         api.post(
-            URLs.api.dashboard,
+            Url.api.dashboard,
             {},
             response => {
                 // @todo Transform response before sending back to Dashboard component

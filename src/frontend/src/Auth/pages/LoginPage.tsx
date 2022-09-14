@@ -7,7 +7,7 @@ import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import useAuth from "../useAuth";
 import FormButton from "../../Core/components/FormButton";
-import URLs from "../../URLs";
+import Url from "../../Url";
 import {useSnackbar} from "notistack";
 import Form from "../../Core/components/Form";
 
@@ -31,7 +31,7 @@ const LoginPage = () => {
             password,
             () => {
                 setError('Log in successful!', {variant:"success"})
-                navigateTo(URLs.auth.profile)
+                navigateTo(Url.auth.profile)
             },
             (err) => {
                 setError(err, {variant:"error"})
@@ -48,7 +48,7 @@ const LoginPage = () => {
             <FormButton onClick={login}>Log in</FormButton>
         </Form>
 
-        <Typography>If you haven't set up a user, or have forgotten your details, <MuiLink component={Link} to={URLs.auth.register}>create a new one here</MuiLink>.</Typography>
+        <Typography>If you haven't set up a user, or have forgotten your details, <MuiLink component={Link} to={Url.auth.register}>create a new one here</MuiLink>.</Typography>
     </>
 }
 
