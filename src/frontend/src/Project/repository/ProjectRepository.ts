@@ -20,6 +20,15 @@ const ProjectRepository = (api: useApi) => {
         )
     }
 
+    const getWithBugs = (id: number, onSuccess: Function = (project) => {}, onError: Function = (err) => {}) => {
+        return api.get(
+            Url.api.projects.getWithBugs(id),
+            {},
+            res => onSuccess(res.data),
+            err => onError(err.data)
+        )
+    }
+
     const deleteProject = (id: number, onSuccess: Function = () => {}, onError: Function = (err) => {}) => {
         api.delete(
             Url.api.projects.delete(id),
@@ -48,7 +57,7 @@ const ProjectRepository = (api: useApi) => {
     return {
         get,
         getAll,
-        getBugs,
+        getWithBugs,
         create,
         delete: deleteProject
     }

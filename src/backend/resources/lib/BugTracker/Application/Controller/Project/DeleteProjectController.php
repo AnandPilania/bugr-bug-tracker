@@ -4,8 +4,8 @@ namespace BugTracker\Application\Controller\Project;
 
 use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Controller\ControllerInterface;
-use BugTracker\Persistence\Command\Project\CreateProjectCommand;
-use BugTracker\Persistence\Command\Project\DeleteProjectCommand;
+use BugTracker\Persistence\Command\Status\CreateProjectCommand;
+use BugTracker\Persistence\Command\Status\DeleteProjectCommand;
 use BugTracker\Persistence\Query\Project\GetProjectQuery;
 use InvalidArgumentException;
 use SourcePot\Container\Container;

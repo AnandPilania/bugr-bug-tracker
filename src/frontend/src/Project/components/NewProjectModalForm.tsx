@@ -26,7 +26,7 @@ const NewProjectModalForm = ({open, setOpen, onSaveNewProject}) => {
     }
 
     return (
-        <DialogForm title="New Project" open={open} onClose={closeModal} fullWidth="true" maxWidth="md"
+        <DialogForm title="Create new Project" open={open} onClose={closeModal} fullWidth="true" maxWidth="md"
                     actions={<><Button onClick={closeModal}>Cancel</Button><Button onClick={saveNewProject}>Save</Button></>}>
             <FormInput label="Project name" value={projectName} onChange={e => setProjectName(e.target.value)} type="text" helperText="" />
         </DialogForm>

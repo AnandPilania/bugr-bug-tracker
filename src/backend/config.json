@@ -1,17 +1,23 @@
 {
   "routes": [
     ["/", "BugTracker\\Application\\Controller\\IndexController"],
-    ["/api/bugs/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController"],
-    ["/api/projects", "BugTracker\\Application\\Controller\\Project\\GetAllProjectsController", ["POST"]],
     ["/api/dashboard", "BugTracker\\Application\\Controller\\DashboardController", ["POST"]],
     ["/api/login", "BugTracker\\Application\\Controller\\Authentication\\LoginController", ["POST"]],
     ["/api/register", "BugTracker\\Application\\Controller\\Authentication\\RegisterController", ["POST"]],
+
     ["/api/user/validate", "BugTracker\\Application\\Controller\\Authentication\\ValidateTokenController", ["POST"]],
     ["/api/user/password", "BugTracker\\Application\\Controller\\Authentication\\ChangePasswordController", ["POST"]],
-    ["/api/projects/create", "BugTracker\\Application\\Controller\\Project\\CreateProjectController", ["POST"]],
+
+    ["/api/bugs", "BugTracker\\Application\\Controller\\Bug\\CreateBugController", ["POST"]],
+    ["/api/bugs/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController"],
+
+    ["/api/projects", "BugTracker\\Application\\Controller\\Project\\GetAllProjectsController", ["GET"]],
+    ["/api/projects", "BugTracker\\Application\\Controller\\Project\\CreateProjectController", ["POST"]],
     ["/api/project/(\\d+)", "BugTracker\\Application\\Controller\\Project\\GetSingleProjectController", ["GET"]],
     ["/api/project/(\\d+)", "BugTracker\\Application\\Controller\\Project\\DeleteProjectController", ["DELETE"]],
-    ["/api/project/(\\d+)/bugs", "BugTracker\\Application\\Controller\\Project\\GetBugsForProjectController", ["GET"]]
+    ["/api/project/(\\d+)/with-bugs", "BugTracker\\Application\\Controller\\Project\\GetProjectWithBugsController", ["GET"]],
+
+    ["/api/project/status", "BugTracker\\Application\\Controller\\Project\\CreateStatusController", ["POST"]]
   ],
   "listeners": [
     ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\RequestStartedListener"],

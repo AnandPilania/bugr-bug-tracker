@@ -5,6 +5,7 @@ namespace BugTracker\Application\Controller\Project;
 use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Status\CreateProjectCommand;
+use BugTracker\Persistence\Command\Status\CreateStatusCommand;
 use BugTracker\Persistence\Query\Project\GetProjectsQuery;
 use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
@@ -14,31 +15,36 @@ use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Persistence\DatabaseAdapter;
 
-class CreateProjectController implements ControllerInterface
+class CreateStatusController implements ControllerInterface
 {
     private ?User $user = null;
 
     public static function create(...$args): ControllerInterface
     {
-
+        return new self();
     }
 
     public function execute(RequestInterface $request): ResponseInterface
     {
         $params = $request->params();
 
-        if (!$params->has('projectName') || $params->get('projectName') === '') {
+        if (!$params->has('project') || $params->get('project') === '') {
             return (new ErrorResponse())->setBody('Missing parameters from request');
         }
 
-        $projectName = $params->get('projectName');
+        if (!$params->has('title') || $params->get('title') === '') {
+            return (new ErrorResponse())->setBody('Missing parameters from request');
+        }
 
         $database = Container::get(DatabaseAdapter::class);
 
-        $database->query(new CreateProjectCommand($projectName));
+        $database->query(new CreateStatusCommand(
+            status: $params->get('title'),
+            project: $params->get('project')
+        ));
 
         return (new BasicResponse())
-            ->setBody('Project created');
+            ->setBody('Status created');
     }
 
     public function authorise(?User $user): bool

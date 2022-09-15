@@ -14,12 +14,18 @@ const Url = {
         validateToken: '/user/validate',
         changePassword: '/user/password',
         dashboard: '/dashboard',
+        bugs: {
+            create: '/bugs'
+        },
         projects: {
             all: '/projects',
-            create: '/projects/create',
+            create: '/projects',
             get: (id: number) => `/project/${id}`,
-            delete: (id: number) => `/project/${id}`,
-            bugs: (id: number) => `/project/${id}/bugs`
+            getWithBugs: (id: number) => `/project/${id}/with-bugs`,
+            delete: (id: number) => `/project/${id}`
+        },
+        statuses: {
+            create: '/project/status'
         }
     },
     bugs: {

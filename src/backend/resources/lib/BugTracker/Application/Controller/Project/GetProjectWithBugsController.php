@@ -4,7 +4,7 @@ namespace BugTracker\Application\Controller\Project;
 
 use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Controller\ControllerInterface;
-use BugTracker\Persistence\Query\Project\GetBugsByProjectQuery;
+use BugTracker\Persistence\Query\Project\GetProjectWithAggregatesQuery;
 use InvalidArgumentException;
 use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
@@ -12,7 +12,7 @@ use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Persistence\DatabaseAdapter;
 
-class GetBugsForProjectController implements ControllerInterface
+class GetProjectWithBugsController implements ControllerInterface
 {
     private ?User $user = null;
 
@@ -38,7 +38,7 @@ class GetBugsForProjectController implements ControllerInterface
     {
         $database = Container::get(DatabaseAdapter::class);
 
-        $bugs = $database->query(new GetBugsByProjectQuery($this->projectId));
+        $bugs = $database->query(new GetProjectWithAggregatesQuery($this->projectId));
 
         return (new JSONResponse())
             ->setBody($bugs);

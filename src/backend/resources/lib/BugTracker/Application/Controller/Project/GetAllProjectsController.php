@@ -32,6 +32,8 @@ class GetAllProjectsController implements ControllerInterface
 
     public function authorise(?User $user): bool
     {
+        // @todo for now, this won't work
+        return true;
         $this->user = $user;
         return $user !== null;
     }

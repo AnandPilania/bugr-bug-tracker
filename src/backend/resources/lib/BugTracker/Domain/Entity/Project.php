@@ -8,7 +8,9 @@ class Project implements EntityInterface
 {
     public function __construct(
         public readonly int $id,
-        public readonly string $title
+        public readonly string $title,
+        public readonly array $bugs = [],
+        public readonly array $statuses = [],
     ) {
     }
 
@@ -16,7 +18,9 @@ class Project implements EntityInterface
     {
         return new self(
             id: $args['id'],
-            title: $args['title']
+            title: $args['title'],
+            bugs: $args['bugs'],
+            statuses: $args['statuses']
         );
     }
 
@@ -24,7 +28,9 @@ class Project implements EntityInterface
     {
         return [
             'id' => $this->id,
-            'title' => $this->title
+            'title' => $this->title,
+            'bugs' => array_map(fn($bug) => $bug->toArray(), $this->bugs),
+            'statuses' => array_map(fn($status) => $status->toArray(), $this->statuses),
         ];
     }
 }
