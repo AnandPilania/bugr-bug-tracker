@@ -3,7 +3,7 @@ import Url from "../../Url";
 
 const ProjectRepository = (api: useApi) => {
     const getAll = (onSuccess: Function, onError: Function) => {
-        api.post(
+        return api.post(
             Url.api.projects.all,
             {},
             response => onSuccess(response.data),

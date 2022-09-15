@@ -6,10 +6,6 @@ import useRepository from "../../Core/hooks/useRepository";
 import ProjectRepository from "../repository/ProjectRepository";
 import {useSnackbar} from "notistack";
 import {Delete} from "@mui/icons-material";
-import Form from "../../Core/components/Form";
-import FormInput from "../../Core/components/FormInput";
-import FormButton from "../../Core/components/FormButton";
-import BugRepository from "../../Bug/repository/BugRepository";
 
 const ProjectPage = () => {
     const {projectId} = useParams()
@@ -26,6 +22,7 @@ const ProjectPage = () => {
             },
             err => setError(err, {variant:"error"})
         )
+        // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
@@ -33,6 +30,7 @@ const ProjectPage = () => {
             console.log('Fetching bugs for project')
             return projectRepository.getBugs(project.id)
         }
+        // eslint-disable-next-line
     }, [project])
 
     const deleteProject = () => {

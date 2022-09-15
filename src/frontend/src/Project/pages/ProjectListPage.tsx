@@ -1,4 +1,4 @@
-import {Button, Link as MuiLink, List, ListItem, Typography} from "@mui/material";
+import {Button, Divider, Link as MuiLink, List, ListItem, Typography} from "@mui/material";
 import ProjectRepository from "../repository/ProjectRepository";
 import useRepository from "../../Core/hooks/useRepository";
 import {useEffect, useState} from "react";
@@ -9,6 +9,8 @@ import Url from "../../Url";
 import {AddOutlined} from "@mui/icons-material";
 
 const ProjectListPage = () => {
+    console.log('ProjectListPage rendering')
+
     const {enqueueSnackbar: setError} = useSnackbar()
     const repository = useRepository(ProjectRepository)
     const [projects, setProjects] = useState([])
@@ -16,27 +18,40 @@ const ProjectListPage = () => {
 
     let [refetch, setRefetch] = useState(false)
     useEffect(() => {
-        repository.getAll(
-            projects => setProjects(projects),
+        console.log('fetching projects')
+        return repository.getAll(
+            projects => {
+                console.log('fetched projects, triggering render')
+                setProjects(projects)
+            },
             err => setError(err)
         )
+
         // eslint-disable-next-line
     }, [refetch])
 
     const onSaveNewProject = () => {
+        console.log('onSaveNewProject')
         // A new project has been created, we should re-fetch the list of projects to display
         // @todo DODGY HACK to make the component reload which will trigger the useEffect to load the list of projects
         setRefetch(!refetch)
     }
 
+    const openNewProjectModal = () => {
+        console.log('Opening new project modal')
+        setNewProjectModalOpen(true)
+    }
+
     return (
         <>
             <Typography variant="h2">Projects</Typography>
-            <Typography><Button onClick={() => setNewProjectModalOpen(true)}><AddOutlined /> Create new project</Button></Typography>
+            <Typography><Button onClick={() => openNewProjectModal()}><AddOutlined /> Create new project</Button></Typography>
+            <Divider sx={{marginY:"1rem"}} />
             <List>
                 {projects.map((project,key) => (
                     <ListItem key={`p-${project.id}`}>
-                        <MuiLink component={Link} to={Url.projects.view(project.id)}>{project.title}</MuiLink></ListItem>
+                        <MuiLink component={Link} to={Url.projects.view(project.id)}>{project.title}</MuiLink>
+                    </ListItem>
                 ))}
             </List>
 
