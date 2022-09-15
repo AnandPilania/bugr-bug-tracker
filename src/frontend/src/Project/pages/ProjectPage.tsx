@@ -1,24 +1,27 @@
-import {Button, Divider, List, ListItem, Typography} from "@mui/material";
+import {
+    Button,
+    Divider,
+    Typography
+} from "@mui/material";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import NotFoundPage from "../../Core/pages/NotFoundPage";
 import useRepository from "../../Core/hooks/useRepository";
 import ProjectRepository from "../repository/ProjectRepository";
 import {useSnackbar} from "notistack";
-import {AddOutlined, BugReportOutlined, Delete, ListAltTwoTone} from "@mui/icons-material";
-import NewProjectModalForm from "../components/NewProjectModalForm";
-import NewBugModalForm from "../../Bug/components/NewBugModalForm";
-import NewStatusModalForm from "../../Status/components/NewStatusModalForm";
+import {Delete} from "@mui/icons-material";
+import ProjectStatusSection from "../components/ProjectStatusSection";
+import ProjectBugSection from "../components/ProjectBugSection";
 
 const ProjectPage = () => {
     const {projectId} = useParams()
     const projectRepository = useRepository(ProjectRepository)
     const [project, setProject] = useState(null)
-    const [newBugModalOpen, setNewBugModalOpen] = useState(false)
-    const [newStatusModalOpen, setNewStatusModalOpen] = useState(false)
     const {enqueueSnackbar: setError} = useSnackbar()
 
     const [refetch, setRefetch] = useState(false)
+
+    console.log('- ProjectPage')
 
     useEffect(() => {
         console.log('Fetching project data')
@@ -43,24 +46,7 @@ const ProjectPage = () => {
         )
     }
 
-    const openNewBugModal = () => {
-        console.log('openNewBugModal')
-        setNewBugModalOpen(true)
-    }
-
-    const onSaveNewBug = () => {
-        // trigger re-render as the bug should now appear in this list
-        setRefetch(v => !v)
-    }
-
-    const openNewStatusModal = () => {
-        console.log('openNewStatusModal')
-        setNewStatusModalOpen(true)
-    }
-
-    const onSaveNewStatus = () => {
-        setNewStatusModalOpen(false)
-        // trigger re-render as the status should now appear in this list
+    const doRefetch = () => {
         setRefetch(v => !v)
     }
 
@@ -73,19 +59,11 @@ const ProjectPage = () => {
             <Typography variant="h2">{project.title}</Typography>
             <Typography><Button onClick={deleteProject}><Delete />Delete project</Button> </Typography>
 
+            <Typography>Expand the sections below to see more information about this Project</Typography>
             <Divider sx={{marginY:"1rem"}} />
-            <Typography>Some other information about the project</Typography>
 
-            <Typography><Button onClick={openNewStatusModal}><ListAltTwoTone />Add new Status</Button></Typography>
-            <List>
-                {project.statuses.map((status,key) => (
-                    <ListItem key={`s-${key}`}>{status.title}</ListItem>
-                ))}
-            </List>
-            <NewStatusModalForm open={newStatusModalOpen} setOpen={setNewStatusModalOpen} onSaveNewStatus={onSaveNewStatus} project={project.title} />
-
-            <Typography><Button onClick={openNewBugModal}><BugReportOutlined />Create new Bug</Button></Typography>
-            <NewBugModalForm open={newBugModalOpen} setOpen={setNewBugModalOpen} onSaveNewBug={onSaveNewBug} project={project.title} />
+            <ProjectStatusSection project={project} doRefetch={doRefetch} />
+            <ProjectBugSection project={project} doRefetch={doRefetch} />
         </>
     )
 }

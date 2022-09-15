@@ -21,6 +21,7 @@ const NewStatusModalForm = ({open, setOpen, onSaveNewStatus, project}) => {
             status, project,
             response => {
                 setError(response, {variant: "success"})
+                setOpen(false)
                 onSaveNewStatus()
             },
             err => setError(err, {variant:"error"})

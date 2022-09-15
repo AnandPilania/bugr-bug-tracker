@@ -9,7 +9,7 @@ import Url from "../../Url";
 import {AddOutlined} from "@mui/icons-material";
 
 const ProjectListPage = () => {
-    console.log('ProjectListPage rendering')
+    console.log('- ProjectListPage')
 
     const {enqueueSnackbar: setError} = useSnackbar()
     const repository = useRepository(ProjectRepository)
@@ -30,11 +30,8 @@ const ProjectListPage = () => {
         // eslint-disable-next-line
     }, [refetch])
 
-    const onSaveNewProject = () => {
-        console.log('onSaveNewProject')
-        // A new project has been created, we should re-fetch the list of projects to display
-        // @todo DODGY HACK to make the component reload which will trigger the useEffect to load the list of projects
-        setRefetch(!refetch)
+    const doRefetch = () => {
+        setRefetch(v => !v)
     }
 
     const openNewProjectModal = () => {
@@ -55,7 +52,7 @@ const ProjectListPage = () => {
                 ))}
             </List>
 
-            <NewProjectModalForm open={newProjectModalOpen} setOpen={setNewProjectModalOpen} onSaveNewProject={onSaveNewProject} />
+            <NewProjectModalForm open={newProjectModalOpen} setOpen={setNewProjectModalOpen} onSaveNewProject={doRefetch} />
         </>
     )
 }

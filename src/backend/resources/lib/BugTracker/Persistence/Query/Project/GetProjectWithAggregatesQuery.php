@@ -29,7 +29,10 @@ class GetProjectWithAggregatesQuery implements QueryInterface
         $statement->execute(['projectId' => $this->projectId]);
         $statuses = $statement->fetchAll();
 
-        $statement = $database->prepare('SELECT * FROM bugs WHERE project_id = :projectId AND deleted = 0 ORDER BY title');
+        $statement = $database->prepare('
+            SELECT bugs.*, statuses.title status_name FROM bugs
+                     JOIN statuses ON statuses.id = bugs.status_id
+            WHERE bugs.project_id = :projectId AND bugs.deleted = 0 ORDER BY bugs.title');
         $statement->execute(['projectId' => $this->projectId]);
         $bugs = $statement->fetchAll();
 

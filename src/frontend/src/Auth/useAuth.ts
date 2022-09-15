@@ -10,7 +10,7 @@ const useAuth = () => {
     const validateToken = (token: string, onSuccess: Function = () => {}, onError: Function = () => {}) => {
         return api.post(
             Url.api.validateToken,
-            {token},
+            {},
             response => {
                 onSuccess(response.data.user as UserType)
             },
@@ -18,7 +18,9 @@ const useAuth = () => {
                 authContext.setUser(null)
                 authContext.setToken(null)
                 onError(err)
-            })
+            },
+            {token}
+        )
     }
 
     const login = (

@@ -19,27 +19,28 @@ class AuthorisationListener implements ListenerInterface
 {
     public function handle(EventInterface $event): EventInterface
     {
-        $params = $event->get('request')->params();
+        $headers = $event->get('request')->headers();
 
-        $user = $this->getUserOfToken($params);
+        $user = $this->getUserOfToken($headers->get('Token'));
 
         $authorised = $event->get('controller')->authorise($user);
 
         if (!$authorised) {
+            if(!$user) {
+                throw new UnauthenticatedException();
+            }
             throw new UnauthorisedException($user->username);
         }
 
         return $event;
     }
 
-    private function getUserOfToken(Bag $params): ?User
+    private function getUserOfToken(?string $tokenToCheck): ?User
     {
         // This case means we don't have a logged-in user.  This is not an error by itself
-        if (!$params->has('token') || $params->get('token') === '') {
+        if (!$tokenToCheck) {
             return null;
         }
-
-        $tokenToCheck = $params->get('token');
 
         $database = Container::get(DatabaseAdapter::class);
         $token = $database->query(new FindTokenQuery($tokenToCheck));

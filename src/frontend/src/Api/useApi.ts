@@ -21,14 +21,14 @@ const useApi = (): UseApiType => {
         baseUrl: 'http://localhost:8000/api'
     }
 
-    const makeRequest = (method: string, url: string, data: Object = {}, onSuccess: Function = () => {}, onError: Function = () => {}) => {
+    const makeRequest = (method: string, url: string, data: Object = {}, onSuccess: Function = () => {}, onError: Function = () => {}, headers: {} = {}) => {
         // check request method is acceptable
         if (!['get', 'post', 'put', 'patch', 'delete'].includes(method.toLowerCase())) {
             throw new Error(`Invalid request method: ${method}`)
         }
 
-        if (method.toLowerCase() !== 'get' && token) {
-            data.token = token
+        if (token) {
+            headers.token = token
         }
 
         loadingOverlay.show()
@@ -39,6 +39,7 @@ const useApi = (): UseApiType => {
             method,
             url: config.baseUrl + url,
             data,
+            headers,
             signal: axiosController.signal
         })
             .then((response: AxiosResponse) => {
@@ -83,8 +84,8 @@ const useApi = (): UseApiType => {
         return makeRequest('get', url+params, data, onSuccess, onError)
     }
 
-    const post = (url: string, data: Object, onSuccess: Function = () => {}, onError: Function = () => {}) => {
-        return makeRequest('post', url, data, onSuccess, onError)
+    const post = (url: string, data: Object, onSuccess: Function = () => {}, onError: Function = () => {}, headers: {} = {}) => {
+        return makeRequest('post', url, data, onSuccess, onError, headers)
     }
 
     const put = (url: string, data: Object, onSuccess: Function = () => {}, onError: Function = () => {}) => {

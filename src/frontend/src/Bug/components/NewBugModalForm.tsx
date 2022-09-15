@@ -23,6 +23,7 @@ const NewBugModalForm = ({open, setOpen, onSaveNewBug, project}) => {
             bugTitle, projectName, status,
             response => {
                 setError(response, {variant: "success"})
+                setOpen(false)
                 onSaveNewBug()
             },
             err => setError(err, {variant:"error"})
