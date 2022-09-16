@@ -23,10 +23,7 @@ const ProjectPage = () => {
 
     const [refetch, setRefetch] = useState(false)
 
-    console.log('- ProjectPage')
-
     useEffect(() => {
-        console.log('Fetching project data')
         return projectRepository.getWithBugs(
             projectId,
             project => {

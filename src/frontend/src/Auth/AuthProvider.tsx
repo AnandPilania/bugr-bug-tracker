@@ -18,7 +18,6 @@ const AuthProvider = ({children}) => {
                 token,
                 user => setUser(user),
                 err => {
-                    console.log(err)
                     setToken(null)
                     setUser(null)
                 }

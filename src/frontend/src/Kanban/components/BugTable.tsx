@@ -22,12 +22,8 @@ const BugTable = ({projectId, statuses}) => {
     const projectRepository = useRepository(ProjectRepository)
     const {enqueueSnackbar: setError} = useSnackbar()
 
-    console.log('- BugTable', projectId)
-
     useEffect(() => {
-        console.log('BugTable useEffect')
         if (projectId !== '') {
-            console.log('BugTable useEffect', projectId)
             return projectRepository.getBugs(
                 projectId as number,
                 bugs => {

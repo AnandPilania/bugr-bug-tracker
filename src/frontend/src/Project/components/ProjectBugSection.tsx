@@ -18,8 +18,6 @@ import {useState} from "react";
 const ProjectBugSection = ({project, doRefetch}) => {
     const [newBugModalOpen, setNewBugModalOpen] = useState(false)
 
-    console.log('- ProjectBugSection')
-
     return (
         <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreOutlined />}>

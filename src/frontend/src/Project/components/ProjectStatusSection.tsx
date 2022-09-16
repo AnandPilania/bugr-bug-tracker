@@ -6,8 +6,6 @@ import {useState} from "react";
 const ProjectStatusSection = ({project, doRefetch}) => {
     const [newStatusModalOpen, setNewStatusModalOpen] = useState(false)
 
-    console.log('- ProjectStatusSection')
-
     return (
         <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreOutlined />}>

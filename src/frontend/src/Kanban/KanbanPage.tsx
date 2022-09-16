@@ -17,8 +17,6 @@ const KanbanPage = () => {
     const [projectId, setProjectId] = useState('')
     const [projects, setProjects] = useState([])
 
-    console.log('- KanbanPage')
-
     useEffect(() => {
         return projectRepository.getAll(
             projects => setProjects(projects),

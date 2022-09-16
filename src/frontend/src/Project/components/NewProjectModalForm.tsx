@@ -7,8 +7,6 @@ import useRepository from "../../Core/hooks/useRepository";
 import ProjectRepository from "../repository/ProjectRepository";
 
 const NewProjectModalForm = ({open, setOpen, onSaveNewProject}) => {
-    console.log('NewProjectModalForm')
-
     const repository = useRepository(ProjectRepository)
     const {enqueueSnackbar: setError} = useSnackbar()
     const [projectName, setProjectName] = useState('')

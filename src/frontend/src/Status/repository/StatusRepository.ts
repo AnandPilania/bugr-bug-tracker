@@ -9,7 +9,7 @@ export type StatusType = {
 
 const StatusRepository = (api: useApi) => {
     const get = (id: number) => {
-        console.log('Getting bug with id', id)
+        console.log('Getting status with id', id)
     }
 
     const getAll = () => {

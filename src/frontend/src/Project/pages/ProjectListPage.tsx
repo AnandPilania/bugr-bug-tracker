@@ -9,7 +9,6 @@ import Url from "../../Url";
 import {AddOutlined} from "@mui/icons-material";
 
 const ProjectListPage = () => {
-    console.log('- ProjectListPage')
 
     const {enqueueSnackbar: setError} = useSnackbar()
     const repository = useRepository(ProjectRepository)
@@ -18,10 +17,8 @@ const ProjectListPage = () => {
 
     let [refetch, setRefetch] = useState(false)
     useEffect(() => {
-        console.log('fetching projects')
         return repository.getAll(
             projects => {
-                console.log('fetched projects, triggering render')
                 setProjects(projects)
             },
             err => setError(err)
@@ -34,10 +31,7 @@ const ProjectListPage = () => {
         setRefetch(v => !v)
     }
 
-    const openNewProjectModal = () => {
-        console.log('Opening new project modal')
-        setNewProjectModalOpen(true)
-    }
+    const openNewProjectModal = () => setNewProjectModalOpen(true)
 
     return (
         <>
