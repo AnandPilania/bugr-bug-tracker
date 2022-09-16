@@ -9,7 +9,8 @@
     ["/api/user/password", "BugTracker\\Application\\Controller\\Authentication\\ChangePasswordController", ["POST"]],
 
     ["/api/bugs", "BugTracker\\Application\\Controller\\Bug\\CreateBugController", ["POST"]],
-    ["/api/bugs/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController"],
+    ["/api/bug/(\\d+)", "BugTracker\\Application\\Controller\\Bug\\GetBugController", ["GET"]],
+    ["/api/bug/(\\d+)/status", "BugTracker\\Application\\Controller\\Bug\\ChangeBugStatusController", ["POST"]],
 
     ["/api/projects", "BugTracker\\Application\\Controller\\Project\\GetAllProjectsController", ["GET"]],
     ["/api/projects", "BugTracker\\Application\\Controller\\Project\\CreateProjectController", ["POST"]],

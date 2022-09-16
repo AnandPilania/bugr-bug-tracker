@@ -31,7 +31,8 @@ const Url = {
     },
     bugs: {
         byProject: (projectId: number) => `/bugs/${projectId}`,
-        view: (id: number) => `/bug/${id}`
+        view: (id: number) => `/bug/${id}`,
+        setStatus: (id: number) => `/bug/${id}/status`
     },
     projects: {
         all: '/projects',

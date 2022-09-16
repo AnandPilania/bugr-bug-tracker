@@ -10,8 +10,6 @@ import UserProfilePage from "../User/pages/UserProfilePage";
 import ProtectedRoute from "../Auth/components/ProtectedRoute";
 import ProviderWrapper from "./ProviderWrapper";
 import Url from "../Url";
-import IfLoggedInRoute from "../Auth/components/IfLoggedInRoute";
-import DashboardPage from "./pages/DashboardPage";
 import ProjectListPage from "../Project/pages/ProjectListPage";
 import ProjectPage from "../Project/pages/ProjectPage";
 import KanbanPage from "../Kanban/KanbanPage";
@@ -23,7 +21,7 @@ const App = () => {
                 <Navbar />
                 <Container maxWidth="xl" sx={{paddingTop: 3}}>
                     <Routes>
-                        <Route path={Url.root} element={<IfLoggedInRoute notLoggedIn={<IndexPage />} loggedIn={<DashboardPage />} />} />
+                        <Route path={Url.root} element={<IndexPage />} />
                         <Route path={Url.auth.login} element={<LoginPage />} />
                         <Route path={Url.auth.register} element={<ProtectedRoute requiresAdmin><RegisterPage /></ProtectedRoute>} />
                         <Route path={Url.auth.logout} element={<LogoutPage />} />

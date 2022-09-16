@@ -5,8 +5,7 @@ type FormInputProps = {
     label: string,
     value: string,
     onChange: ChangeEventHandler,
-    type: string,
-    helperText: string
+    type: string
 }
 
 const FormInput = (props: FormInputProps) => (

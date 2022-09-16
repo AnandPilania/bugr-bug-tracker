@@ -10,13 +10,14 @@ export type BugType = {
 }
 
 const BugRepository = (api: useApi) => {
-    const get = (id: number) => {
-        console.log('Getting bug with id', id)
-    }
 
-    const topX = (x: number) => {
-        // gets the top X bugs
-        console.log('Getting top ', x)
+    const get = (id: number, onSuccess: Function = response => {}, onError: Function = err => {}) => {
+        return api.get(
+            Url.bugs.view(id),
+            {},
+            response => onSuccess(response.data),
+            err => onError(err.data)
+        )
     }
 
     const create = (
@@ -34,10 +35,24 @@ const BugRepository = (api: useApi) => {
         )
     }
 
+    const setBugStatus = (
+        id,
+        status,
+        onSuccess: Function = response => {},
+        onError: Function = err => {}
+    ) => {
+        return api.post(
+            Url.bugs.setStatus(id),
+            {status},
+            res => onSuccess(res.data),
+            err => onError(err.data)
+        )
+    }
+
     return {
         get,
         create,
-        topX
+        setBugStatus
     }
 }
 

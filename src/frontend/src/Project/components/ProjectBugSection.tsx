@@ -7,7 +7,7 @@ import {
     Paper,
     Table,
     TableBody,
-    TableCell, TableContainer, TableHead,
+    TableCell, TableContainer,
     TableRow,
     Typography
 } from "@mui/material";

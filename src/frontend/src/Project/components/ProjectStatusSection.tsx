@@ -1,4 +1,4 @@
-import {Accordion, AccordionDetails, AccordionSummary, Box, Button, List, ListItem, Typography} from "@mui/material";
+import {Accordion, AccordionDetails, AccordionSummary, Button, List, ListItem, Typography} from "@mui/material";
 import {ExpandMoreOutlined, ListAltTwoTone} from "@mui/icons-material";
 import NewStatusModalForm from "../../Status/components/NewStatusModalForm";
 import {useState} from "react";

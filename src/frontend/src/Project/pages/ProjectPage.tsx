@@ -3,7 +3,7 @@ import {
     Divider,
     Typography
 } from "@mui/material";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import NotFoundPage from "../../Core/pages/NotFoundPage";
 import useRepository from "../../Core/hooks/useRepository";
@@ -12,12 +12,14 @@ import {useSnackbar} from "notistack";
 import {Delete} from "@mui/icons-material";
 import ProjectStatusSection from "../components/ProjectStatusSection";
 import ProjectBugSection from "../components/ProjectBugSection";
+import Url from "../../Url";
 
 const ProjectPage = () => {
     const {projectId} = useParams()
     const projectRepository = useRepository(ProjectRepository)
     const [project, setProject] = useState(null)
     const {enqueueSnackbar: setError} = useSnackbar()
+    const navigateTo = useNavigate()
 
     const [refetch, setRefetch] = useState(false)
 
@@ -41,6 +43,7 @@ const ProjectPage = () => {
             projectId,
             response => {
                 setError(response, {variant: "success"})
+                navigateTo(Url.projects.all)
             },
             err => setError(err, {variant:"error"})
         )

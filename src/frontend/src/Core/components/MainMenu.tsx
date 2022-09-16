@@ -2,14 +2,16 @@ import MenuIcon from "@mui/icons-material/Menu";
 import {IconButton, Menu} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import Url from "../../Url";
-import {useState} from "react";
-import {BugReportOutlined, DashboardOutlined, PagesOutlined, ViewKanban} from "@mui/icons-material";
+import {useContext, useState} from "react";
+import {PagesOutlined, ViewKanban} from "@mui/icons-material";
 import MenuItemWithIcon from "./MenuItemWithIcon";
+import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
 
 const MainMenu = () => {
     const navigateTo = useNavigate()
     const [anchorEl, setAnchorEl] = useState<HTMLElement|null>(null)
     const menuOpen = Boolean(anchorEl)
+    const {user} = useContext<AuthContextType>(AuthContext)
 
     const openMenu = (e) => {
         setAnchorEl(e.currentTarget)
@@ -33,9 +35,7 @@ const MainMenu = () => {
             <MenuIcon />
         </IconButton>
         <Menu open={menuOpen} anchorEl={anchorEl} onClose={closeMenu} onClick={closeMenu}>
-            <MenuItemWithIcon onClick={() => navigateTo(Url.root)} icon={<DashboardOutlined />} text="Dashboard" />
-            <MenuItemWithIcon onClick={() => navigateTo(Url.projects.all)} icon={<PagesOutlined />} text="Projects" />
-            <MenuItemWithIcon onClick={closeMenu} icon={<BugReportOutlined />} text="Bugs" />
+            {user?.isAdmin && <MenuItemWithIcon onClick={() => navigateTo(Url.projects.all)} icon={<PagesOutlined />} text="Projects" />}
             <MenuItemWithIcon onClick={() => navigateTo(Url.kanban)} icon={<ViewKanban />} text="Kanban board" />
         </Menu>
     </>
