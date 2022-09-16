@@ -4,21 +4,21 @@ namespace BugTracker\Domain\Entity;
 
 use BugTracker\Persistence\Entity\EntityInterface;
 
-class Status implements EntityInterface
+class Assignee implements EntityInterface
 {
     public function __construct(
         public readonly int $id,
-        public readonly string $title,
-        public readonly int $projectId
+        public readonly string $username,
+        public readonly string $friendlyName,
     ) {
     }
 
     public static function populate(array $args): static
     {
         return new self(
-            id: (int)$args['id'],
-            title: $args['title'],
-            projectId: (int)$args['project_id']
+            id: $args['id'],
+            username: $args['username'],
+            friendlyName: $args['friendly_name'],
         );
     }
 
@@ -26,8 +26,8 @@ class Status implements EntityInterface
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'projectId' => $this->projectId
+            'username' => $this->username,
+            'friendlyName' => $this->friendlyName
         ];
     }
 }

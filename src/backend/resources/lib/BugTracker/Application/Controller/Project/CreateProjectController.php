@@ -2,25 +2,26 @@
 
 namespace BugTracker\Application\Controller\Project;
 
+use BugTracker\Application\Authorisation\AdminUserRequiredStrategy;
 use BugTracker\Domain\Entity\User;
+use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
-use BugTracker\Persistence\Command\Status\CreateProjectCommand;
-use BugTracker\Persistence\Query\Project\GetProjectsQuery;
+use BugTracker\Persistence\Command\Project\CreateProjectCommand;
+use BugTracker\Persistence\Entity\EntityInterface;
 use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\BasicResponse;
 use SourcePot\Core\Http\Response\ErrorResponse;
-use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Persistence\DatabaseAdapter;
 
 class CreateProjectController implements ControllerInterface
 {
-    private ?User $user = null;
+    private User $user;
 
     public static function create(...$args): ControllerInterface
     {
-
+        return new self();
     }
 
     public function execute(RequestInterface $request): ResponseInterface
@@ -41,19 +42,12 @@ class CreateProjectController implements ControllerInterface
             ->setBody('Project created');
     }
 
-    public function authorise(?User $user): bool
+    public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
     {
-        /**
-         * Must be an Admin user to create a project
-         */
-        if ($user === null) {
-            return false;
-        }
-        if (!$user->isAdmin) {
-            return false;
+        if ($entity instanceof User) {
+            $this->user = $entity;
         }
 
-        $this->user = $user;
-        return true;
+        return new AdminUserRequiredStrategy($entity);
     }
 }

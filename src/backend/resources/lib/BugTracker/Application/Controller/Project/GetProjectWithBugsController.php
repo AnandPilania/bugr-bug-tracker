@@ -2,8 +2,10 @@
 
 namespace BugTracker\Application\Controller\Project;
 
-use BugTracker\Domain\Entity\User;
+use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
+use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
+use BugTracker\Persistence\Entity\EntityInterface;
 use BugTracker\Persistence\Query\Project\GetProjectWithAggregatesQuery;
 use InvalidArgumentException;
 use SourcePot\Container\Container;
@@ -14,8 +16,6 @@ use SourcePot\Persistence\DatabaseAdapter;
 
 class GetProjectWithBugsController implements ControllerInterface
 {
-    private ?User $user = null;
-
     public function __construct(
         private readonly int $projectId
     ) {
@@ -44,11 +44,8 @@ class GetProjectWithBugsController implements ControllerInterface
             ->setBody($bugs);
     }
 
-    public function authorise(?User $user): bool
+    public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
     {
-        // @todo GET requests don't work with my authorisation yet
-        return true;
-        $this->user = $user;
-        return $user !== null;
+        return new LoggedInUserRequiredStrategy($entity);
     }
 }

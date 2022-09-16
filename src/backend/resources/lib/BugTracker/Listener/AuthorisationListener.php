@@ -3,12 +3,9 @@
 namespace BugTracker\Listener;
 
 use BugTracker\Domain\Entity\User;
-use BugTracker\Factory\DatabaseAdapterFactory;
 use BugTracker\Persistence\Query\Token\FindTokenQuery;
 use BugTracker\Persistence\Query\User\FindUserByIdQuery;
-use SourcePot\Bag\Bag;
 use SourcePot\Container\Container;
-use SourcePot\Core\Config\Config;
 use SourcePot\Core\Http\Exception\UnauthenticatedException;
 use SourcePot\Core\Http\Exception\UnauthorisedException;
 use SourcePot\Core\EventDispatcher\ListenerInterface;
@@ -23,10 +20,11 @@ class AuthorisationListener implements ListenerInterface
 
         $user = $this->getUserOfToken($headers->get('Token'));
 
-        $authorised = $event->get('controller')->authorise($user);
+        $authStrategy = $event->get('controller')->getAuthorisationStrategy($user);
+        $authorised = $authStrategy->authorise();
 
         if (!$authorised) {
-            if(!$user) {
+            if (!$user) {
                 throw new UnauthenticatedException();
             }
             throw new UnauthorisedException($user->username);

@@ -14,6 +14,7 @@ import IfLoggedInRoute from "../Auth/components/IfLoggedInRoute";
 import DashboardPage from "./pages/DashboardPage";
 import ProjectListPage from "../Project/pages/ProjectListPage";
 import ProjectPage from "../Project/pages/ProjectPage";
+import KanbanPage from "../Kanban/KanbanPage";
 
 const App = () => {
     return (
@@ -29,6 +30,7 @@ const App = () => {
                         <Route path={Url.auth.profile} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
                         <Route path={Url.projects.all} element={<ProtectedRoute><ProjectListPage /></ProtectedRoute>} />
                         <Route path={Url.projects.one} element={<ProtectedRoute><ProjectPage /></ProtectedRoute>} />
+                        <Route path={Url.kanban} element={<ProtectedRoute><KanbanPage /></ProtectedRoute>} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </Container>

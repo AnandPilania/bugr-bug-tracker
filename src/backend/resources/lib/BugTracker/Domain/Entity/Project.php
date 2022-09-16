@@ -19,8 +19,8 @@ class Project implements EntityInterface
         return new self(
             id: $args['id'],
             title: $args['title'],
-            bugs: $args['bugs'],
-            statuses: $args['statuses']
+            bugs: $args['bugs'] ?? [],
+            statuses: $args['statuses'] ?? []
         );
     }
 

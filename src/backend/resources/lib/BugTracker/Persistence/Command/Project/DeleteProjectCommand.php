@@ -8,7 +8,7 @@ use SourcePot\Persistence\QueryInterface;
 class DeleteProjectCommand implements QueryInterface
 {
     public function __construct(
-        private readonly string $projectId
+        private readonly int $projectId
     ) {
     }
 

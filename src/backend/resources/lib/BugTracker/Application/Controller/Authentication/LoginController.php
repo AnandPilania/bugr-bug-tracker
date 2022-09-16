@@ -2,10 +2,13 @@
 
 namespace BugTracker\Application\Controller\Authentication;
 
+use BugTracker\Application\Authorisation\NoAuthenticationRequiredStrategy;
 use BugTracker\Domain\Entity\User;
 use BugTracker\Factory\DatabaseAdapterFactory;
+use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Token\StoreTokenCommand;
+use BugTracker\Persistence\Entity\EntityInterface;
 use BugTracker\Persistence\Query\User\FindUserByUsernameQuery;
 use DateInterval;
 use DateTimeImmutable;
@@ -20,14 +23,7 @@ use SourcePot\Security\Password;
 
 class LoginController implements ControllerInterface
 {
-    private ?User $user;
-
-    public function authorise(?User $user): bool
-    {
-        // store the logged-in user for later use
-        $this->user = $user;
-        return true;
-    }
+    private ?User $user = null;
 
     public static function create(...$args): self
     {
@@ -74,5 +70,14 @@ class LoginController implements ControllerInterface
 
         return (new JSONResponse())
             ->setBody($response);
+    }
+
+    public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
+    {
+        if ($entity instanceof User) {
+            $this->user = $entity;
+        }
+
+        return new NoAuthenticationRequiredStrategy();
     }
 }

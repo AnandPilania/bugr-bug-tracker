@@ -2,10 +2,12 @@
 
 namespace BugTracker\Application\Controller\Bug;
 
+use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
 use BugTracker\Domain\Entity\User;
+use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Bug\CreateBugCommand;
-use InvalidArgumentException;
+use BugTracker\Persistence\Entity\EntityInterface;
 use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\ErrorResponse;
@@ -17,22 +19,12 @@ class CreateBugController implements ControllerInterface
 {
     public User $user;
 
-    public function authorise(?User $user): bool
-    {
-        if ($user !== null) {
-            $this->user = $user;
-            return true;
-        }
-
-        return false;
-    }
-
     public function execute(RequestInterface $request): ResponseInterface
     {
         $params = $request->params();
 
         // @todo create validator to check that these are not empty
-        if(!$params->has('title') || !$params->has('project') || !$params->get('status')) {
+        if (!$params->has('title') || !$params->has('project') || !$params->get('status')) {
             return (new ErrorResponse())->setBody('Missing parameters from request');
         }
 
@@ -51,5 +43,14 @@ class CreateBugController implements ControllerInterface
     public static function create(...$args): ControllerInterface
     {
         return new self();
+    }
+
+    public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
+    {
+        if ($entity instanceof User) {
+            $this->user = $entity;
+        }
+
+        return new LoggedInUserRequiredStrategy($entity);
     }
 }

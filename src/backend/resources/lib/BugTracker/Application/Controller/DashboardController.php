@@ -2,8 +2,11 @@
 
 namespace BugTracker\Application\Controller;
 
+use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
 use BugTracker\Domain\Entity\User;
+use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
+use BugTracker\Persistence\Entity\EntityInterface;
 use BugTracker\Persistence\Query\Bug\FindBugsByAssigneeQuery;
 use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
@@ -13,19 +16,11 @@ use SourcePot\Persistence\DatabaseAdapter;
 
 class DashboardController implements ControllerInterface
 {
-    private ?User $user = null;
-
-    public function authorise(?User $user): bool
-    {
-        // Just need a logged-in user
-        $this->user = $user;
-        return $user !== null;
-    }
+    private User $user;
 
     public static function create(...$args): ControllerInterface
     {
-        // No params applicable to this endpoint
-        return new self;
+        return new self();
     }
 
     public function execute(RequestInterface $request): ResponseInterface
@@ -35,5 +30,14 @@ class DashboardController implements ControllerInterface
 
         return (new JSONResponse())
             ->setBody($bugs);
+    }
+
+    public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
+    {
+        if ($entity instanceof User) {
+            $this->user = $entity;
+        }
+
+        return new LoggedInUserRequiredStrategy($entity);
     }
 }

@@ -3,7 +3,7 @@ import {IconButton, Menu} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import Url from "../../Url";
 import {useState} from "react";
-import {BugReportOutlined, DashboardOutlined, PagesOutlined} from "@mui/icons-material";
+import {BugReportOutlined, DashboardOutlined, PagesOutlined, ViewKanban} from "@mui/icons-material";
 import MenuItemWithIcon from "./MenuItemWithIcon";
 
 const MainMenu = () => {
@@ -36,6 +36,7 @@ const MainMenu = () => {
             <MenuItemWithIcon onClick={() => navigateTo(Url.root)} icon={<DashboardOutlined />} text="Dashboard" />
             <MenuItemWithIcon onClick={() => navigateTo(Url.projects.all)} icon={<PagesOutlined />} text="Projects" />
             <MenuItemWithIcon onClick={closeMenu} icon={<BugReportOutlined />} text="Bugs" />
+            <MenuItemWithIcon onClick={() => navigateTo(Url.kanban)} icon={<ViewKanban />} text="Kanban board" />
         </Menu>
     </>
 }

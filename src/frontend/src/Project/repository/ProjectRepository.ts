@@ -3,7 +3,7 @@ import Url from "../../Url";
 
 const ProjectRepository = (api: useApi) => {
     const getAll = (onSuccess: Function, onError: Function) => {
-        return api.post(
+        return api.get(
             Url.api.projects.all,
             {},
             response => onSuccess(response.data),
@@ -37,9 +37,10 @@ const ProjectRepository = (api: useApi) => {
         )
     }
 
-    const getBugs = (projectId: number, onSuccess: Function = (bugs) => {}, onError: Function = (err) => {}) => {
+    const getBugs = (projectId: number, onSuccess: Function = bugs => {}, onError: Function = err => {}) => {
         return api.get(
             Url.api.projects.bugs(projectId),
+            {},
             response => onSuccess(response.data),
             err => onError(err.data)
         )
@@ -57,6 +58,7 @@ const ProjectRepository = (api: useApi) => {
     return {
         get,
         getAll,
+        getBugs,
         getWithBugs,
         create,
         delete: deleteProject

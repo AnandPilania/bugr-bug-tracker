@@ -11,7 +11,7 @@ class User implements EntityInterface
         public readonly string $username,
         public readonly string $friendlyName,
         public readonly bool $isAdmin,
-        public readonly string $password
+        public readonly string $password = ''
     ) {
     }
 

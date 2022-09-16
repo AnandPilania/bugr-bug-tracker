@@ -2,23 +2,20 @@
 
 namespace BugTracker\Application\Controller\Project;
 
-use BugTracker\Application\Authorisation\AdminUserRequiredStrategy;
-use BugTracker\Domain\Entity\User;
+use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
-use BugTracker\Persistence\Command\Project\DeleteProjectCommand;
 use BugTracker\Persistence\Entity\EntityInterface;
+use BugTracker\Persistence\Query\Bug\FindBugsByProjectQuery;
 use InvalidArgumentException;
 use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
-use SourcePot\Core\Http\Response\BasicResponse;
+use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Persistence\DatabaseAdapter;
 
-class DeleteProjectController implements ControllerInterface
+class GetBugsForProjectController implements ControllerInterface
 {
-    private User $user;
-
     public function __construct(
         private readonly int $projectId
     ) {
@@ -41,18 +38,14 @@ class DeleteProjectController implements ControllerInterface
     {
         $database = Container::get(DatabaseAdapter::class);
 
-        $database->query(new DeleteProjectCommand($this->projectId));
+        $bugs = $database->query(new FindBugsByProjectQuery($this->projectId));
 
-        return (new BasicResponse())
-            ->setBody('Project deleted');
+        return (new JSONResponse())
+            ->setBody($bugs);
     }
 
     public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
     {
-        if ($entity instanceof User) {
-            $this->user = $entity;
-        }
-
-        return new AdminUserRequiredStrategy($entity);
+        return new LoggedInUserRequiredStrategy($entity);
     }
 }

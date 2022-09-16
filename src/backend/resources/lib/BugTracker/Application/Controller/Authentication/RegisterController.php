@@ -2,9 +2,12 @@
 
 namespace BugTracker\Application\Controller\Authentication;
 
+use BugTracker\Application\Authorisation\AdminUserRequiredStrategy;
 use BugTracker\Domain\Entity\User;
+use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\User\CreateUserCommand;
+use BugTracker\Persistence\Entity\EntityInterface;
 use BugTracker\Persistence\Query\User\FindUserByUsernameQuery;
 use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
@@ -16,18 +19,6 @@ use SourcePot\Persistence\DatabaseAdapter;
 class RegisterController implements ControllerInterface
 {
     private User $user;
-
-    public function authorise(?User $user): bool
-    {
-        // Requires an admin user to use this feature
-        if ($user === null || !$user->isAdmin) {
-            return false;
-        }
-
-        $this->user = $user;
-
-        return true;
-    }
 
     public static function create(...$args): self
     {
@@ -62,5 +53,14 @@ class RegisterController implements ControllerInterface
 
         return (new JSONResponse())
             ->setBody(['result' => 'success']);
+    }
+
+    public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
+    {
+        if ($entity instanceof User) {
+            $this->user = $entity;
+        }
+
+        return new AdminUserRequiredStrategy($entity);
     }
 }

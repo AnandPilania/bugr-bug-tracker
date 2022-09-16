@@ -21,11 +21,13 @@ class GetProjectWithAggregatesQuery implements QueryInterface
         $statement->execute(['projectId' => $this->projectId]);
         $project = $statement->fetch();
 
-        if( $project === false ) {
+        if ($project === false) {
             return null;
         }
 
-        $statement = $database->prepare('SELECT * FROM statuses WHERE project_id = :projectId AND deleted = 0 ORDER BY title');
+        $statement = $database->prepare(
+            'SELECT * FROM statuses WHERE project_id = :projectId AND deleted = 0 ORDER BY title'
+        );
         $statement->execute(['projectId' => $this->projectId]);
         $statuses = $statement->fetchAll();
 

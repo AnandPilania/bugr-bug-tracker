@@ -2,7 +2,6 @@
 
 namespace BugTracker\Domain\Entity;
 
-use BugTracker\Domain\Entity\Status\Status;
 use BugTracker\Persistence\Entity\EntityInterface;
 
 class Bug implements EntityInterface
@@ -13,7 +12,7 @@ class Bug implements EntityInterface
         public readonly string $description,
         public readonly Status $status,
         public readonly Project $project,
-        public readonly User $assignee
+        public readonly ?Assignee $assignee,
     ) {
     }
 
@@ -25,7 +24,7 @@ class Bug implements EntityInterface
             description: $args['description'],
             status: $args['status'],
             project: $args['project'],
-            assignee: $args['assignee']
+            assignee: $args['assignee'] ?? null,
         );
     }
 
@@ -37,7 +36,7 @@ class Bug implements EntityInterface
             'description' => $this->description,
             'status' => $this->status->toArray(),
             'project' => $this->project->toArray(),
-            'assignee' => $this->assignee->toArray()
+            'assignee' => $this->assignee?->toArray()
         ];
     }
 }

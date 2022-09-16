@@ -19,6 +19,7 @@ const Url = {
         },
         projects: {
             all: '/projects',
+            bugs: (id: number) => `/project/${id}/bugs`,
             create: '/projects',
             get: (id: number) => `/project/${id}`,
             getWithBugs: (id: number) => `/project/${id}/with-bugs`,
@@ -36,7 +37,8 @@ const Url = {
         all: '/projects',
         view: (id: number) => `/project/${id}`,  // this is a function to use to generate a url
         one: '/project/:projectId'         // this is the url that the above function generates to we can navigate to it
-    }
+    },
+    kanban: '/kanban'
 }
 
 export default Url

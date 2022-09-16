@@ -2,12 +2,13 @@
 
 namespace BugTracker\Application\Controller\Authentication;
 
+use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
 use BugTracker\Domain\Entity\User;
-use BugTracker\Factory\DatabaseAdapterFactory;
+use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\User\ChangePasswordCommand;
+use BugTracker\Persistence\Entity\EntityInterface;
 use SourcePot\Container\Container;
-use SourcePot\Core\Config\Config;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
@@ -17,17 +18,6 @@ use SourcePot\Persistence\DatabaseAdapter;
 class ChangePasswordController implements ControllerInterface
 {
     private User $user;
-
-    public function authorise(?User $user): bool
-    {
-        if ($user === null) {
-            return false;
-        }
-
-        $this->user = $user;
-
-        return true;
-    }
 
     public static function create(...$args): self
     {
@@ -59,5 +49,10 @@ class ChangePasswordController implements ControllerInterface
 
         return (new JSONResponse())
             ->setBody(['result' => 'success']);
+    }
+
+    public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
+    {
+        return new LoggedInUserRequiredStrategy($entity);
     }
 }

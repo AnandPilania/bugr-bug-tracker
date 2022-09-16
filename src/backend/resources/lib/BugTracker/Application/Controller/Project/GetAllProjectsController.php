@@ -2,8 +2,10 @@
 
 namespace BugTracker\Application\Controller\Project;
 
-use BugTracker\Domain\Entity\User;
+use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
+use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
+use BugTracker\Persistence\Entity\EntityInterface;
 use BugTracker\Persistence\Query\Project\GetProjectsQuery;
 use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
@@ -13,11 +15,9 @@ use SourcePot\Persistence\DatabaseAdapter;
 
 class GetAllProjectsController implements ControllerInterface
 {
-    private ?User $user = null;
-
     public static function create(...$args): ControllerInterface
     {
-
+        return new self();
     }
 
     public function execute(RequestInterface $request): ResponseInterface
@@ -30,11 +30,8 @@ class GetAllProjectsController implements ControllerInterface
             ->setBody($projects);
     }
 
-    public function authorise(?User $user): bool
+    public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
     {
-        // @todo for now, this won't work
-        return true;
-        $this->user = $user;
-        return $user !== null;
+        return new LoggedInUserRequiredStrategy($entity);
     }
 }
