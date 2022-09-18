@@ -2,10 +2,10 @@
 
 namespace BugTracker\Persistence\Command\Status;
 
+use SourcePot\Persistence\CommandInterface;
 use SourcePot\Persistence\DatabaseAdapter;
-use SourcePot\Persistence\QueryInterface;
 
-class CreateStatusCommand implements QueryInterface
+class CreateStatusCommand implements CommandInterface
 {
     public function __construct(
         private readonly string $status,
@@ -14,7 +14,7 @@ class CreateStatusCommand implements QueryInterface
     ) {
     }
 
-    public function execute(DatabaseAdapter $database): mixed
+    public function execute(DatabaseAdapter $database): void
     {
         $statement = $database->prepare('
             INSERT INTO statuses
@@ -22,7 +22,5 @@ class CreateStatusCommand implements QueryInterface
                 project_id = (SELECT id FROM projects WHERE title = :project AND deleted = 0)
         ');
         $statement->execute(['status' => $this->status, 'project' => $this->project]);
-
-        return true;
     }
 }

@@ -2,11 +2,10 @@
 
 namespace BugTracker\Persistence\Command\Bug;
 
-use BugTracker\Domain\Entity\Project;
+use SourcePot\Persistence\CommandInterface;
 use SourcePot\Persistence\DatabaseAdapter;
-use SourcePot\Persistence\QueryInterface;
 
-class ChangeBugStatusCommand implements QueryInterface
+class ChangeBugStatusCommand implements CommandInterface
 {
     public function __construct(
         private readonly int $bugId,
@@ -14,14 +13,12 @@ class ChangeBugStatusCommand implements QueryInterface
     ) {
     }
 
-    public function execute(DatabaseAdapter $database): mixed
+    public function execute(DatabaseAdapter $database): void
     {
         $statement = $database->prepare('UPDATE bugs SET status_id = :statusId WHERE id = :bugId');
         $statement->execute([
             'statusId' => $this->statusId,
             'bugId' => $this->bugId
         ]);
-
-        return true;
     }
 }

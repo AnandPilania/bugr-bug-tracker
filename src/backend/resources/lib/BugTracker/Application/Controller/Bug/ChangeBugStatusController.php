@@ -7,7 +7,6 @@ use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Bug\ChangeBugStatusCommand;
-use BugTracker\Persistence\Command\Bug\CreateBugCommand;
 use BugTracker\Persistence\Entity\EntityInterface;
 use InvalidArgumentException;
 use SourcePot\Container\Container;
@@ -36,7 +35,7 @@ class ChangeBugStatusController implements ControllerInterface
 
         $database = Container::get(DatabaseAdapter::class);
 
-        $database->query(new ChangeBugStatusCommand(
+        $database->command(new ChangeBugStatusCommand(
             bugId: $this->bugId,
             statusId: $params->get('status')
         ));

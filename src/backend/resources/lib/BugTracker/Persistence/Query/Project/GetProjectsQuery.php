@@ -28,7 +28,11 @@ class GetProjectsQuery implements QueryInterface
                 $statuses = explode(',', $project['statuses']);
                 $statuses = array_map(function ($status) use ($project) {
                     $status = explode(':', $status);
-                    return Status::populate(['id' => $status[0], 'title' => $status[1], 'project_id' => $project['id']]);
+                    return Status::populate([
+                        'id' => $status[0],
+                        'title' => $status[1],
+                        'project_id' => $project['id']
+                    ]);
                 }, $statuses);
             }
             return Project::populate([...$project, 'statuses' => $statuses]);

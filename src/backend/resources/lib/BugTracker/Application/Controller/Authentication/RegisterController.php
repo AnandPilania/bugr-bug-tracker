@@ -44,7 +44,7 @@ class RegisterController implements ControllerInterface
         }
 
         // @todo add some logging to show who created this user
-        $database->query(new CreateUserCommand(
+        $database->command(new CreateUserCommand(
             username: $username,
             password: $params->get('password'),
             friendlyName: $params->get('friendlyName'),

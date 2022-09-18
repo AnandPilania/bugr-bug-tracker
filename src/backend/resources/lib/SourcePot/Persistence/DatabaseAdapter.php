@@ -63,4 +63,9 @@ class DatabaseAdapter
     {
         return $query->execute($this);
     }
+
+    public function command(CommandInterface $command): void
+    {
+        $command->execute($this);
+    }
 }

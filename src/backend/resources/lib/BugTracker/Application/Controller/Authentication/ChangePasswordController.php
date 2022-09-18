@@ -45,7 +45,7 @@ class ChangePasswordController implements ControllerInterface
 
         $database = Container::get(DatabaseAdapter::class);
 
-        $database->query(new ChangePasswordCommand($username, $password));
+        $database->command(new ChangePasswordCommand($username, $password));
 
         return (new JSONResponse())
             ->setBody(['result' => 'success']);

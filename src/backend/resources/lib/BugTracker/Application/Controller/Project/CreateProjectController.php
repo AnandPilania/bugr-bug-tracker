@@ -36,7 +36,7 @@ class CreateProjectController implements ControllerInterface
 
         $database = Container::get(DatabaseAdapter::class);
 
-        $database->query(new CreateProjectCommand($projectName));
+        $database->command(new CreateProjectCommand($projectName));
 
         return (new BasicResponse())
             ->setBody('Project created');

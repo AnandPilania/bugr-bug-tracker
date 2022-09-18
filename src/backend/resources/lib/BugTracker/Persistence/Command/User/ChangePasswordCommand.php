@@ -2,11 +2,11 @@
 
 namespace BugTracker\Persistence\Command\User;
 
+use SourcePot\Persistence\CommandInterface;
 use SourcePot\Persistence\DatabaseAdapter;
-use SourcePot\Persistence\QueryInterface;
 use SourcePot\Security\Password;
 
-class ChangePasswordCommand implements QueryInterface
+class ChangePasswordCommand implements CommandInterface
 {
     public function __construct(
         private readonly string $username,
@@ -14,7 +14,7 @@ class ChangePasswordCommand implements QueryInterface
     ) {
     }
 
-    public function execute(DatabaseAdapter $database): mixed
+    public function execute(DatabaseAdapter $database): void
     {
         $password = Password::encrypt($this->password);
         $statement = $database->prepare(
@@ -24,6 +24,5 @@ class ChangePasswordCommand implements QueryInterface
             'username' => $this->username,
             'password' => $password,
         ]);
-        return null;
     }
 }

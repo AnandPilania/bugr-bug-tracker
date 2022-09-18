@@ -15,6 +15,10 @@ class AdminUserRequiredStrategy implements AuthorisationStrategyInterface
 
     public function authorise(): bool
     {
-        return $this->user?->isAdmin ?? false;
+        if ($this->user instanceof User) {
+            return $this->user->isAdmin;
+        }
+
+        return false;
     }
 }

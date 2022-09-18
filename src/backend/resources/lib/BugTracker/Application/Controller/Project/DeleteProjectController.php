@@ -41,7 +41,7 @@ class DeleteProjectController implements ControllerInterface
     {
         $database = Container::get(DatabaseAdapter::class);
 
-        $database->query(new DeleteProjectCommand($this->projectId));
+        $database->command(new DeleteProjectCommand($this->projectId));
 
         return (new BasicResponse())
             ->setBody('Project deleted');

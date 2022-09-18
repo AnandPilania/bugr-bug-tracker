@@ -4,7 +4,6 @@ namespace BugTracker\Application\Controller\Authentication;
 
 use BugTracker\Application\Authorisation\NoAuthenticationRequiredStrategy;
 use BugTracker\Domain\Entity\User;
-use BugTracker\Factory\DatabaseAdapterFactory;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Token\StoreTokenCommand;
@@ -13,7 +12,6 @@ use BugTracker\Persistence\Query\User\FindUserByUsernameQuery;
 use DateInterval;
 use DateTimeImmutable;
 use SourcePot\Container\Container;
-use SourcePot\Core\Config\Config;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
@@ -57,11 +55,12 @@ class LoginController implements ControllerInterface
         }
 
         // @todo delegate token creation
+        // @todo store token in Redis with expiry time
         $token = uniqid('token-');
         // @todo figure out TimeZone storage - custom transformer that appends timezone to a date string
         $expiry = (new DateTimeImmutable())->add(new DateInterval('PT5M'));
         // store in database with expiry date
-        $database->query(new StoreTokenCommand($user->id, $token, $expiry->format('Y-m-d H:i-s')));
+        $database->command(new StoreTokenCommand($user->id, $token, $expiry->format('Y-m-d H:i-s')));
 
         $response = [
             'user' => $user->toArray(),

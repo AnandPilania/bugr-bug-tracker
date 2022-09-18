@@ -38,7 +38,7 @@ class CreateStatusController implements ControllerInterface
 
         $database = Container::get(DatabaseAdapter::class);
 
-        $database->query(new CreateStatusCommand(
+        $database->command(new CreateStatusCommand(
             status: $params->get('title'),
             project: $params->get('project')
         ));

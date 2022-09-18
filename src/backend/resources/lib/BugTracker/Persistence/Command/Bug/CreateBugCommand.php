@@ -2,11 +2,10 @@
 
 namespace BugTracker\Persistence\Command\Bug;
 
-use BugTracker\Domain\Entity\Project;
+use SourcePot\Persistence\CommandInterface;
 use SourcePot\Persistence\DatabaseAdapter;
-use SourcePot\Persistence\QueryInterface;
 
-class CreateBugCommand implements QueryInterface
+class CreateBugCommand implements CommandInterface
 {
     public function __construct(
         private readonly string $title,
@@ -15,7 +14,7 @@ class CreateBugCommand implements QueryInterface
     ) {
     }
 
-    public function execute(DatabaseAdapter $database): mixed
+    public function execute(DatabaseAdapter $database): void
     {
         $description = '';
         if (strlen($this->title) >= 100) {
@@ -40,7 +39,5 @@ class CreateBugCommand implements QueryInterface
             'project' => $this->project,
             'status' => $this->status
         ]);
-
-        return true;
     }
 }

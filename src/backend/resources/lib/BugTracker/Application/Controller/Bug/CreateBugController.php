@@ -30,7 +30,7 @@ class CreateBugController implements ControllerInterface
 
         $database = Container::get(DatabaseAdapter::class);
 
-        $database->query(new CreateBugCommand(
+        $database->command(new CreateBugCommand(
             $params->get('title'),
             $params->get('project'),
             $params->get('status')

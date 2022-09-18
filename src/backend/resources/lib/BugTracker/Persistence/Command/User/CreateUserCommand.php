@@ -2,11 +2,11 @@
 
 namespace BugTracker\Persistence\Command\User;
 
+use SourcePot\Persistence\CommandInterface;
 use SourcePot\Persistence\DatabaseAdapter;
-use SourcePot\Persistence\QueryInterface;
 use SourcePot\Security\Password;
 
-class CreateUserCommand implements QueryInterface
+class CreateUserCommand implements CommandInterface
 {
     public function __construct(
         private readonly string $username,
@@ -16,7 +16,7 @@ class CreateUserCommand implements QueryInterface
     ) {
     }
 
-    public function execute(DatabaseAdapter $database): mixed
+    public function execute(DatabaseAdapter $database): void
     {
         $password = Password::encrypt($this->password);
         $statement = $database->prepare(
@@ -29,6 +29,5 @@ class CreateUserCommand implements QueryInterface
             'friendlyName' => $this->friendlyName,
             'isAdmin' => (int) $this->isAdmin    // need to force this into an int for mysql
         ]);
-        return null;
     }
 }

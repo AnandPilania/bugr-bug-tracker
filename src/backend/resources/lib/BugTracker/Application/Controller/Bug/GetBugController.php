@@ -3,7 +3,6 @@
 namespace BugTracker\Application\Controller\Bug;
 
 use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
-use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Entity\EntityInterface;
