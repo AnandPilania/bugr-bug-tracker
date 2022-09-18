@@ -13,6 +13,8 @@ import Url from "../Url";
 import ProjectListPage from "../Project/pages/ProjectListPage";
 import ProjectPage from "../Project/pages/ProjectPage";
 import KanbanPage from "../Kanban/KanbanPage";
+import IfLoggedInRoute from "../Auth/components/IfLoggedInRoute";
+import IndexPageLoggedIn from "./pages/IndexPageLoggedIn";
 
 const App = () => {
     return (
@@ -21,7 +23,7 @@ const App = () => {
                 <Navbar />
                 <Container maxWidth="xl" sx={{paddingTop: 3}}>
                     <Routes>
-                        <Route path={Url.root} element={<IndexPage />} />
+                        <Route path={Url.root} element={<IfLoggedInRoute notLoggedIn={<IndexPage />} loggedIn={<IndexPageLoggedIn />} />} />
                         <Route path={Url.auth.login} element={<LoginPage />} />
                         <Route path={Url.auth.register} element={<ProtectedRoute requiresAdmin><RegisterPage /></ProtectedRoute>} />
                         <Route path={Url.auth.logout} element={<LogoutPage />} />
