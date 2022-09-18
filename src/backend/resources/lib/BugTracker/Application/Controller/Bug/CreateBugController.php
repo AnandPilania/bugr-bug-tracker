@@ -17,8 +17,6 @@ use SourcePot\Persistence\DatabaseAdapter;
 
 class CreateBugController implements ControllerInterface
 {
-    public User $user;
-
     public function execute(RequestInterface $request): ResponseInterface
     {
         $params = $request->params();
@@ -47,10 +45,6 @@ class CreateBugController implements ControllerInterface
 
     public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
     {
-        if ($entity instanceof User) {
-            $this->user = $entity;
-        }
-
         return new LoggedInUserRequiredStrategy($entity);
     }
 }

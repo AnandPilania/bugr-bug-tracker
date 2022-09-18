@@ -20,6 +20,8 @@ class AuthorisationListener implements ListenerInterface
 
         $user = $this->getUserOfToken($headers->get('Token'));
 
+        Container::put($user, User::class);
+
         $authStrategy = $event->get('controller')->getAuthorisationStrategy($user);
         $authorised = $authStrategy->authorise();
 

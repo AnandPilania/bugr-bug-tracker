@@ -3,7 +3,6 @@
 namespace BugTracker\Application\Controller\Project;
 
 use BugTracker\Application\Authorisation\AdminUserRequiredStrategy;
-use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Status\CreateStatusCommand;
@@ -17,8 +16,6 @@ use SourcePot\Persistence\DatabaseAdapter;
 
 class CreateStatusController implements ControllerInterface
 {
-    private User $user;
-
     public static function create(...$args): ControllerInterface
     {
         return new self();
@@ -49,10 +46,6 @@ class CreateStatusController implements ControllerInterface
 
     public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
     {
-        if ($entity instanceof User) {
-            $this->user = $entity;
-        }
-
         return new AdminUserRequiredStrategy($entity);
     }
 }

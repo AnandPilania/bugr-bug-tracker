@@ -17,8 +17,6 @@ use SourcePot\Persistence\DatabaseAdapter;
 
 class ChangePasswordController implements ControllerInterface
 {
-    private User $user;
-
     public static function create(...$args): self
     {
         return new self();
@@ -37,7 +35,8 @@ class ChangePasswordController implements ControllerInterface
         $username = $this->user->username;
 
         // If the user is an Admin, they are allowed to change anyone's password, so they might be passing in a username
-        if ($this->user->isAdmin) {
+        $user = Container::get(User::class);
+        if ($user?->isAdmin) {
             if ($params->has('username') && $params->get('username') !== '') {
                 $username = $params->get('username');
             }

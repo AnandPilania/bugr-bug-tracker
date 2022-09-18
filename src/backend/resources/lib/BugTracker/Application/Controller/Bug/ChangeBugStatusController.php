@@ -3,7 +3,6 @@
 namespace BugTracker\Application\Controller\Bug;
 
 use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
-use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Bug\ChangeBugStatusCommand;
@@ -18,8 +17,6 @@ use SourcePot\Persistence\DatabaseAdapter;
 
 class ChangeBugStatusController implements ControllerInterface
 {
-    public User $user;
-
     public function __construct(
         private readonly int $bugId
     ) {
@@ -59,10 +56,6 @@ class ChangeBugStatusController implements ControllerInterface
 
     public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
     {
-        if ($entity instanceof User) {
-            $this->user = $entity;
-        }
-
         return new LoggedInUserRequiredStrategy($entity);
     }
 }

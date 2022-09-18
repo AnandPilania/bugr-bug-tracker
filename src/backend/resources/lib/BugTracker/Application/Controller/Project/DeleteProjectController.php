@@ -3,7 +3,6 @@
 namespace BugTracker\Application\Controller\Project;
 
 use BugTracker\Application\Authorisation\AdminUserRequiredStrategy;
-use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Project\DeleteProjectCommand;
@@ -17,8 +16,6 @@ use SourcePot\Persistence\DatabaseAdapter;
 
 class DeleteProjectController implements ControllerInterface
 {
-    private User $user;
-
     public function __construct(
         private readonly int $projectId
     ) {
@@ -49,10 +46,6 @@ class DeleteProjectController implements ControllerInterface
 
     public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
     {
-        if ($entity instanceof User) {
-            $this->user = $entity;
-        }
-
         return new AdminUserRequiredStrategy($entity);
     }
 }

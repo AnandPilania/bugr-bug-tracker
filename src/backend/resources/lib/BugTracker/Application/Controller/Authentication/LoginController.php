@@ -3,7 +3,6 @@
 namespace BugTracker\Application\Controller\Authentication;
 
 use BugTracker\Application\Authorisation\NoAuthenticationRequiredStrategy;
-use BugTracker\Domain\Entity\User;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Token\StoreTokenCommand;
@@ -21,8 +20,6 @@ use SourcePot\Security\Password;
 
 class LoginController implements ControllerInterface
 {
-    private ?User $user = null;
-
     public static function create(...$args): self
     {
         return new self();
@@ -31,6 +28,7 @@ class LoginController implements ControllerInterface
     public function execute(RequestInterface $request): ResponseInterface
     {
         // @todo if we already have a logged in use, expire their token first
+//        $user = Container::get(User::class);
 
         $params = $request->params();
 
@@ -73,10 +71,6 @@ class LoginController implements ControllerInterface
 
     public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface
     {
-        if ($entity instanceof User) {
-            $this->user = $entity;
-        }
-
         return new NoAuthenticationRequiredStrategy();
     }
 }

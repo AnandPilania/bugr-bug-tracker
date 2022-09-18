@@ -9,7 +9,6 @@ import Url from "../../Url";
 import {AddOutlined} from "@mui/icons-material";
 
 const ProjectListPage = () => {
-
     const {enqueueSnackbar: setError} = useSnackbar()
     const repository = useRepository(ProjectRepository)
     const [projects, setProjects] = useState([])
