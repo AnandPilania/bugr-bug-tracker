@@ -12,6 +12,14 @@ const theme = createTheme({
                     fontWeight: 600
                 }
             }
+        },
+        MuiDivider: {
+            styleOverrides: {
+                root: {
+                    marginTop: "1rem",
+                    marginBottom: "1rem"
+                }
+            }
         }
     },
     palette: {

@@ -1,5 +1,5 @@
 import {ReactElement, useContext} from "react";
-import {AuthContext, AuthContextType} from "../AuthContext";
+import AuthContext from "../AuthContext";
 
 type IfLoggedInRouteProps = {
     notLoggedIn: ReactElement,
@@ -7,7 +7,7 @@ type IfLoggedInRouteProps = {
 }
 
 const IfLoggedInRoute = ({notLoggedIn, loggedIn}: IfLoggedInRouteProps) => {
-    const {user} = useContext<AuthContextType>(AuthContext)
+    const {user} = useContext(AuthContext)
 
     return user ? loggedIn : notLoggedIn
 }

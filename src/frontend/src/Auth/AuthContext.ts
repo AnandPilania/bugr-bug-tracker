@@ -1,12 +1,12 @@
 import {createContext} from "react";
 
-type UserType = {
+export type UserType = {
     username: string,
     friendlyName: string,
     isAdmin: boolean
 }
 
-type AuthContextType = {
+export type AuthContextType = {
     user: UserType|null,
     token: string|null,
     setUser: Function
@@ -16,12 +16,8 @@ type AuthContextType = {
 const AuthContext = createContext({
     user: null,
     token: null,
-    setUser: (user: UserType) => {},
-    setToken: (token: string) => {}
+    setUser: () => {},
+    setToken: () => {}
 })
 
-export {
-    AuthContext,
-    AuthContextType,
-    UserType
-}
+export default AuthContext

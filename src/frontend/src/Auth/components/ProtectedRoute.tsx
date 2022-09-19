@@ -1,14 +1,14 @@
-import {AuthContext, AuthContextType} from "../AuthContext";
-import React, {useContext} from "react";
+import AuthContext from "../AuthContext";
+import {ReactElement, useContext} from "react";
 import NotAuthorisedPage from "../pages/NotAuthorisedPage";
 
 type ProtectedRouteProps = {
-    children: React.ReactElement | React.ReactElement[],
-    requiresAdmin: boolean
+    children: ReactElement | ReactElement[],
+    requiresAdmin?: boolean
 }
 
-const ProtectedRoute = ({children, requiresAdmin}: ProtectedRouteProps) => {
-    const {user} = useContext<AuthContextType>(AuthContext)
+const ProtectedRoute = ({children, requiresAdmin = false}: ProtectedRouteProps): ReactElement => {
+    const {user} = useContext(AuthContext)
 
     if (!user) {
         return <NotAuthorisedPage />

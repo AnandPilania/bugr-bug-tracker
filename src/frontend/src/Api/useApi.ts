@@ -1,7 +1,7 @@
 import Axios, {AxiosError, AxiosResponse} from "axios";
 import {LoadingOverlayContext, LoadingOverlayContextType} from "./LoadingOverlayContext";
 import {useContext} from "react";
-import {AuthContext, AuthContextType} from "../Auth/AuthContext";
+import AuthContext from "../Auth/AuthContext";
 
 export type UseApiType = {
     get: Function,
@@ -12,8 +12,22 @@ export type UseApiType = {
     config: {}
 }
 
+export type SuccessResponseType = {
+    data: any,
+    status: number,
+    statusText: string,
+    headers: Array<any>
+}
+
+export type ErrorResponseType = {
+    status: number,
+    statusText: string,
+    data: string,
+    headers: Array<any>
+}
+
 const useApi = (): UseApiType => {
-    const {token} = useContext<AuthContextType>(AuthContext)
+    const {token} = useContext(AuthContext)
     const loadingOverlay = useContext<LoadingOverlayContextType>(LoadingOverlayContext)
 
     let config = {
@@ -71,7 +85,7 @@ const useApi = (): UseApiType => {
         return () => axiosController.abort()
     }
 
-    const get = (url: string, data: Object, onSuccess: Function = () => {}, onError: Function = () => {}) => {
+    const get = (url: string, data: Object, onSuccess: Function = (response: SuccessResponseType) => {}, onError: Function = (error: ErrorResponseType) => {}) => {
         // build query string from data object
         const params = (() => {
             const params = Object.entries(data).map(([key,value]) => key + '=' + value).join(',')

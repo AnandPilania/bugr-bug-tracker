@@ -1,5 +1,5 @@
 import {SetStateAction, useEffect, useState} from "react";
-import {AuthContext, UserType} from "./AuthContext"
+import AuthContext, {UserType} from "./AuthContext"
 import useCookie from "../Core/hooks/useCookie";
 import useAuth from "./useAuth";
 

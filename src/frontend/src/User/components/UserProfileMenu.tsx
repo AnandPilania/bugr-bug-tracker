@@ -1,4 +1,4 @@
-import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
+import AuthContext from "../../Auth/AuthContext";
 import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {Divider, IconButton, Menu, MenuItem, PopoverProps, Tooltip} from "@mui/material";
@@ -9,7 +9,7 @@ import AdminMenu from "./AdminMenu";
 
 const UserProfileMenu = () => {
     const [anchorElement, setAnchorElement] = useState<PopoverProps[anchorElement]>(null)
-    const {user} = useContext<AuthContextType>(AuthContext)
+    const {user} = useContext(AuthContext)
     const navigateTo = useNavigate()
     const menuOpen = Boolean(anchorElement)
 

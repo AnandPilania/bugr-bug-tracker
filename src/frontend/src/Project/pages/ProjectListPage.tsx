@@ -36,7 +36,7 @@ const ProjectListPage = () => {
         <>
             <Typography variant="h2">Projects</Typography>
             <Typography><Button onClick={() => openNewProjectModal()}><AddOutlined /> Create new project</Button></Typography>
-            <Divider sx={{marginY:"1rem"}} />
+            <Divider />
             <List>
                 {projects.map((project,key) => (
                     <ListItem key={`p-${project.id}`}>

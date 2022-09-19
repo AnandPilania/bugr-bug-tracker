@@ -1,11 +1,11 @@
 import {useContext} from "react";
 import useApi from "../Api/useApi";
-import {AuthContext, AuthContextType, UserType} from "./AuthContext";
+import AuthContext, {UserType} from "./AuthContext";
 import Url from "../Url";
 
 const useAuth = () => {
     const api = useApi()
-    const authContext = useContext<AuthContextType>(AuthContext)
+    const authContext = useContext(AuthContext)
 
     const validateToken = (token: string, onSuccess: Function = () => {}, onError: Function = () => {}) => {
         return api.post(

@@ -1,5 +1,5 @@
 import {useContext, useState} from "react";
-import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
+import AuthContext from "../../Auth/AuthContext";
 import {Divider, TextField, Typography} from "@mui/material";
 import FormButton from "../../Core/components/FormButton";
 import Form from "../../Core/components/Form";
@@ -10,7 +10,7 @@ import {useSnackbar} from "notistack";
 const UserProfilePage = () => {
     const [newPassword, setNewPassword] = useState<string>('')
     const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>('')
-    const {user} = useContext<AuthContextType>(AuthContext)
+    const {user} = useContext(AuthContext)
     const api = useApi()
     const {enqueueSnackbar: setError} = useSnackbar()
 
@@ -47,7 +47,7 @@ const UserProfilePage = () => {
         <Typography>Display name: {user.friendlyName}</Typography>
         <Typography>You are {user.isAdmin ? "an Administrator" : "a Normal user"}</Typography>
 
-        <Divider sx={{marginY: "1rem"}} />
+        <Divider />
 
         <Typography>Change your password</Typography>
         <Form>

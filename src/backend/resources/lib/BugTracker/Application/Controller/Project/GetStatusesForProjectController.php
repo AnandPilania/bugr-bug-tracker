@@ -6,7 +6,7 @@ use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Entity\EntityInterface;
-use BugTracker\Persistence\Query\Bug\FindBugsByProjectQuery;
+use BugTracker\Persistence\Query\Project\FindStatusesByProjectQuery;
 use InvalidArgumentException;
 use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
@@ -14,7 +14,7 @@ use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Persistence\DatabaseAdapter;
 
-class GetBugsForProjectController implements ControllerInterface
+class GetStatusesForProjectController implements ControllerInterface
 {
     public function __construct(
         private readonly int $projectId
@@ -38,10 +38,10 @@ class GetBugsForProjectController implements ControllerInterface
     {
         $database = Container::get(DatabaseAdapter::class);
 
-        $bugs = $database->query(new FindBugsByProjectQuery($this->projectId));
+        $statuses = $database->query(new FindStatusesByProjectQuery($this->projectId));
 
         return (new JSONResponse())
-            ->setBody($bugs);
+            ->setBody($statuses);
     }
 
     public function getAuthorisationStrategy(?EntityInterface $entity): AuthorisationStrategyInterface

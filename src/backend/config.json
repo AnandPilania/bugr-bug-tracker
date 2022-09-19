@@ -18,6 +18,7 @@
     ["/api/project/(\\d+)", "BugTracker\\Application\\Controller\\Project\\DeleteProjectController", ["DELETE"]],
     ["/api/project/(\\d+)/with-bugs", "BugTracker\\Application\\Controller\\Project\\GetProjectWithBugsController", ["GET"]],
     ["/api/project/(\\d+)/bugs", "BugTracker\\Application\\Controller\\Project\\GetBugsForProjectController", ["GET"]],
+    ["/api/project/(\\d+)/statuses", "BugTracker\\Application\\Controller\\Project\\GetStatusesForProjectController", ["GET"]],
 
     ["/api/project/status", "BugTracker\\Application\\Controller\\Project\\CreateStatusController", ["POST"]]
   ],

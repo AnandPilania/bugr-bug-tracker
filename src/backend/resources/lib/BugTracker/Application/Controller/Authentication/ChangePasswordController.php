@@ -35,7 +35,7 @@ class ChangePasswordController implements ControllerInterface
         $username = $this->user->username;
 
         // If the user is an Admin, they are allowed to change anyone's password, so they might be passing in a username
-        $user = Container::get(User::class);
+        $user = Container::has(User::class) ? Container::get(User::class) : null;
         if ($user?->isAdmin) {
             if ($params->has('username') && $params->get('username') !== '') {
                 $username = $params->get('username');

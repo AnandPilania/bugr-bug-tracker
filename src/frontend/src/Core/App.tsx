@@ -30,7 +30,8 @@ const App = () => {
                         <Route path={Url.auth.profile} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
                         <Route path={Url.projects.all} element={<ProtectedRoute><ProjectListPage /></ProtectedRoute>} />
                         <Route path={Url.projects.one} element={<ProtectedRoute><ProjectPage /></ProtectedRoute>} />
-                        <Route path={Url.kanban} element={<ProtectedRoute><KanbanPage /></ProtectedRoute>} />
+                        <Route path={Url.kanban.root} element={<ProtectedRoute><KanbanPage /></ProtectedRoute>} />
+                        <Route path={Url.kanban.project} element={<ProtectedRoute><KanbanPage /></ProtectedRoute>} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </Container>

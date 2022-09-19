@@ -1,4 +1,4 @@
-import useApi from "../../Api/useApi";
+import {ErrorResponseType, SuccessResponseType, UseApiType} from "../../Api/useApi";
 import Url from "../../Url";
 
 export type StatusType = {
@@ -7,27 +7,35 @@ export type StatusType = {
     projectId: number
 }
 
-const StatusRepository = (api: useApi) => {
-    const get = (id: number) => {
-        console.log('Getting status with id', id)
+const StatusRepository = (api: UseApiType) => {
+    const getByProject = (
+        projectId: number,
+        onSuccess: Function = () => {},
+        onError: Function = () => {}
+    ) => {
+        api.get(
+            Url.statuses.byProject(projectId),
+            {},
+            (response: SuccessResponseType) => onSuccess(response.data as Array<StatusType>),
+            (error: ErrorResponseType) => onError(error.data as string)
+        )
     }
 
-    const getAll = () => {
-        console.log('Getting all the statuses')
-    }
-
-    const create = (title: string, project: string, onSuccess: Function = (response) => {}, onError: Function = (err) => {}) => {
+    const create = (
+        title: string, project: string,
+        onSuccess: Function = () => {},
+        onError: Function = () => {}
+    ) => {
         api.post(
             Url.api.statuses.create,
             {title, project},
-            response => onSuccess(response.data),
-            err => onError(err.data)
+            (response: SuccessResponseType) => onSuccess(response.data as string),
+            (error: ErrorResponseType) => onError(error.data)
         )
     }
 
     return {
-        get,
-        getAll,
+        getByProject,
         create
     }
 }

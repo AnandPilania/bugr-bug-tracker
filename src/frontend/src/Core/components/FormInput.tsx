@@ -4,8 +4,9 @@ import {ChangeEventHandler} from "react";
 type FormInputProps = {
     label: string,
     value: string,
-    onChange: ChangeEventHandler,
-    type: string
+    onChange?: ChangeEventHandler,
+    type: string,
+    disabled?: boolean
 }
 
 const FormInput = (props: FormInputProps) => (

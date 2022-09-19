@@ -7,38 +7,46 @@ import {
 } from "@mui/material";
 import {useEffect, useState} from "react";
 import useRepository from "../Core/hooks/useRepository";
-import ProjectRepository from "../Project/repository/ProjectRepository";
+import ProjectRepository, {ProjectType} from "../Project/repository/ProjectRepository";
 import {useSnackbar} from "notistack";
-import BugTable from "./components/BugTable";
+import KanbanBoard from "./components/KanbanBoard";
+import {useNavigate, useParams} from "react-router-dom";
+import Url from "../Url";
 
 const KanbanPage = () => {
+    const {projectId = ''} = useParams()
+    const navigateTo = useNavigate()
     const projectRepository = useRepository(ProjectRepository)
     const {enqueueSnackbar: setError} = useSnackbar()
-    const [projectId, setProjectId] = useState('')
-    const [projects, setProjects] = useState([])
+    const [projects, setProjects] = useState<Array<ProjectType>>([])
 
     useEffect(() => {
         return projectRepository.getAll(
-            projects => setProjects(projects),
-            err => setError(err, {variant: "error"})
+            (projects: Array<ProjectType>) => setProjects(projects),
+            (error: string) => setError(error, {variant: "error"})
         )
         //eslint-disable-next-line
     }, [])
 
-    const currentProject = projects.filter(project => project.id === projectId)[0]
+    const ProjectMenuItems = projects.map(
+        (project, key) => <MenuItem value={project.id} key={`p-${key}`}>{project.title}</MenuItem>
+    )
 
     return (
         <>
             <Typography variant="h1">Kanban</Typography>
-            <FormControl fullWidth>
-                <InputLabel>Project</InputLabel>
-                <Select value={projectId} label="Project" onChange={e => setProjectId(e.target.value)}>
-                    {projects.map((project, key) => <MenuItem value={project.id}
-                                                              key={`p-${key}`}>{project.title}</MenuItem>)}
-                </Select>
-            </FormControl>
+            {projects.length > 0 ?
+                <FormControl fullWidth>
+                    <InputLabel>Project</InputLabel>
+                    <Select value={projectId} label="Project" onChange={e => navigateTo(Url.projects.kanban(Number(e.target.value)))}>
+                        {ProjectMenuItems}
+                    </Select>
+                </FormControl>
+            :
+                <Typography>No projects have been set up yet.</Typography>
+            }
 
-            {currentProject && <BugTable projectId={projectId} statuses={currentProject.statuses} />}
+            {projectId !== '' && <KanbanBoard projectId={Number(projectId)} />}
         </>
     )
 }

@@ -57,8 +57,6 @@ const RegisterPage = () => {
 
             <FormButton onClick={createUser}>Create user</FormButton>
         </Form>
-
-        <Typography>If you don't know your unique key, I cannot help you.</Typography>
     </>
 }
 

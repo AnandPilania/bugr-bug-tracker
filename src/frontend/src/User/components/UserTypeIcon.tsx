@@ -1,9 +1,9 @@
 import {useContext} from "react";
-import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
+import AuthContext from "../../Auth/AuthContext";
 import {PersonOutline, SupervisorAccountOutlined} from "@mui/icons-material";
 
-const UserTypeIcon = (props) => {
-    const {user} = useContext<AuthContextType>(AuthContext)
+const UserTypeIcon = (props: {} = {}) => {
+    const {user} = useContext(AuthContext)
 
     return user.isAdmin ? <SupervisorAccountOutlined {...props} /> : <PersonOutline {...props} />
 }

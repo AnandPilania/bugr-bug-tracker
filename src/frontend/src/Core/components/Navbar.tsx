@@ -2,12 +2,12 @@ import {AppBar, Toolbar, Typography} from "@mui/material";
 import UserProfileMenu from "../../User/components/UserProfileMenu";
 import MainMenu from "./MainMenu";
 import {useContext} from "react";
-import {AuthContext, AuthContextType} from "../../Auth/AuthContext";
+import AuthContext from "../../Auth/AuthContext";
 import LoginButton from "../../Auth/components/buttons/LoginButton";
 import Config from "../../config";
 
 const Navbar = () => {
-    const {user} = useContext<AuthContextType>(AuthContext)
+    const {user} = useContext(AuthContext)
 
     return (
         <AppBar position="static">

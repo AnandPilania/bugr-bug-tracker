@@ -19,10 +19,11 @@ import {useSnackbar} from "notistack";
 type ViewBugModalProps = {
     setBugId: Function,
     bugId: number|null,
-    statuses: Array<{}>
+    statuses: Array<{}>,
+    onComplete: Function
 }
 
-const ViewBugModal = ({setBugId, bugId, doRefetch = () => {}, statuses = []}: ViewBugModalProps) => {
+const ViewBugModal = ({setBugId, bugId, statuses = [], onComplete = () => {}}: ViewBugModalProps) => {
     const [bug, setBug] = useState<{}|null>(null)
     const [newStatus, setNewStatus] = useState<number>(null)
     const bugRepository = useRepository(BugRepository)
@@ -53,7 +54,7 @@ const ViewBugModal = ({setBugId, bugId, doRefetch = () => {}, statuses = []}: Vi
             response => {
                 setError(response, {variant: "success"})
                 closeModal()
-                doRefetch()
+                onComplete()
             },
             err => setError(err, {variant:"error"})
         )

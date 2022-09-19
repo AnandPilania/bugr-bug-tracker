@@ -29,4 +29,9 @@ class Container implements ContainerInterface
 
         self::$containers[$class] = $object;
     }
+
+    public static function has(string $class): bool
+    {
+        return array_key_exists($class, self::$containers);
+    }
 }

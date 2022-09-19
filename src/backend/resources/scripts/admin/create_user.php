@@ -43,6 +43,6 @@ $command = new CreateUserCommand(
     friendlyName: $friendlyName,
     isAdmin: $isAdmin
 );
-$database->query($command);
+$database->command($command);
 
 echo "Done\n";

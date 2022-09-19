@@ -1,22 +1,35 @@
-import useApi from "../../Api/useApi";
+import {ErrorResponseType, SuccessResponseType, UseApiType} from "../../Api/useApi";
 import Url from "../../Url";
+import {StatusType} from "../../Status/repository/StatusRepository";
+import {UserType} from "../../Auth/AuthContext";
+import {ProjectType} from "../../Project/repository/ProjectRepository";
 
 export type BugType = {
     id: number
     title: string,
     description: string,
-    statusName: string,
-    assigneeName: string
+    status: StatusType,
+    project: ProjectType,
+    assignee: UserType|null
 }
 
-const BugRepository = (api: useApi) => {
+const BugRepository = (api: UseApiType) => {
 
-    const get = (id: number, onSuccess: Function = response => {}, onError: Function = err => {}) => {
+    const get = (id: number, onSuccess: Function = () => {}, onError: Function = () => {}) => {
         return api.get(
             Url.bugs.view(id),
             {},
-            response => onSuccess(response.data),
-            err => onError(err.data)
+            (response: SuccessResponseType) => onSuccess(response.data),
+            (error: ErrorResponseType) => onError(error.data)
+        )
+    }
+
+    const getByProject = (projectId: number, onSuccess: Function = () => {}, onError: Function = () => {}) => {
+        return api.get(
+            Url.bugs.byProject(projectId),
+            {},
+            (response: SuccessResponseType) => onSuccess(response.data as Array<BugType>),
+            (error: ErrorResponseType) => onError(error.data as string)
         )
     }
 
@@ -24,33 +37,34 @@ const BugRepository = (api: useApi) => {
         title: string,
         project: string,
         status: string,
-        onSuccess: Function = response => {},
-        onError: Function = err => {}
+        onSuccess: Function = () => {},
+        onError: Function = () => {}
     ) => {
         api.post(
             Url.api.bugs.create,
             {title, project, status},
-            response => onSuccess(response.data),
-            err => onError(err.data)
+            (response: SuccessResponseType) => onSuccess(response.data),
+            (error: ErrorResponseType) => onError(error.data)
         )
     }
 
     const setBugStatus = (
-        id,
-        status,
-        onSuccess: Function = response => {},
-        onError: Function = err => {}
+        id: number,
+        statusId: number,
+        onSuccess: Function = () => {},
+        onError: Function = () => {}
     ) => {
         return api.post(
             Url.bugs.setStatus(id),
-            {status},
-            res => onSuccess(res.data),
-            err => onError(err.data)
+            {status: statusId},
+            (response: SuccessResponseType) => onSuccess(response.data),
+            (error: ErrorResponseType) => onError(error.data)
         )
     }
 
     return {
         get,
+        getByProject,
         create,
         setBugStatus
     }

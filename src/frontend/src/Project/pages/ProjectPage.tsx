@@ -7,47 +7,42 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import NotFoundPage from "../../Core/pages/NotFoundPage";
 import useRepository from "../../Core/hooks/useRepository";
-import ProjectRepository from "../repository/ProjectRepository";
+import ProjectRepository, {ProjectType} from "../repository/ProjectRepository";
 import {useSnackbar} from "notistack";
 import {Delete} from "@mui/icons-material";
 import ProjectStatusSection from "../components/ProjectStatusSection";
 import ProjectBugSection from "../components/ProjectBugSection";
 import Url from "../../Url";
+import React from "react";
 
 const ProjectPage = () => {
     const {projectId} = useParams()
     const projectRepository = useRepository(ProjectRepository)
-    const [project, setProject] = useState(null)
+    const [project, setProject] = useState<ProjectType|null>(null)
     const {enqueueSnackbar: setError} = useSnackbar()
     const navigateTo = useNavigate()
 
-    const [refetch, setRefetch] = useState(false)
-
     useEffect(() => {
-        return projectRepository.getWithBugs(
+        return projectRepository.get(
             projectId,
-            project => {
+            (project: ProjectType) => {
                 setProject(project)
             },
-            err => setError(err, {variant:"error"})
+            (error: string) => setError(error, {variant:"error"})
         )
         // eslint-disable-next-line
-    }, [refetch])
+    }, [])
 
     const deleteProject = () => {
         // make API call to delete a project
         projectRepository.delete(
             projectId,
-            response => {
+            (response: string) => {
                 setError(response, {variant: "success"})
                 navigateTo(Url.projects.all)
             },
-            err => setError(err, {variant:"error"})
+            (error: string) => setError(error, {variant:"error"})
         )
-    }
-
-    const doRefetch = () => {
-        setRefetch(v => !v)
     }
 
     if (project === null) {
@@ -57,13 +52,13 @@ const ProjectPage = () => {
     return (
         <>
             <Typography variant="h2">{project.title}</Typography>
-            <Typography><Button onClick={deleteProject}><Delete />Delete project</Button> </Typography>
+            <Typography><Button onClick={deleteProject}><Delete sx={{marginRight: "0.5rem"}} />Delete project</Button> </Typography>
 
             <Typography>Expand the sections below to see more information about this Project</Typography>
-            <Divider sx={{marginY:"1rem"}} />
+            <Divider />
 
-            <ProjectStatusSection project={project} doRefetch={doRefetch} />
-            <ProjectBugSection project={project} doRefetch={doRefetch} />
+            <ProjectStatusSection project={project} />
+            <ProjectBugSection project={project} />
         </>
     )
 }
