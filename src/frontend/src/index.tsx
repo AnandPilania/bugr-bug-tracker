@@ -1,4 +1,4 @@
-// import {StrictMode} from "react";
+import {StrictMode} from "react";
 import {createRoot} from 'react-dom/client';
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import App from './Core/App';
@@ -11,10 +11,10 @@ import theme from "./theme";
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-    // <StrictMode>
+    <StrictMode>
         <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
             <App />
         </ThemeProvider>
-    // </StrictMode>
+    </StrictMode>
 );

@@ -15,8 +15,11 @@ const ProjectRepository = (api: UseApiType) => {
         return api.get(
             Url.api.projects.all,
             {},
-            (response: SuccessResponseType) => onSuccess(response.data as Array<ProjectType>),
-            (err: ErrorResponseType) => onError(err.data as string)
+            ({data: projects}: SuccessResponseType) => {
+                console.log('ProjectRepository:getAll:success')
+                onSuccess(projects as Array<ProjectType>)
+            },
+            ({data: message}: ErrorResponseType) => onError(message as string)
         )
     }
 

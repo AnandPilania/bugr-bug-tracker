@@ -1,20 +1,9 @@
 import {Container} from "@mui/material";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import Navbar from "./components/Navbar";
-import IndexPage from "./pages/IndexPage";
-import LoginPage from "../Auth/pages/LoginPage";
-import LogoutPage from "../Auth/pages/LogoutPage";
-import NotFoundPage from "./pages/NotFoundPage";
-import RegisterPage from "../Auth/pages/RegisterPage";
-import UserProfilePage from "../User/pages/UserProfilePage";
-import ProtectedRoute from "../Auth/components/ProtectedRoute";
 import ProviderWrapper from "./ProviderWrapper";
-import Url from "../Url";
-import ProjectListPage from "../Project/pages/ProjectListPage";
-import ProjectPage from "../Project/pages/ProjectPage";
-import KanbanPage from "../Kanban/KanbanPage";
-import IfLoggedInRoute from "../Auth/components/IfLoggedInRoute";
-import IndexPageLoggedIn from "./pages/IndexPageLoggedIn";
+import RouteWrapper from "./RouteWrapper";
+import NewBugModalAndButtonWrapper from "../Bug/NewBugModalAndButtonWrapper";
 
 const App = () => {
     return (
@@ -22,19 +11,10 @@ const App = () => {
             <BrowserRouter>
                 <Navbar />
                 <Container maxWidth="xl" sx={{paddingTop: 3}}>
-                    <Routes>
-                        <Route path={Url.root} element={<IfLoggedInRoute notLoggedIn={<IndexPage />} loggedIn={<IndexPageLoggedIn />} />} />
-                        <Route path={Url.auth.login} element={<LoginPage />} />
-                        <Route path={Url.auth.register} element={<ProtectedRoute requiresAdmin><RegisterPage /></ProtectedRoute>} />
-                        <Route path={Url.auth.logout} element={<LogoutPage />} />
-                        <Route path={Url.auth.profile} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
-                        <Route path={Url.projects.all} element={<ProtectedRoute><ProjectListPage /></ProtectedRoute>} />
-                        <Route path={Url.projects.one} element={<ProtectedRoute><ProjectPage /></ProtectedRoute>} />
-                        <Route path={Url.kanban.root} element={<ProtectedRoute><KanbanPage /></ProtectedRoute>} />
-                        <Route path={Url.kanban.project} element={<ProtectedRoute><KanbanPage /></ProtectedRoute>} />
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
+                    <RouteWrapper />
                 </Container>
+
+                <NewBugModalAndButtonWrapper />
             </BrowserRouter>
         </ProviderWrapper>
     )

@@ -13,7 +13,7 @@ const StatusRepository = (api: UseApiType) => {
         onSuccess: Function = () => {},
         onError: Function = () => {}
     ) => {
-        api.get(
+        return api.get(
             Url.statuses.byProject(projectId),
             {},
             (response: SuccessResponseType) => onSuccess(response.data as Array<StatusType>),

@@ -1,8 +1,5 @@
 import {
-    FormControl,
-    InputLabel,
     MenuItem,
-    Select,
     Typography
 } from "@mui/material";
 import {useEffect, useState} from "react";
@@ -12,6 +9,7 @@ import {useSnackbar} from "notistack";
 import KanbanBoard from "./components/KanbanBoard";
 import {useNavigate, useParams} from "react-router-dom";
 import Url from "../Url";
+import ProjectSelect from "../Project/components/ProjectSelect";
 
 const KanbanPage = () => {
     const {projectId = ''} = useParams()
@@ -25,25 +23,16 @@ const KanbanPage = () => {
             (projects: Array<ProjectType>) => setProjects(projects),
             (error: string) => setError(error, {variant: "error"})
         )
-        //eslint-disable-next-line
-    }, [])
 
-    const ProjectMenuItems = projects.map(
-        (project, key) => <MenuItem value={project.id} key={`p-${key}`}>{project.title}</MenuItem>
-    )
+        // eslint-disable-next-line
+    }, [])
 
     return (
         <>
             <Typography variant="h1">Kanban</Typography>
-            {projects.length > 0 ?
-                <FormControl fullWidth>
-                    <InputLabel>Project</InputLabel>
-                    <Select value={projectId} label="Project" onChange={e => navigateTo(Url.projects.kanban(Number(e.target.value)))}>
-                        {ProjectMenuItems}
-                    </Select>
-                </FormControl>
-            :
-                <Typography>No projects have been set up yet.</Typography>
+            {projectId === '' ?
+                <ProjectSelect onChange={projectId => navigateTo(Url.projects.kanban(projectId))} />
+            : <Typography variant="h4">{projects.find(project => project.id === Number(projectId))?.title}</Typography>
             }
 
             {projectId !== '' && <KanbanBoard projectId={Number(projectId)} />}
