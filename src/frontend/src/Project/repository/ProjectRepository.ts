@@ -2,6 +2,7 @@ import {UseApiType, ErrorResponseType, SuccessResponseType} from "../../Api/useA
 import Url from "../../Url";
 import {BugType} from "../../Bug/repository/BugRepository";
 import {StatusType} from "../../Status/repository/StatusRepository";
+import {UseCacheType} from "../../Core/useCache";
 
 export type ProjectType = {
     id: number,
@@ -10,17 +11,23 @@ export type ProjectType = {
     statuses: Array<StatusType>
 }
 
-const ProjectRepository = (api: UseApiType) => {
+const ProjectRepository = (api: UseApiType, cache: UseCacheType) => {
     const getAll = (onSuccess: Function, onError: Function) => {
-        return api.get(
-            Url.api.projects.all,
-            {},
-            ({data: projects}: SuccessResponseType) => {
-                console.log('ProjectRepository:getAll:success')
-                onSuccess(projects as Array<ProjectType>)
-            },
-            ({data: message}: ErrorResponseType) => onError(message as string)
-        )
+        const CACHE_KEY = 'project_all'
+
+        if (cache.has(CACHE_KEY)) {
+            onSuccess(cache.get(CACHE_KEY))
+        } else {
+            return api.get(
+                Url.api.projects.all,
+                {},
+                ({data: projects}: SuccessResponseType) => {
+                    cache.add(CACHE_KEY, projects, 10000)
+                    onSuccess(projects as Array<ProjectType>)
+                },
+                ({data: message}: ErrorResponseType) => onError(message as string)
+            )
+        }
     }
 
     const get = (id: number, onSuccess: Function = () => {}, onError: Function = () => {}) => {

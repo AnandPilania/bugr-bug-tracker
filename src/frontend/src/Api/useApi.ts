@@ -1,7 +1,8 @@
-import Axios, {AxiosError, AxiosResponse} from "axios";
+import Axios, {AxiosError} from "axios";
 import {LoadingOverlayContext, LoadingOverlayContextType} from "./LoadingOverlayContext";
 import {useContext} from "react";
 import AuthContext from "../Auth/AuthContext";
+import useCache from "../Core/useCache";
 
 export type UseApiType = {
     get: Function,
@@ -25,51 +26,66 @@ export type ErrorResponseType = {
     headers: Array<any>
 }
 
-type CachedDataType = {
-    data: any,
-    expiry: Date
+const buildGetRequestParamString = (data: {} = {}) => {
+    const params = Object.entries(data).map(([key,value]) => key + '=' + value).join(',')
+    if (params.length === 0) {
+        return ''
+    }
+    return '&' + params
 }
-
-const requestCache = new Map<string,Promise<any>>()
-const dataCache = new Map<string,CachedDataType>()
 
 const useApi = (): UseApiType => {
     const {token} = useContext(AuthContext)
     const loadingOverlay = useContext<LoadingOverlayContextType>(LoadingOverlayContext)
+    const Cache = useCache()
 
     let config = {
         baseUrl: 'http://localhost:8000/api'
     }
 
-    const memoAxios = (method: string, url: string, data: {} = {}, headers: {} = {}, axiosController: AbortController) => {
+    const createCachedPromise = (url: string, headers: {} = {}, axiosController: AbortController) => {
+        const PromiseCacheKey = `promise.${url}`
+
+        if (Cache.has(PromiseCacheKey)) {
+            return Cache.get(PromiseCacheKey)
+        }
+
         const promise = Axios({
+            method: 'get',
+            url,
+            headers,
+            signal: axiosController.signal
+        }).then(resolve => {
+            Cache.delete(PromiseCacheKey)
+
+            // For GET requests only, we'll cache the response data
+            const responseData = {
+                data: resolve.data,
+                status: resolve.status,
+                statusText: resolve.statusText,
+                headers: resolve.headers
+            }
+
+            Cache.add(url, responseData, 6000)
+
+            return responseData
+        }).catch(reject => {
+            Cache.delete(PromiseCacheKey)
+            throw reject
+        })
+
+        Cache.add(PromiseCacheKey, promise)
+        return promise
+    }
+
+    const createPromise = (method: string, url: string, data: {} = {}, headers: {} = {}, axiosController: AbortController) => {
+        return Axios({
             method,
             url,
             data,
             headers,
             signal: axiosController.signal
         })
-
-        // memo-ise GET requests
-        if (method.toLowerCase() === 'get') {
-            promise.then(resolve => {
-                requestCache.delete(url)
-                return resolve
-            })
-            promise.catch(reject => {
-                requestCache.delete(url)
-                return reject
-            })
-
-            // @todo allow denial of caching on some requests
-            if (!requestCache.has(url)) {
-                requestCache.set(url, promise)
-                return promise
-            }
-            return requestCache.get(url)
-        }
-
-        return promise
     }
 
     const makeRequest = (method: string, url: string, data: Object = {}, onSuccess: Function = () => {}, onError: Function = () => {}, headers: {} = {}) => {
@@ -78,58 +94,32 @@ const useApi = (): UseApiType => {
             throw new Error(`Invalid request method: ${method}`)
         }
 
-        url = config.baseUrl + url
+        loadingOverlay.show()
 
-        if (method.toLowerCase() === 'get') {
-            // attempt to use data cache for get requests
-            console.log('Attempting to use cache for', url)
-            if (dataCache.has(url)) {
-                const cachedData = dataCache.get(url)
-                if (cachedData.expiry > new Date()) {
-                    onSuccess(cachedData.data)
-                    // early return here because we're finished with this function
-                    return
-                } else {
-                    dataCache.delete(url)
-                }
-            }
-        }
+        url = config.baseUrl + url
 
         if (token) {
             headers.token = token
         }
 
-        loadingOverlay.show()
+        const abortController = new AbortController()
 
-        const axiosController = new AbortController()
+        const promise = method === 'get'
+            ? createCachedPromise(url, headers, abortController)
+            : createPromise(method, url, data, headers, abortController)
 
-        const promise = memoAxios(method, url, data, headers, axiosController)
-
-        promise.then((response: AxiosResponse) => {
+        promise.then(response => {
             const responseData = {
                 data: response.data,
                 status: response.status,
                 statusText: response.statusText,
                 headers: response.headers
             }
-            if (method.toLowerCase() === 'get') {
-                const expiryDate = new Date()
-                expiryDate.setTime(expiryDate.getTime()+6000)
-                const dataToCache = {
-                    data: responseData,
-                    expiry: expiryDate
-                }
-                dataCache.set(url, dataToCache)
-            }
             onSuccess(responseData)
-        })
-
-        promise.catch((err: AxiosError) => {
-            if (axiosController.signal.aborted) {
+        }).catch((err: AxiosError) => {
+            if (abortController.signal.aborted) {
                 return
             }
-
-            dataCache.delete(url)
 
             // @todo one day I'll remove this debugging code. But not this day
             console.log(err)
@@ -139,24 +129,25 @@ const useApi = (): UseApiType => {
                 data: err.response?.data,
                 headers: err.response?.headers
             })
-        })
-
-        promise.finally(() => {
+        }).finally(() => {
             loadingOverlay.hide()
         })
 
-        return  () => axiosController.abort()
+        return () => {
+            /**
+             * Due to the async nature of the calls being made from React, we need to delete any Promises from the
+             * cache when cancelling the request to save us from accidentally returning a cancelled promise later.
+             *
+             * NB: Not all promises go into the cache but this doesn't give any errors and will only be a very minor
+             * performance hit
+              */
+            Cache.delete(`promise.${url}`)
+            abortController.abort()
+        }
     }
 
-    const get = (url: string, data: Object, onSuccess: Function = (response: SuccessResponseType) => {}, onError: Function = (error: ErrorResponseType) => {}) => {
-        // build query string from data object
-        const params = (() => {
-            const params = Object.entries(data).map(([key,value]) => key + '=' + value).join(',')
-            if (params.length === 0) {
-                return ''
-            }
-            return '&' + params
-        })()
+    const get = (url: string, data: Object, onSuccess: Function = () => {}, onError: Function = () => {}) => {
+        const params = buildGetRequestParamString(data)
 
         return makeRequest('get', url+params, data, onSuccess, onError)
     }

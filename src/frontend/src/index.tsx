@@ -11,10 +11,10 @@ import theme from "./theme";
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-    <StrictMode>
+    // <StrictMode>
         <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
             <App />
         </ThemeProvider>
-    </StrictMode>
+    // </StrictMode>
 );
