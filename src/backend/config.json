@@ -19,10 +19,13 @@
     ["/api/project/(\\d+)/with-bugs", "BugTracker\\Application\\Controller\\Project\\GetProjectWithBugsController", ["GET"]],
     ["/api/project/(\\d+)/bugs", "BugTracker\\Application\\Controller\\Project\\GetBugsForProjectController", ["GET"]],
     ["/api/project/(\\d+)/statuses", "BugTracker\\Application\\Controller\\Project\\GetStatusesForProjectController", ["GET"]],
+    ["/api/project/(\\d+)/tags", "BugTracker\\Application\\Controller\\Project\\GetTagsForProjectController", ["GET"]],
 
     ["/api/status", "BugTracker\\Application\\Controller\\Status\\CreateStatusController", ["POST"]],
     ["/api/status/kanban", "BugTracker\\Application\\Controller\\Status\\ChangeStatusOnKanbanController", ["POST"]],
-    ["/api/status/swap", "BugTracker\\Application\\Controller\\Status\\SwapStatusOrderController", ["POST"]]
+    ["/api/status/swap", "BugTracker\\Application\\Controller\\Status\\SwapStatusOrderController", ["POST"]],
+
+    ["/api/tag", "BugTracker\\Application\\Controller\\Tag\\CreateTagController", ["POST"]]
   ],
   "listeners": [
     ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\RequestStartedListener"],
