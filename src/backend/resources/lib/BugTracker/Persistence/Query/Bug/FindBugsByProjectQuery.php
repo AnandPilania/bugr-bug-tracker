@@ -20,7 +20,7 @@ class FindBugsByProjectQuery implements QueryInterface
     {
         $statement = $database->prepare('
             SELECT bugs.*,
-                statuses.title status_title,
+                statuses.title status_title, statuses.on_kanban,
                 projects.title project_title,
                 users.username assignee_username, users.friendly_name assignee_friendly_name
             FROM bugs
@@ -35,17 +35,18 @@ class FindBugsByProjectQuery implements QueryInterface
             $status = Status::populate([
                 'id' => $bug['status_id'],
                 'title' => $bug['status_title'],
-                'project_id' => $bug['project_id']
+                'project_id' => $bug['project_id'],
+                'on_kanban' => $bug['on_kanban'],
             ]);
             $project = Project::populate([
                 'id' => $bug['project_id'],
-                'title' => $bug['project_title']
+                'title' => $bug['project_title'],
             ]);
             $assignee = $bug['assignee_id'] !== null
                 ? Assignee::populate([
                     'id' => $bug['assignee_id'],
                     'username' => $bug['assignee_username'],
-                    'friendlyName' => $bug['assignee_friendly_name']
+                    'friendlyName' => $bug['assignee_friendly_name'],
                 ])
                 : null;
 

@@ -20,7 +20,8 @@
     ["/api/project/(\\d+)/bugs", "BugTracker\\Application\\Controller\\Project\\GetBugsForProjectController", ["GET"]],
     ["/api/project/(\\d+)/statuses", "BugTracker\\Application\\Controller\\Project\\GetStatusesForProjectController", ["GET"]],
 
-    ["/api/project/status", "BugTracker\\Application\\Controller\\Project\\CreateStatusController", ["POST"]]
+    ["/api/status", "BugTracker\\Application\\Controller\\Status\\CreateStatusController", ["POST"]],
+    ["/api/status/kanban", "BugTracker\\Application\\Controller\\Status\\ChangeStatusOnKanbanController", ["POST"]]
   ],
   "listeners": [
     ["SourcePot\\Core\\Event\\RequestStartedEvent", "BugTracker\\Listener\\RequestStartedListener"],

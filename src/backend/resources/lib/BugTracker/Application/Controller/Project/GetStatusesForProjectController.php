@@ -3,6 +3,7 @@
 namespace BugTracker\Application\Controller\Project;
 
 use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
+use BugTracker\Application\Persistence\QueryBusInterface;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Entity\EntityInterface;
@@ -16,9 +17,12 @@ use SourcePot\Persistence\DatabaseAdapter;
 
 class GetStatusesForProjectController implements ControllerInterface
 {
+    private QueryBusInterface $queryBus;
+
     public function __construct(
         private readonly int $projectId
     ) {
+        $this->queryBus = Container::get(QueryBusInterface::class);
     }
 
     public static function create(...$args): ControllerInterface
@@ -36,9 +40,7 @@ class GetStatusesForProjectController implements ControllerInterface
 
     public function execute(RequestInterface $request): ResponseInterface
     {
-        $database = Container::get(DatabaseAdapter::class);
-
-        $statuses = $database->query(new FindStatusesByProjectQuery($this->projectId));
+        $statuses = $this->queryBus->handle(new FindStatusesByProjectQuery($this->projectId));
 
         return (new JSONResponse())
             ->setBody($statuses);

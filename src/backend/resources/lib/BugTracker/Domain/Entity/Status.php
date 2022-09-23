@@ -9,7 +9,8 @@ class Status implements EntityInterface
     public function __construct(
         public readonly int $id,
         public readonly string $title,
-        public readonly int $projectId
+        public readonly int $projectId,
+        private readonly bool $onKanban,
     ) {
     }
 
@@ -18,7 +19,8 @@ class Status implements EntityInterface
         return new self(
             id: (int)$args['id'],
             title: $args['title'],
-            projectId: (int)$args['project_id']
+            projectId: (int)$args['project_id'],
+            onKanban: (bool)$args['on_kanban']
         );
     }
 
@@ -27,7 +29,8 @@ class Status implements EntityInterface
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'projectId' => $this->projectId
+            'projectId' => $this->projectId,
+            'onKanban' => $this->onKanban,
         ];
     }
 }

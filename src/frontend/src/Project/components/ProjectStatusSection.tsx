@@ -1,4 +1,10 @@
-import {Accordion, AccordionDetails, AccordionSummary, Button, List, ListItem, Typography} from "@mui/material";
+import {
+    Accordion, AccordionDetails, AccordionSummary,
+    Button, Checkbox, Paper,
+    Table, TableBody, TableCell,
+    TableContainer, TableHead, TableRow,
+    Typography
+} from "@mui/material";
 import {ExpandMoreOutlined, ListAltTwoTone} from "@mui/icons-material";
 import NewStatusModalForm from "../../Status/components/NewStatusModalForm";
 import {useEffect, useState} from "react";
@@ -30,6 +36,17 @@ const ProjectStatusSection = ({project}: ProjectStatusSectionProps) => {
         // eslint-disable-next-line
     }, [project])
 
+    const changeOnKanbanStatus = (statusId, value) => {
+        statusRepository.changeOnKanban(
+            statusId, value !== 'on',
+            response => {
+                setError(response, {variant: "success"})
+                loadStatuses()
+            },
+            error => setError(error, {variant: "error"})
+        )
+    }
+
     return (
         <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
@@ -42,11 +59,24 @@ const ProjectStatusSection = ({project}: ProjectStatusSectionProps) => {
                         Add new Status
                     </Button>
                 </Typography>
-                <List>
-                    {statuses.map((status, key) => (
-                        <ListItem key={`s-${key}`}>{status.title}</ListItem>
-                    ))}
-                </List>
+                <TableContainer component={Paper}>
+                    <Table size="small">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Title</TableCell>
+                                <TableCell sx={{width:"10rem"}}>Show on Kanban</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {statuses.map((status: StatusType, key: number) => (
+                                <TableRow key={`s-${key}`}>
+                                    <TableCell>{status.title}</TableCell>
+                                    <TableCell><Checkbox checked={status.onKanban} onChange={e => changeOnKanbanStatus(status.id, e.currentTarget.value)} /></TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
                 <NewStatusModalForm open={newStatusModalOpen} setOpen={setNewStatusModalOpen} onSaveNewStatus={loadStatuses}
                                     projectTitle={project.title} />
             </AccordionDetails>

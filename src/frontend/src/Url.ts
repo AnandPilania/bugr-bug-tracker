@@ -25,7 +25,8 @@ const Url = {
             delete: (id: number) => `/project/${id}`
         },
         statuses: {
-            create: '/project/status'
+            create: '/status',
+            changeOnKanban: '/status/kanban'
         }
     },
     bugs: {

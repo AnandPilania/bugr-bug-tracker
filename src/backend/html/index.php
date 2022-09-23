@@ -15,7 +15,7 @@ Autoloader::register();
 // Add CORS headers
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE');
-header('Access-Control-Allow-Headers: baggage,content-type,sentry-trace,token');
+header('Access-Control-Allow-Headers: content-type,token');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
    http_response_code(204);

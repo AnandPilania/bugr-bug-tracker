@@ -4,7 +4,8 @@ import Url from "../../Url";
 export type StatusType = {
     id: number
     title: string,
-    projectId: number
+    projectId: number,
+    onKanban: boolean
 }
 
 const StatusRepository = (api: UseApiType) => {
@@ -34,9 +35,23 @@ const StatusRepository = (api: UseApiType) => {
         )
     }
 
+    const changeOnKanban = (
+        statusId: number, onKanban: boolean,
+        onSuccess: Function = () => {},
+        onError: Function = () => {}
+    ) => {
+        api.post(
+            Url.api.statuses.changeOnKanban,
+            {statusId, onKanban},
+            (response: SuccessResponseType) => onSuccess(response.data as string),
+            (error: ErrorResponseType) => onError(error.data)
+        )
+    }
+
     return {
         getByProject,
-        create
+        create,
+        changeOnKanban
     }
 }
 

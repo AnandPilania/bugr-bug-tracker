@@ -1,6 +1,6 @@
 <?php
 
-namespace BugTracker\Application\Controller\Project;
+namespace BugTracker\Application\Controller\Status;
 
 use BugTracker\Application\Authorisation\AdminUserRequiredStrategy;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;

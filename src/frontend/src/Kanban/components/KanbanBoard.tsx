@@ -36,7 +36,11 @@ const KanbanBoard = ({projectId}: KanbanBoardProps) => {
     useEffect(() => {
         return statusRepository.getByProject(
             projectId,
-            (statuses: Array<StatusType>) => setStatuses(statuses),
+            (statuses: Array<StatusType>) => setStatuses(
+                statuses
+                    .filter(status => status.onKanban === true)
+                    // @todo place order check here
+                    .sort((a: StatusType,b: StatusType) => a.title.localeCompare(b.title))),
             (error: string) => setError(error, {variant:"error"})
         )
         // eslint-disable-next-line
