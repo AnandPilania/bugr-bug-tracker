@@ -28,7 +28,7 @@ class LoginController implements ControllerInterface
 
     public function execute(RequestInterface $request): ResponseInterface
     {
-        // @todo if we already have a logged in use, expire their token first
+        // @todo if we already have a logged in user, expire their token first
         $user = Container::has(User::class) ? Container::get(User::class) : null;
 
         $params = $request->params();

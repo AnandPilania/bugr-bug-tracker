@@ -22,16 +22,22 @@ class CreateBugController implements ControllerInterface
         $params = $request->params();
 
         // @todo create validator to check that these are not empty
-        if (!$params->has('title') || !$params->has('project') || !$params->get('status')) {
+        if (
+            !$params->has('title') ||
+            !$params->has('description') ||
+            !$params->has('project') ||
+            !$params->get('status')
+        ) {
             return (new ErrorResponse())->setBody('Missing parameters from request');
         }
 
         $database = Container::get(DatabaseAdapter::class);
 
         $database->command(new CreateBugCommand(
-            $params->get('title'),
-            $params->get('project'),
-            $params->get('status')
+            title: $params->get('title'),
+            description: $params->get('description'),
+            projectId: (int)$params->get('project'),
+            statusId: (int)$params->get('status')
         ));
 
         return (new BasicResponse())

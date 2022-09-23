@@ -2,7 +2,7 @@
 
 namespace BugTracker\Persistence\Command\Project;
 
-use SourcePot\Persistence\CommandInterface;
+use BugTracker\Application\Persistence\CommandInterface;
 use SourcePot\Persistence\DatabaseAdapter;
 
 class CreateProjectCommand implements CommandInterface

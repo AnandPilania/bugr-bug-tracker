@@ -1,6 +1,8 @@
 <?php
 
-namespace SourcePot\Persistence;
+namespace BugTracker\Application\Persistence;
+
+use SourcePot\Persistence\DatabaseAdapter;
 
 interface CommandInterface
 {

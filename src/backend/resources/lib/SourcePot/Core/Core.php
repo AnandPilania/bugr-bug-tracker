@@ -2,10 +2,16 @@
 
 namespace SourcePot\Core;
 
+use BugTracker\Application\Persistence\CommandBusInterface;
+use BugTracker\Application\Persistence\QueryBusInterface;
 use BugTracker\Factory\DatabaseAdapterFactory;
+use BugTracker\Persistence\CommandBus;
+use BugTracker\Persistence\QueryBus;
 use JsonException;
 use SourcePot\Container\Container;
 use SourcePot\Core\Config\Config;
+use SourcePot\Core\EventDispatcher\EventDispatcherInterface;
+use SourcePot\Core\EventDispatcher\EventInterface;
 use SourcePot\Core\Http\Response\NotFoundResponse;
 use SourcePot\Core\Http\Response\UnauthenticatedResponse;
 use SourcePot\Core\Http\Response\ErrorResponse;
@@ -19,12 +25,16 @@ use SourcePot\Core\Event\RequestStartedEvent;
 use SourcePot\Core\Event\RouteDecidedEvent;
 use SourcePot\Core\EventDispatcher\EventDispatcher;
 use SourcePot\Core\EventDispatcher\ListenerProvider;
+use SourcePot\Core\Http\RouterInterface;
 use SourcePot\IO\FileLoader;
+use SourcePot\Persistence\DatabaseAdapter;
 
 class Core implements CoreInterface
 {
     private Config $config;
-    private readonly ListenerProvider $listenerProvider;
+    private ListenerProvider $listenerProvider;
+    private EventDispatcherInterface $eventDispatcher;
+    private RouterInterface $router;
 
     public function __construct()
     {
@@ -63,34 +73,61 @@ class Core implements CoreInterface
         }
     }
 
+    private function setupEventDispatcher(): void
+    {
+        $this->eventDispatcher = new EventDispatcher($this->listenerProvider);
+        $this->setupListeners();
+    }
+
+    private function dispatchEvent(EventInterface $event): void
+    {
+        $this->eventDispatcher->dispatch($event);
+    }
+
     private function initiateDatabaseConnection(): void
     {
         $database = (new DatabaseAdapterFactory(Container::get(Config::class)))->build();
         Container::put($database);
     }
 
+    public function setupCommandBus(): void
+    {
+        $commandBus = new CommandBus(Container::get(DatabaseAdapter::class));
+        Container::put($commandBus, CommandBusInterface::class);
+    }
+
+    private function setupQueryBus(): void
+    {
+        $queryBus = new QueryBus(Container::get(DatabaseAdapter::class));
+        Container::put($queryBus, QueryBusInterface::class);
+    }
+
+    private function setupRoutes(): void
+    {
+        $this->router = Router::create();
+        $this->router->addRoutes($this->config->get('routes'));
+    }
+
     public function execute(): void
     {
-        // These parts cannot fail
-        $eventDispatcher = new EventDispatcher($this->listenerProvider);
-        $this->setupListeners();
-
         try {
+            $this->setupEventDispatcher();
             $this->initiateDatabaseConnection();
+            $this->setupCommandBus();
+            $this->setupQueryBus();
 
-            $eventDispatcher->dispatch(new CoreStartedEvent());
+            $this->dispatchEvent(new CoreStartedEvent());
 
-            $router = Router::create();
-            $router->addRoutes($this->config->get('routes'));
+            $this->setupRoutes();
 
             $request = Request::create();
-            $controller = $router->getControllerForRoute($request->path(), $request->method());
+            $controller = $this->router->getControllerForRoute($request->path(), $request->method());
 
-            $eventDispatcher->dispatch(new RouteDecidedEvent($request, $controller));
+            $this->dispatchEvent(new RouteDecidedEvent($request, $controller));
 
-            $eventDispatcher->dispatch(new RequestStartedEvent());
+            $this->dispatchEvent(new RequestStartedEvent());
             $response = $controller->execute($request);
-            $eventDispatcher->dispatch(new RequestFinishedEvent());
+            $this->dispatchEvent(new RequestFinishedEvent());
             $response->send();
         } catch (Http\Exception\NoRouteForPathException $e) {
             NotFoundResponse::create()
@@ -109,7 +146,7 @@ class Core implements CoreInterface
                 ->setBody('ERROR: ' . $t::class . "\n" . $t->getMessage())
                 ->send();
         } finally {
-            $eventDispatcher->dispatch(new CoreShutdownEvent());
+            $this->dispatchEvent(new CoreShutdownEvent());
         }
     }
 }

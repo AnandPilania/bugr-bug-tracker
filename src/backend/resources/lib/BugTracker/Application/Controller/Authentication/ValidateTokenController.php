@@ -21,7 +21,8 @@ class ValidateTokenController implements ControllerInterface
 
     public function execute(RequestInterface $request): ResponseInterface
     {
-        $user = Container::has(User::class) ? Container::get(User::class) : null;
+        // We can't do this in the Constructor because Controllers are instantiated before the Authentication has run
+        $user = Container::get(User::class);
 
         $response = [
             'user' => $user->toArray()

@@ -3,6 +3,7 @@
 namespace BugTracker\Application\Controller\Project;
 
 use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
+use BugTracker\Application\Persistence\QueryBusInterface;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Entity\EntityInterface;
@@ -11,10 +12,16 @@ use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
-use SourcePot\Persistence\DatabaseAdapter;
 
 class GetAllProjectsController implements ControllerInterface
 {
+    private readonly QueryBusInterface $queryBus;
+
+    public function __construct()
+    {
+        $this->queryBus = Container::get(QueryBusInterface::class);
+    }
+
     public static function create(...$args): ControllerInterface
     {
         return new self();
@@ -22,9 +29,7 @@ class GetAllProjectsController implements ControllerInterface
 
     public function execute(RequestInterface $request): ResponseInterface
     {
-        $database = Container::get(DatabaseAdapter::class);
-
-        $projects = $database->query(new GetProjectsQuery());
+        $projects = $this->queryBus->handle(new GetProjectsQuery());
 
         return (new JSONResponse())
             ->setBody($projects);

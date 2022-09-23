@@ -2,42 +2,40 @@
 
 namespace BugTracker\Persistence\Command\Bug;
 
-use SourcePot\Persistence\CommandInterface;
+use BugTracker\Application\Persistence\CommandInterface;
 use SourcePot\Persistence\DatabaseAdapter;
 
 class CreateBugCommand implements CommandInterface
 {
     public function __construct(
         private readonly string $title,
-        private readonly string $project,
-        private readonly string $status,
+        private readonly string $description,
+        private readonly int $projectId,
+        private readonly int $statusId,
     ) {
     }
 
     public function execute(DatabaseAdapter $database): void
     {
-        $description = '';
+        $description = $this->description;
+        $title = $this->title;
         if (strlen($this->title) >= 100) {
             $title = substr($this->title, 0, 97) . '...';
-            $description = $this->title;
-        } else {
-            $title = $this->title;
+            $description = $this->title . "\n\n" . $this->description;
         }
         $statement = $database->prepare('
             INSERT INTO bugs
             SET
                 title = :title,
                 description = :description,
-                project_id = (SELECT id FROM projects WHERE title = :project AND deleted=0),
-                status_id = (SELECT id FROM statuses WHERE title = :status AND project_id = (
-                    SELECT id FROM projects WHERE title = :project AND deleted = 0
-                ) AND deleted = 0)
+                project_id = :project,
+                status_id = :status
         ');
         $statement->execute([
             'title' => $title,
             'description' => $description,
-            'project' => $this->project,
-            'status' => $this->status
+            'project' => $this->projectId,
+            'status' => $this->statusId
         ]);
     }
 }

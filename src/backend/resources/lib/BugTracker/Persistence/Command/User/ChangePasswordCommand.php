@@ -2,7 +2,7 @@
 
 namespace BugTracker\Persistence\Command\User;
 
-use SourcePot\Persistence\CommandInterface;
+use BugTracker\Application\Persistence\CommandInterface;
 use SourcePot\Persistence\DatabaseAdapter;
 use SourcePot\Security\Password;
 

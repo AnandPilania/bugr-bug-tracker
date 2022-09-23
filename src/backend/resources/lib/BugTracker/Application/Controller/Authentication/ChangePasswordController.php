@@ -17,6 +17,13 @@ use SourcePot\Persistence\DatabaseAdapter;
 
 class ChangePasswordController implements ControllerInterface
 {
+    private User $user;
+
+    public function __construct()
+    {
+        $this->user = Container::get(User::class);
+    }
+
     public static function create(...$args): self
     {
         return new self();

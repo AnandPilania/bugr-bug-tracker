@@ -2,6 +2,7 @@
 
 namespace SourcePot\Persistence;
 
+use BugTracker\Application\Persistence\CommandInterface;
 use PDO;
 use PDOStatement;
 

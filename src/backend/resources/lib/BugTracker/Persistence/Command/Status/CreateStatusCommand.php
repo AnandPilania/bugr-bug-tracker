@@ -2,7 +2,7 @@
 
 namespace BugTracker\Persistence\Command\Status;
 
-use SourcePot\Persistence\CommandInterface;
+use BugTracker\Application\Persistence\CommandInterface;
 use SourcePot\Persistence\DatabaseAdapter;
 
 class CreateStatusCommand implements CommandInterface

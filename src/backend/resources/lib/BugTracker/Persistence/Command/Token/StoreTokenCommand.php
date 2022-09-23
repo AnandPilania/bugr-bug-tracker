@@ -2,9 +2,8 @@
 
 namespace BugTracker\Persistence\Command\Token;
 
-use SourcePot\Persistence\CommandInterface;
+use BugTracker\Application\Persistence\CommandInterface;
 use SourcePot\Persistence\DatabaseAdapter;
-use SourcePot\Persistence\QueryInterface;
 
 class StoreTokenCommand implements CommandInterface
 {

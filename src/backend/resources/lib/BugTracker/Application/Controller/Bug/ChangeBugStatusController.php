@@ -3,6 +3,7 @@
 namespace BugTracker\Application\Controller\Bug;
 
 use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
+use BugTracker\Application\Persistence\CommandBusInterface;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Command\Bug\ChangeBugStatusCommand;
@@ -13,13 +14,15 @@ use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\ErrorResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
 use SourcePot\Core\Http\Response\BasicResponse;
-use SourcePot\Persistence\DatabaseAdapter;
 
 class ChangeBugStatusController implements ControllerInterface
 {
+    private readonly CommandBusInterface $commandBus;
+
     public function __construct(
         private readonly int $bugId
     ) {
+        $this->commandBus = Container::get(CommandBusInterface::class);
     }
 
     public function execute(RequestInterface $request): ResponseInterface
@@ -30,9 +33,7 @@ class ChangeBugStatusController implements ControllerInterface
             return (new ErrorResponse())->setBody('Missing parameters from request');
         }
 
-        $database = Container::get(DatabaseAdapter::class);
-
-        $database->command(new ChangeBugStatusCommand(
+        $this->commandBus->dispatch(new ChangeBugStatusCommand(
             bugId: $this->bugId,
             statusId: $params->get('status')
         ));

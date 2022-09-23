@@ -5,6 +5,8 @@ namespace BugTracker\Application\Controller;
 use BugTracker\Application\Authorisation\NoAuthenticationRequiredStrategy;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
+use BugTracker\Persistence\Command\Bug\ChangeBugStatusCommand;
+use BugTracker\Persistence\CommandBus;
 use BugTracker\Persistence\Entity\EntityInterface;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\ResponseInterface;
