@@ -22,7 +22,7 @@ const ProjectRepository = (api: UseApiType, cache: UseCacheType) => {
                 Url.api.projects.all,
                 {},
                 ({data: projects}: SuccessResponseType) => {
-                    cache.add(CACHE_KEY, projects, 10000)
+                    cache.add(CACHE_KEY, projects, 60000)
                     onSuccess(projects as Array<ProjectType>)
                 },
                 ({data: message}: ErrorResponseType) => onError(message as string)

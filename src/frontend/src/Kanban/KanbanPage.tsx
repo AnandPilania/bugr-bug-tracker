@@ -1,7 +1,4 @@
-import {
-    MenuItem,
-    Typography
-} from "@mui/material";
+import {Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import useRepository from "../Core/hooks/useRepository";
 import ProjectRepository, {ProjectType} from "../Project/repository/ProjectRepository";

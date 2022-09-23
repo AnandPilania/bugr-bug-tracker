@@ -18,7 +18,7 @@ type CachedDataType = {
 
 const cache = new Map<string,CachedDataType>()
 
-const wrapDataWithExpiry = (data: any, expiry: Date): CachedDataType => ({data,expiry})
+const wrapDataWithExpiry = (data: any, expiry: Date): CachedDataType => ({data, expiry})
 const unwrapData = (data: CachedDataType) => data?.data
 
 const addDataToCache = (name: string, data: any, expiry: number = 6000) => {
@@ -33,7 +33,7 @@ const removeDataFromCache = (name) => {
 }
 
 const getDataFromCache = (name): any|null => {
-    if (!cache.has(name)) {
+    if (!cache.has(name) || cache.get(name).expiry <= new Date()) {
         return null
     }
 
@@ -41,7 +41,7 @@ const getDataFromCache = (name): any|null => {
 }
 
 const isDataInCache = (name: string) => {
-    return cache.has(name) && cache.get(name).expiry <= new Date();
+    return cache.has(name) && cache.get(name).expiry > new Date();
 }
 
 const useCache = () => {

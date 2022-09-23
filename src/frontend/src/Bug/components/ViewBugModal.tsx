@@ -15,6 +15,7 @@ import {useEffect, useState} from "react";
 import useRepository from "../../Core/hooks/useRepository";
 import BugRepository from "../repository/BugRepository";
 import {useSnackbar} from "notistack";
+import useCache from "../../Core/useCache";
 
 type ViewBugModalProps = {
     setBugId: Function,
@@ -28,6 +29,7 @@ const ViewBugModal = ({setBugId, bugId, statuses = [], onComplete = () => {}}: V
     const [newStatus, setNewStatus] = useState<number>(null)
     const bugRepository = useRepository(BugRepository)
     const {enqueueSnackbar: setError} = useSnackbar()
+    const cache = useCache()
 
     useEffect(() => {
         if (bugId) {
@@ -52,6 +54,7 @@ const ViewBugModal = ({setBugId, bugId, statuses = [], onComplete = () => {}}: V
             bugId,
             newStatus,
             response => {
+                cache.delete('bug_all')
                 setError(response, {variant: "success"})
                 closeModal()
                 onComplete()
