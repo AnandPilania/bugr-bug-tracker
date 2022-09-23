@@ -8,9 +8,8 @@ use SourcePot\Persistence\DatabaseAdapter;
 
 class FindStatusesByProjectHandler implements QueryHandlerInterface
 {
-    public function __construct(
-        private readonly DatabaseAdapter $database
-    ) {
+    public function __construct(private readonly DatabaseAdapter $database)
+    {
     }
 
     public function handle($query): array

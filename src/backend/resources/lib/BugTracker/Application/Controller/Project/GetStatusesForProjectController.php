@@ -19,9 +19,7 @@ class GetStatusesForProjectController implements ControllerInterface
 {
     private QueryBusInterface $queryBus;
 
-    public function __construct(
-        private readonly int $projectId
-    ) {
+    public function __construct(private readonly int $projectId) {
         $this->queryBus = Container::get(QueryBusInterface::class);
     }
 

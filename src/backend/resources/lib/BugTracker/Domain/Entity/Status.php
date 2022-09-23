@@ -10,7 +10,8 @@ class Status implements EntityInterface
         public readonly int $id,
         public readonly string $title,
         public readonly int $projectId,
-        private readonly bool $onKanban,
+        public readonly bool $onKanban,
+        public readonly int $order,
     ) {
     }
 
@@ -20,7 +21,8 @@ class Status implements EntityInterface
             id: (int)$args['id'],
             title: $args['title'],
             projectId: (int)$args['project_id'],
-            onKanban: (bool)$args['on_kanban']
+            onKanban: (bool)$args['on_kanban'],
+            order: (int)$args['priority'],
         );
     }
 
@@ -31,6 +33,7 @@ class Status implements EntityInterface
             'title' => $this->title,
             'projectId' => $this->projectId,
             'onKanban' => $this->onKanban,
+            'order' => $this->order,
         ];
     }
 }

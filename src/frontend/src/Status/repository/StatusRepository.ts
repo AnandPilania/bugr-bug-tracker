@@ -5,7 +5,8 @@ export type StatusType = {
     id: number
     title: string,
     projectId: number,
-    onKanban: boolean
+    onKanban: boolean,
+    order: number,
 }
 
 const StatusRepository = (api: UseApiType) => {
@@ -48,10 +49,24 @@ const StatusRepository = (api: UseApiType) => {
         )
     }
 
+    const swapOrder = (
+        firstStatusId, secondStatusId,
+        onSuccess: Function = () => {},
+        onError: Function = () => {}
+    ) => {
+        api.post(
+            Url.api.statuses.swap,
+            {firstStatusId, secondStatusId},
+            (response: SuccessResponseType) => onSuccess(response.data as string),
+            (error: ErrorResponseType) => onError(error.data)
+        )
+    }
+
     return {
         getByProject,
         create,
-        changeOnKanban
+        changeOnKanban,
+        swapOrder
     }
 }
 

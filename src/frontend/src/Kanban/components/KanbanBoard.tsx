@@ -28,7 +28,7 @@ const KanbanBoard = ({projectId}: KanbanBoardProps) => {
     const loadBugs = () => {
         return bugRepository.getByProject(
             projectId,
-            (bugs: Array<BugType>) => setBugs(bugs),
+            (bugs: Array<BugType>) => setBugs(bugs.sort((a,b) => a.title.localeCompare(b.title))),
             (error: string) => setError(error, {variant: "error"})
         )
     }
@@ -39,8 +39,7 @@ const KanbanBoard = ({projectId}: KanbanBoardProps) => {
             (statuses: Array<StatusType>) => setStatuses(
                 statuses
                     .filter(status => status.onKanban === true)
-                    // @todo place order check here
-                    .sort((a: StatusType,b: StatusType) => a.title.localeCompare(b.title))),
+                    .sort((a,b) => (a.order - b.order))),
             (error: string) => setError(error, {variant:"error"})
         )
         // eslint-disable-next-line

@@ -26,7 +26,8 @@ const Url = {
         },
         statuses: {
             create: '/status',
-            changeOnKanban: '/status/kanban'
+            changeOnKanban: '/status/kanban',
+            swap: '/status/swap'
         }
     },
     bugs: {

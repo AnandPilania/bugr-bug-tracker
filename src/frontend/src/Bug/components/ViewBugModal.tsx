@@ -13,7 +13,7 @@ import {
 import DialogForm from "../../Core/components/DialogForm";
 import {useEffect, useState} from "react";
 import useRepository from "../../Core/hooks/useRepository";
-import BugRepository from "../repository/BugRepository";
+import BugRepository, {BugType} from "../repository/BugRepository";
 import {useSnackbar} from "notistack";
 import useCache from "../../Core/useCache";
 
@@ -25,7 +25,7 @@ type ViewBugModalProps = {
 }
 
 const ViewBugModal = ({setBugId, bugId, statuses = [], onComplete = () => {}}: ViewBugModalProps) => {
-    const [bug, setBug] = useState<{}|null>(null)
+    const [bug, setBug] = useState<BugType|null>(null)
     const [newStatus, setNewStatus] = useState<number>(null)
     const bugRepository = useRepository(BugRepository)
     const {enqueueSnackbar: setError} = useSnackbar()

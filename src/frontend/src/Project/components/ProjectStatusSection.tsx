@@ -5,7 +5,7 @@ import {
     TableContainer, TableHead, TableRow,
     Typography
 } from "@mui/material";
-import {ExpandMoreOutlined, ListAltTwoTone} from "@mui/icons-material";
+import {ChevronLeftTwoTone, ChevronRightTwoTone, ExpandMoreOutlined, ListAltTwoTone} from "@mui/icons-material";
 import NewStatusModalForm from "../../Status/components/NewStatusModalForm";
 import {useEffect, useState} from "react";
 import {ProjectType} from "../repository/ProjectRepository";
@@ -26,7 +26,9 @@ const ProjectStatusSection = ({project}: ProjectStatusSectionProps) => {
     const loadStatuses = () => {
         return statusRepository.getByProject(
             project.id,
-            (statuses: Array<StatusType>) => setStatuses(statuses),
+            (statuses: Array<StatusType>) => setStatuses(
+                statuses.sort((a,b) => (a.order - b.order))
+            ),
             (error: string) => setError(error)
         )
     }
@@ -39,6 +41,33 @@ const ProjectStatusSection = ({project}: ProjectStatusSectionProps) => {
     const changeOnKanbanStatus = (statusId, value) => {
         statusRepository.changeOnKanban(
             statusId, value !== 'on',
+            response => {
+                setError(response, {variant: "success"})
+                loadStatuses()
+            },
+            error => setError(error, {variant: "error"})
+        )
+    }
+
+    const changeStatusOrder = (statusId, direction) => {
+        const [status] = statuses.filter(status => status.id === statusId)
+
+        const newOrder = status.order + direction
+        if (newOrder < 1) {
+            return
+        }
+        if (newOrder > statuses.length) {
+            return
+        }
+
+        const [other] = statuses.filter(status => status.order === newOrder)
+
+        other.order = status.order
+        status.order = newOrder
+        console.log(status, other)
+
+        statusRepository.swapOrder(
+            status.id, other.id,
             response => {
                 setError(response, {variant: "success"})
                 loadStatuses()
@@ -64,14 +93,19 @@ const ProjectStatusSection = ({project}: ProjectStatusSectionProps) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Title</TableCell>
-                                <TableCell sx={{width:"10rem"}}>Show on Kanban</TableCell>
+                                <TableCell sx={{width:"10rem"}} align="center">Show on Kanban</TableCell>
+                                <TableCell sx={{width:"10rem"}} align="center">Change order</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {statuses.map((status: StatusType, key: number) => (
                                 <TableRow key={`s-${key}`}>
                                     <TableCell>{status.title}</TableCell>
-                                    <TableCell><Checkbox checked={status.onKanban} onChange={e => changeOnKanbanStatus(status.id, e.currentTarget.value)} /></TableCell>
+                                    <TableCell align="center"><Checkbox checked={status.onKanban} onChange={e => changeOnKanbanStatus(status.id, e.currentTarget.value)} /></TableCell>
+                                    <TableCell align="center">
+                                        <Button onClick={() => changeStatusOrder(status.id, -1)}><ChevronLeftTwoTone /></Button>
+                                        <Button onClick={() => changeStatusOrder(status.id, 1)}><ChevronRightTwoTone /></Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

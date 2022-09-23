@@ -3,6 +3,7 @@
 namespace BugTracker\Application\Controller\Bug;
 
 use BugTracker\Application\Authorisation\LoggedInUserRequiredStrategy;
+use BugTracker\Application\Persistence\QueryBusInterface;
 use BugTracker\Framework\Authorisation\AuthorisationStrategyInterface;
 use BugTracker\Framework\Controller\ControllerInterface;
 use BugTracker\Persistence\Entity\EntityInterface;
@@ -12,14 +13,16 @@ use SourcePot\Container\Container;
 use SourcePot\Core\Http\RequestInterface;
 use SourcePot\Core\Http\Response\JSONResponse;
 use SourcePot\Core\Http\Response\ResponseInterface;
-use SourcePot\Core\Http\Response\BasicResponse;
 use SourcePot\Persistence\DatabaseAdapter;
 
 class GetBugController implements ControllerInterface
 {
+    private QueryBusInterface $queryBus;
+
     public function __construct(
         private int $bugId
     ) {
+        $this->queryBus = Container::get(QueryBusInterface::class);
     }
 
     public static function create(...$args): self
@@ -37,9 +40,7 @@ class GetBugController implements ControllerInterface
 
     public function execute(RequestInterface $request): ResponseInterface
     {
-        $database = Container::get(DatabaseAdapter::class);
-
-        $bug = $database->query(new GetBugQuery($this->bugId));
+        $bug = $this->queryBus->handle(new GetBugQuery($this->bugId));
 
         return (new JSONResponse())
             ->setBody($bug->toArray());
