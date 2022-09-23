@@ -1,12 +1,15 @@
 import LoadingOverlayProvider from "../Api/LoadingOverlayProvider";
 import AuthProvider from "../Auth/AuthProvider";
-import SnackbarProviderWrapper from "./components/SnackbarProviderWrapper";
+import SnackbarProviderWrapper from "./providers/SnackbarProviderWrapper";
+import NewBugModalProvider from "./providers/NewBugModalProvider";
 
 const ProviderWrapper = ({children}) => (
     <LoadingOverlayProvider>
         <SnackbarProviderWrapper>
             <AuthProvider>
-                {children}
+                <NewBugModalProvider>
+                    {children}
+                </NewBugModalProvider>
             </AuthProvider>
         </SnackbarProviderWrapper>
     </LoadingOverlayProvider>

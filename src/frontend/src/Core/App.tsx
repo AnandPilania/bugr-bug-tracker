@@ -3,7 +3,8 @@ import {BrowserRouter} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProviderWrapper from "./ProviderWrapper";
 import RouteWrapper from "./RouteWrapper";
-import NewBugModalAndButtonWrapper from "../Bug/NewBugModalAndButtonWrapper";
+import NewBugFloatingButton from "../Bug/components/NewBugFloatingButton";
+import NewBugModal from "../Bug/components/NewBugModal";
 
 const App = () => {
     return (
@@ -14,7 +15,8 @@ const App = () => {
                     <RouteWrapper />
                 </Container>
 
-                <NewBugModalAndButtonWrapper />
+                <NewBugFloatingButton />
+                <NewBugModal />
             </BrowserRouter>
         </ProviderWrapper>
     )

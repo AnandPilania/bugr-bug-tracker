@@ -82,6 +82,10 @@ const ViewBugModal = ({setBugId, bugId, statuses = [], onComplete = () => {}}: V
                             <TableCell><Typography>Status</Typography></TableCell>
                             <TableCell><Typography>{bug.status.title}</Typography></TableCell>
                         </TableRow>
+                        <TableRow>
+                            <TableCell><Typography>Description</Typography></TableCell>
+                            <TableCell><Typography>{bug.description}</Typography></TableCell>
+                        </TableRow>
                     </TableBody>
                 </Table>
 

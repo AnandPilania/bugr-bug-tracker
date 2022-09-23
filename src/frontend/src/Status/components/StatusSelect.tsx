@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
-import {FormControl, FormGroup, FormLabel, InputLabel, MenuItem, Select} from "@mui/material";
-import ProjectRepository, {ProjectType} from "../repository/ProjectRepository";
+import {MenuItem} from "@mui/material";
 import useRepository from "../../Core/hooks/useRepository";
 import {useSnackbar} from "notistack";
 import StatusRepository, {StatusType} from "../repository/StatusRepository";
@@ -17,7 +16,7 @@ const StatusSelect = ({projectId, onChange = () => {}}: StatusSelectType) => {
     const {enqueueSnackbar: setError} = useSnackbar()
 
     useEffect(() => {
-        if (projectId !== null) {
+        if (projectId !== '') {
             return statusRepository.getByProject(
                 projectId,
                 statuses => setStatuses(statuses),
@@ -34,13 +33,19 @@ const StatusSelect = ({projectId, onChange = () => {}}: StatusSelectType) => {
         onChange(statusId)
     }
 
-    return (
-        <FormSelect onChange={_setStatusId} value={statusId} label="Status">
-            <MenuItem value="" key="status-x" disabled>Select a status...</MenuItem>
-            { statuses.map(
+    const statusList = projectId === ''
+        ? [<MenuItem value="" key="status-x" disabled>Select a Project first to see its Statuses</MenuItem>]
+        : [
+            <MenuItem value="" key="status-x" disabled>Select a status...</MenuItem>,
+            ...statuses.map(
                 (status, key) =>
                     <MenuItem value={status.id} key={`status-${key}`}>{status.title}</MenuItem>
-            )}
+            )
+        ]
+
+    return (
+        <FormSelect onChange={_setStatusId} value={statusId} label="Status">
+            {statusList}
         </FormSelect>
     )
 }

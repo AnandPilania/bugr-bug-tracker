@@ -1,19 +1,24 @@
 import {useEffect, useState} from "react";
-import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {CircularProgress, MenuItem} from "@mui/material";
 import ProjectRepository, {ProjectType} from "../repository/ProjectRepository";
 import useRepository from "../../Core/hooks/useRepository";
 import {useSnackbar} from "notistack";
 import FormSelect from "../../Core/components/FormSelect";
 
 type ProjectSelectType = {
-    onChange?: Function
+    onChange?: Function,
+    defaultValue?: string
 }
 
-const ProjectSelect = ({onChange = () => {}}: ProjectSelectType) => {
+const ProjectSelect = ({defaultValue = '', onChange = () => {}}: ProjectSelectType) => {
     const [projectId, setProjectId] = useState<string>('')
     const [projects, setProjects] = useState<Array<ProjectType>>([])
     const projectRepository = useRepository(ProjectRepository)
     const {enqueueSnackbar: setError} = useSnackbar()
+
+    useEffect(() => {
+        setProjectId(defaultValue)
+    }, [defaultValue])
 
     useEffect(() => {
         return projectRepository.getAll(
@@ -30,10 +35,14 @@ const ProjectSelect = ({onChange = () => {}}: ProjectSelectType) => {
         onChange(projectId)
     }
 
+    if (projects.length === 0) {
+        return <CircularProgress />
+    }
+
     return (
         <FormSelect onChange={_setProjectId} value={projectId} label="Project">
             <MenuItem value="" key="project-x" disabled>Select a project...</MenuItem>
-            { projects.map(
+            {projects.map(
                 (project, key) =>
                     <MenuItem value={project.id} key={`project-${key}`}>{project.title}</MenuItem>
             )}

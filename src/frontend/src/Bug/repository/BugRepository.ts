@@ -35,14 +35,15 @@ const BugRepository = (api: UseApiType) => {
 
     const create = (
         title: string,
-        project: string,
-        status: string,
+        description: string,
+        project: number,
+        status: number,
         onSuccess: Function = () => {},
         onError: Function = () => {}
     ) => {
         api.post(
             Url.api.bugs.create,
-            {title, project, status},
+            {title, description, project, status},
             (response: SuccessResponseType) => onSuccess(response.data),
             (error: ErrorResponseType) => onError(error.data)
         )

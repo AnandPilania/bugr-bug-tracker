@@ -1,4 +1,4 @@
-import {FormControl, FormGroup, InputLabel, MenuItem, Select} from "@mui/material";
+import {FormControl, FormGroup, InputLabel, Select} from "@mui/material";
 import {ReactElement} from "react";
 
 type FormSelectProps = {

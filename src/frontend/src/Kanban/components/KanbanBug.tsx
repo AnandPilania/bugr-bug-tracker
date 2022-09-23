@@ -17,7 +17,6 @@ const KanbanBug = ({setBugId, bug}: KanbanBugProps) => {
             <CardActionArea onClick={() => setBugId(bug.id)}>
                 <CardContent>
                     <Typography color="primary">{bug.title}</Typography>
-                    <Typography>{bug.description}</Typography>
                     <Typography sx={{textAlign: "right"}}
                                 color="text.secondary">{bug.assignee?.friendlyName ?? ''}</Typography>
                 </CardContent>

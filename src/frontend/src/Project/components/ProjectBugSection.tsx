@@ -1,30 +1,22 @@
 import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Button,
-    Chip,
-    Paper,
-    Table,
-    TableBody,
-    TableCell, TableContainer,
-    TableRow,
-    Typography
+    Accordion, AccordionDetails, AccordionSummary,
+    Button, Chip, Paper, Typography,
+    Table, TableBody, TableCell, TableContainer, TableRow,
 } from "@mui/material";
 import {BugReportOutlined, ExpandMoreOutlined} from "@mui/icons-material";
-import NewBugModalForm from "../../Bug/components/NewBugModalForm";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {ProjectType} from "../repository/ProjectRepository";
 import BugRepository, {BugType} from "../../Bug/repository/BugRepository";
 import useRepository from "../../Core/hooks/useRepository";
 import {useSnackbar} from "notistack";
+import {NewBugModalContext} from "../../Core/providers/NewBugModalProvider";
 
 type ProjectBugSectionProps = {
     project: ProjectType
 }
 
 const ProjectBugSection = ({project}: ProjectBugSectionProps) => {
-    const [newBugModalOpen, setNewBugModalOpen] = useState(false)
+    const {setOpen: setNewBugModalOpen, setDefaults: setNewBugModalDefaults} = useContext(NewBugModalContext)
     const [bugs, setBugs] = useState<Array<BugType>>([])
     const bugRepository = useRepository(BugRepository)
     const {enqueueSnackbar: setError} = useSnackbar()
@@ -42,6 +34,13 @@ const ProjectBugSection = ({project}: ProjectBugSectionProps) => {
         // eslint-disable-next-line
     }, [project])
 
+    const openNewBugModal = () => {
+        setNewBugModalDefaults({
+            projectId: String(project.id)
+        })
+        setNewBugModalOpen(true)
+    }
+
     return (
         <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
@@ -49,7 +48,7 @@ const ProjectBugSection = ({project}: ProjectBugSectionProps) => {
             </AccordionSummary>
             <AccordionDetails>
                 <Typography>
-                        <Button onClick={() => setNewBugModalOpen(true)}>
+                    <Button onClick={openNewBugModal}>
                         <BugReportOutlined sx={{marginRight: "0.5rem"}} />
                         Create new Bug
                     </Button>
@@ -70,8 +69,6 @@ const ProjectBugSection = ({project}: ProjectBugSectionProps) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <NewBugModalForm open={newBugModalOpen} setOpen={setNewBugModalOpen} onSaveNewBug={loadBugs}
-                                 project={project.title} />
             </AccordionDetails>
         </Accordion>
     )

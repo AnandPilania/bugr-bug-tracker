@@ -1,15 +1,24 @@
 import {Fab} from "@mui/material";
 import {BugReportTwoTone} from "@mui/icons-material";
+import {NewBugModalContext} from "../../Core/providers/NewBugModalProvider";
+import {useContext} from "react";
 
-type NewBugFloatingButtonProps = {
-    onClick: Function
-}
+const NewBugFloatingButton = () => {
+    const {setOpen, setDefaults} = useContext(NewBugModalContext)
 
-const NewBugFloatingButton = ({onClick}: NewBugFloatingButtonProps) => {
+    const onClick = () => {
+        setDefaults({
+            projectId: '',
+            statusId: '',
+            title: '',
+            description: ''
+        })
+        setOpen(true)
+    }
 
     return (
-        <Fab color="secondary" onClick={onClick} sx={{position:"fixed", bottom:"1rem", right: "1rem"}}>
-            <BugReportTwoTone fontSize="large" />
+        <Fab color="primary" onClick={onClick} sx={{position: "fixed", bottom: "1rem", right: "1rem"}}>
+            <BugReportTwoTone fontSize="large"/>
         </Fab>
     )
 }
