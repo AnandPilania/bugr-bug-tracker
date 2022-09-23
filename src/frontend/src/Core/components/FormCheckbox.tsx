@@ -1,4 +1,4 @@
-import {Checkbox, FormControlLabel} from "@mui/material";
+import {Checkbox, FormControlLabel, FormGroup} from "@mui/material";
 
 type FormCheckboxProps = {
     label: string,
@@ -7,7 +7,9 @@ type FormCheckboxProps = {
 }
 
 const FormCheckbox = ({onChange, checked, ...props}: FormCheckboxProps) => (
-    <FormControlLabel control={<Checkbox checked={checked} onChange={onChange} />} {...props} />
+    <FormGroup>
+        <FormControlLabel sx={{display:"block"}} control={<Checkbox checked={checked} onChange={onChange} />} {...props} />
+    </FormGroup>
 )
 
 export default FormCheckbox

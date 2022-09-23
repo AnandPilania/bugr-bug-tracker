@@ -4,6 +4,7 @@ import Form from "../../Core/components/Form";
 import FormInput from "../../Core/components/FormInput";
 import {Close, SaveAltOutlined} from "@mui/icons-material";
 import ProjectSelect from "../../Project/components/ProjectSelect";
+import StatusSelect from "../../Status/components/StatusSelect";
 
 type NewBugModalProps = {
     open: boolean,
@@ -13,14 +14,16 @@ type NewBugModalProps = {
 type NewBugStateType = {
     title: string,
     description: string,
-    projectId: number|null
+    projectId: number|null,
+    statusId: number|null,
 }
 
 const NewBugModal = ({open, onClose}: NewBugModalProps) => {
     const [state, setState] = useState<NewBugStateType>({
         title: '',
         description: '',
-        projectId: null
+        projectId: null,
+        statusId: null,
     })
 
     const updateData = (key, value) => {
@@ -34,6 +37,7 @@ const NewBugModal = ({open, onClose}: NewBugModalProps) => {
 
     const saveNewBug = () => {
         // @todo save the bug here
+        console.log(state)
         onClose()
     }
 
@@ -45,6 +49,7 @@ const NewBugModal = ({open, onClose}: NewBugModalProps) => {
                     <ProjectSelect onChange={projectId => updateData('projectId', projectId)} />
                     <FormInput label="Bug title" value={state.title} type="text" onChange={e => updateData('title', e.target.value)} />
                     <FormInput label="Description" value={state.description} type="text" multiline rows="7" onChange={e => updateData('description', e.target.value)} />
+                    <StatusSelect onChange={statusId => updateData('statusId', statusId)} projectId={state.projectId} />
                 </Form>
             </DialogContent>
             <DialogActions sx={{display:"flex", justifyContent:"space-between"}}>

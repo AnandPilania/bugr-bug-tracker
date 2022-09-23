@@ -10,7 +10,7 @@ type FormInputProps = {
 }
 
 const FormInput = (props: FormInputProps) => (
-    <TextField {...props} margin="dense" fullWidth variant="standard"></TextField>
+    <TextField {...props} margin="dense" fullWidth variant="outlined"></TextField>
 )
 
 export default FormInput

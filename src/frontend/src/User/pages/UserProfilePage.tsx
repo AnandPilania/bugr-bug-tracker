@@ -6,6 +6,7 @@ import Form from "../../Core/components/Form";
 import Url from "../../Url";
 import useApi from "../../Api/useApi";
 import {useSnackbar} from "notistack";
+import FormInput from "../../Core/components/FormInput";
 
 const UserProfilePage = () => {
     const [newPassword, setNewPassword] = useState<string>('')
@@ -51,8 +52,8 @@ const UserProfilePage = () => {
 
         <Typography>Change your password</Typography>
         <Form>
-            <TextField label="New password" margin="dense" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} fullWidth variant="standard"></TextField>
-            <TextField label="Confirm new password" margin="dense" type="password" value={newPasswordConfirm} onChange={e => setNewPasswordConfirm(e.target.value)} fullWidth variant="standard"></TextField>
+            <FormInput label="New password" value={newPassword} type="password" onChange={e => setNewPassword(e.target.value)} />
+            <FormInput label="Confirm new password" value={newPasswordConfirm} type="password" onChange={e => setNewPasswordConfirm(e.target.value)} />
 
             <FormButton onClick={changePassword}>Change my password</FormButton>
         </Form>

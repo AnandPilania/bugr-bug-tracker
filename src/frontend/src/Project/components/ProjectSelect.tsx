@@ -3,6 +3,7 @@ import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import ProjectRepository, {ProjectType} from "../repository/ProjectRepository";
 import useRepository from "../../Core/hooks/useRepository";
 import {useSnackbar} from "notistack";
+import FormSelect from "../../Core/components/FormSelect";
 
 type ProjectSelectType = {
     onChange?: Function
@@ -30,16 +31,13 @@ const ProjectSelect = ({onChange = () => {}}: ProjectSelectType) => {
     }
 
     return (
-        <FormControl fullWidth>
-            <InputLabel>Project</InputLabel>
-            <Select value={projectId} label="Project" onChange={_setProjectId} variant="standard">
-                <MenuItem value="" key="project-x" disabled>Select a project...</MenuItem>
-                { projects.map(
-                    (project, key) =>
-                        <MenuItem value={project.id} key={`project-${key}`}>{project.title}</MenuItem>
-                )}
-            </Select>
-        </FormControl>
+        <FormSelect onChange={_setProjectId} value={projectId} label="Project">
+            <MenuItem value="" key="project-x" disabled>Select a project...</MenuItem>
+            { projects.map(
+                (project, key) =>
+                    <MenuItem value={project.id} key={`project-${key}`}>{project.title}</MenuItem>
+            )}
+        </FormSelect>
     )
 }
 
