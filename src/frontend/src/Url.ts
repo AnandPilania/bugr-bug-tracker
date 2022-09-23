@@ -28,6 +28,10 @@ const Url = {
             create: '/status',
             changeOnKanban: '/status/kanban',
             swap: '/status/swap'
+        },
+        tags: {
+            byProject: (projectId: number) => `/project/${projectId}/tags`,
+            create: '/tag'
         }
     },
     bugs: {

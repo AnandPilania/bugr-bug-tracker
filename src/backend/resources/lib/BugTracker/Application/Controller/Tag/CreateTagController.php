@@ -44,7 +44,7 @@ class CreateTagController implements ControllerInterface
 
         $this->commandBus->dispatch(new CreateTagCommand(
             title: $params->get('title'),
-            projectId: $params->get('projectId')
+            projectId: (int)$params->get('projectId')
         ));
 
         return (new BasicResponse())

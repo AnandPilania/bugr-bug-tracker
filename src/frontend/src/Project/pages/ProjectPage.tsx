@@ -14,6 +14,7 @@ import ProjectStatusSection from "../components/ProjectStatusSection";
 import ProjectBugSection from "../components/ProjectBugSection";
 import Url from "../../Url";
 import React from "react";
+import ProjectTagSection from "../components/ProjectTagSection";
 
 const ProjectPage = () => {
     const {projectId} = useParams()
@@ -58,7 +59,7 @@ const ProjectPage = () => {
             <Divider />
 
             <ProjectStatusSection project={project} />
-            <ProjectBugSection project={project} />
+            <ProjectTagSection project={project} />
         </>
     )
 }
