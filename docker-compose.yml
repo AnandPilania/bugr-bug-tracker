@@ -38,15 +38,17 @@ services:
 
   # Need to revisit this another time.
   # The server needs to serve index.html if a requested file doesn't exist already (e.g. js/css resources)
-  # frontend-build:
-  #   build:
-  #     context: ./docker
-  #     dockerfile: build-server.dockerfile
-  #   container_name: trackr-live
-  #   volumes:
-  #     - ./src/frontend/build:/app
-  #   ports:
-  #     - "3001:80"
+  live:
+    build:
+      context: ./docker
+      dockerfile: build-server.dockerfile
+    container_name: trackr-live
+    volumes:
+      - ./src/frontend:/app
+    ports:
+      - "80:3000"
+    networks:
+      - trackr_external
 
   redis:
     image: redis:7

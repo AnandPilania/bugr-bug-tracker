@@ -37,6 +37,8 @@ const buildGetRequestParamString = (data: {} = {}) => {
 const useApi = (): UseApiType => {
     const {token} = useContext(AuthContext)
     const loadingOverlay = useContext<LoadingOverlayContextType>(LoadingOverlayContext)
+    // Not sure why, but the linter insists we're not using this Cache variable
+    // eslint-disable-next-line
     const Cache = useCache()
 
     let config = {

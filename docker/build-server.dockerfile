@@ -1,7 +1,9 @@
-FROM php:8.1
+FROM node:18
+RUN apt-get update && apt-get upgrade -y
+RUN npm install -g serve
 
-RUN mkdir /app
+RUN mkdir -p /app/build
 
 WORKDIR /app
 
-ENTRYPOINT ["php", "-S", "0.0.0.0:80", "index.html"]
+ENTRYPOINT npm install && serve -s build
