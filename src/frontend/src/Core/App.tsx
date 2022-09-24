@@ -1,3 +1,4 @@
+import React from 'react';
 import {Container} from "@mui/material";
 import {BrowserRouter} from "react-router-dom";
 import Navbar from "./components/Navbar";

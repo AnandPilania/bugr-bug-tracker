@@ -3,6 +3,8 @@ import Url from "../../Url";
 import {StatusType} from "../../Status/repository/StatusRepository";
 import {UserType} from "../../Auth/AuthContext";
 import {ProjectType} from "../../Project/repository/ProjectRepository";
+import Database from "../../Core/Firestore";
+import { collection , onSnapshot } from 'firebase/firestore';
 
 export type BugType = {
     id: number
@@ -28,7 +30,15 @@ const BugRepository = (api: UseApiType) => {
         return api.get(
             Url.bugs.byProject(projectId),
             {},
-            (response: SuccessResponseType) => onSuccess(response.data as Array<BugType>),
+            (response: SuccessResponseType) => {
+                onSnapshot(
+                    collection(Database, 'bugs'),
+                    snapshot => {
+                        response.data.push(...snapshot.docs.map(doc => doc.data()))
+                        onSuccess(response.data)
+                    }
+                )
+            },
             (error: ErrorResponseType) => onError(error.data as string)
         )
     }

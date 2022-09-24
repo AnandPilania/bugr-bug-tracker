@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     Accordion, AccordionDetails, AccordionSummary,
     Button, Chip, Paper, Typography,
@@ -24,7 +25,9 @@ const ProjectBugSection = ({project}: ProjectBugSectionProps) => {
     const loadBugs = () => {
         return bugRepository.getByProject(
             project.id,
-            (bugs: Array<BugType>) => setBugs(bugs),
+            (bugs: Array<BugType>) => {
+                setBugs(bugs)
+            },
             (error: string) => setError(error)
         )
     }
